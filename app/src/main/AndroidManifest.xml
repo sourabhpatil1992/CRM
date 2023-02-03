@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.venter.regodigital">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+
+    <application
+        android:name=".RegoDigital"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/regologo"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/regologo"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.RegoDigital"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <activity
+            android:name=".officeexpenses.ExpenseRecptActivity"
+            android:exported="false" />
+        <activity
+            android:name=".officeexpenses.ExpensesDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".candidateFee.CandidateFeeReceiptActivity"
+            android:exported="false" />
+        <activity
+            android:name=".candidateFee.FeeReceiptActivity"
+            android:exported="false" />
+        <activity
+            android:name=".candidateFee.FeeDashboard"
+            android:exported="false" />
+
+        <service
+            android:name=".Candidate.CandidateProfileFrgnd"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".FirebaseService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".Candidate.CandidateDet"
+            android:exported="false" />
+        <activity
+            android:name=".Candidate.CandidateCertificate"
+            android:exported="false" />
+        <activity
+            android:name=".Candidate.CandidateAcc"
+            android:exported="false" />
+        <activity
+            android:name=".Candidate.CandidateMang"
+            android:exported="false" />
+        <activity
+            android:name=".Dashboard.EmpDashboard"
+            android:exported="false" />
+        <activity
+            android:name=".Dashboard.AdminDashboard"
+            android:exported="false" />
+        <activity
+            android:name=".Login.OtpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Login.LogInActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.venter.regodigital.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+</manifest>

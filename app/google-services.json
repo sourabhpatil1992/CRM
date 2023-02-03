@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "792847812473",
+    "project_id": "regodigitalsolotion",
+    "storage_bucket": "regodigitalsolotion.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:792847812473:android:417219cac7eb68eda091a8",
+        "android_client_info": {
+          "package_name": "com.venter.regodigital"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "792847812473-3nc91l2nsk09unbuh7q30h06cfm6m1pf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTFNBd-niZSPlsk2jATOLQfsuSotigp4U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "792847812473-3nc91l2nsk09unbuh7q30h06cfm6m1pf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

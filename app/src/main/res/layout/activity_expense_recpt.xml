@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".officeexpenses.ExpenseRecptActivity"
+    android:background="#f0f1ff">
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="Transaction Receipt"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/txtTitle"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transaction Date :"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/black"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/edtRcptDate"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:hint="Transaction Date"
+                    android:textSize="16sp"
+                    android:maxLength="10"
+                    android:inputType="date"
+                    android:layout_weight="0.8"
+                    android:textColor="@color/black"/>
+
+                <ImageView
+                    android:id="@+id/btnRcptCal"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="0.1"
+                    android:src="@drawable/ic_baseline_calendar_month_24" />
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transaction Category:"
+                android:textStyle="bold"
+                android:layout_marginTop="5dp"
+                android:textSize="18sp"
+                android:textColor="@color/black"/>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/rdobtnDebit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Debit"
+                    android:checked="true"
+                    android:textColor="@color/black"
+                    android:layout_weight="0.5"
+                    android:textSize="16sp"/>
+                <RadioButton
+                    android:id="@+id/rdobtnCredit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Credit"
+                    android:textColor="@color/black"
+                    android:layout_weight="0.5"
+                    android:textSize="16sp"/>
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transaction Type:"
+                android:textStyle="bold"
+                android:layout_marginTop="5dp"
+                android:textSize="18sp"
+                android:textColor="@color/black"/>
+
+            <Spinner
+                android:id="@+id/spinnerTransType"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="5dp"
+                android:tooltipText="Expense Type"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transaction Description :"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/black"/>
+
+            <EditText
+                android:id="@+id/edtRcptDscr"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Transaction Description"
+                android:layout_marginTop="5dp"
+                android:textSize="16sp"
+                android:maxLength="100"
+                android:layout_weight="0.8"
+                android:textColor="@color/black"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transaction Amount :"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/black"/>
+            <EditText
+                android:id="@+id/edtAmt"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Amount"
+                android:layout_marginTop="5dp"
+                android:textSize="16sp"
+                android:inputType="number"
+                android:maxLength="100"
+                android:layout_weight="0.8"
+                android:textColor="@color/black"/>
+            +
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSubmit"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@drawable/rounded_back_btn_blue"
+                android:text="Submit"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:layout_marginTop="20dp"
+                />
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/progressbar"
+        style="@style/SpinKitView.ChasingDots"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:SpinKit_Color="#211a46" />
+
+
+</RelativeLayout>
