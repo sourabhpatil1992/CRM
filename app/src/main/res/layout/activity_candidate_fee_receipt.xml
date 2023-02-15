@@ -86,7 +86,7 @@
             <EditText
                 android:id="@+id/edtRemark"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:hint="Remark"
                 android:textSize="18sp"
                 android:textColor="@color/black"/>

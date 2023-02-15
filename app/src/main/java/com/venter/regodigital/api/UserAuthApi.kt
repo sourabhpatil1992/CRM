@@ -50,7 +50,8 @@ interface UserAuthApi {
         @Query("cId") cId: String,
         @Query("letterDate") letterDate: String,
         @Query("releaseDate") releaseDate: String,
-        @Query("stamp") stamp: Boolean
+        @Query("stamp") stamp: Boolean,
+        @Query("jobActivity") jobActivity:String
     ): Response<String>
 
     @POST("/candidateApi/printRelievingLetter")
@@ -103,17 +104,31 @@ interface UserAuthApi {
     suspend fun getCandidateFeeDet() : Response<List<CandidateFeeList>>
 
     @POST("/candidateFeeApi/feeLedger")
-    suspend fun getCandidateFeeLedger(@Query("cId") cId: String) : Response<List<FeeLedger>>
+    suspend fun getCandidateFeeLedger(@Query("cId") cId: String) : Response<FeeLedgerDet>
 
     @POST("/candidateFeeApi/candidateFeeReceipt")
-    suspend fun candidateFeeReceipt(@Query("cId") cId: String,@Query("rcptDate") rcptDate: String,@Query("rcptAmt") rcptAmt: String,@Query("remark") remark: String,@Query("nextPayDate") nextPayDate: String,@Query("candidateName") candidateName: String) : Response<String>
+    suspend fun candidateFeeReceipt(@Query("cId") cId: String,@Query("rcptDate") rcptDate: String,@Query("rcptAmt") rcptAmt: String,@Query("remark") remark: String,@Query("nextPayDate") nextPayDate: String,@Query("candidateName") candidateName: String,@Query("rcptId")rcptId:Int?) : Response<String>
 
     @POST("/expenseManagement/expenseReceipt")
     suspend fun expenseReceipt(@Query("rcptDate") rcptDate: String,@Query("transCat") transCat: String,@Query("tranType") tranType: String,@Query("traDesc") traDesc: String,@Query("rcptAmt") rcptAmt: String) : Response<String>
 
     @POST("/expenseManagement/expenseReport")
     suspend fun expenseReport() : Response<ExpenseReportRes>
+    @POST("/expenseManagement/expenseReportPrint")
+    suspend fun expenseReportPrint(@Query("toDate") toDate: String,@Query("fromDate") fromDate: String) : Response<List<expensesDet>>
 
+    @POST("/userManagement/createUser")
+    suspend fun createUser(@Query("userName") userName: String,@Query("mobileNo") mobileNo: String,@Query("emailId") emailId: String,@Query("jobDesignation") jobDesignation: String,@Query("userType") userType: String,@Query("user_id") userId: Int) : Response<String>
+
+
+    @POST("/userManagement/userList")
+    suspend fun userList() : Response<List<UserListRes>>
+
+    @Multipart
+    @POST("/userManagement/rawData")
+    suspend fun addRawData(
+        @Part spic: MultipartBody.Part
+    ): Response<String>
 
 
 

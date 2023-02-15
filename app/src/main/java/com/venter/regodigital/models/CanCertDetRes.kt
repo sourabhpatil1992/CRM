@@ -26,7 +26,8 @@ data class CanCertDetRes(
     val resign_date:String?,
     val releiving_date:String?,
     val salaryslip_package:String?,
-    val salarysllip_jobpos:String?
+    val salarysllip_jobpos:String?,
+    val jobActivity:String?
 
 
 

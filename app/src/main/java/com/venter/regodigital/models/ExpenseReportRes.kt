@@ -11,3 +11,12 @@ data class  expenses(
 val tras_type:String,
 val amt:Double
 )
+
+data class  expensesDet(
+    val trans_id:String,
+    val trans_date:String,
+    val tras_type:String,
+    val trans_dscr:String,
+    val category:String,
+    val transAmt:Double
+)

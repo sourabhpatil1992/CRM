@@ -19,4 +19,8 @@
     <color name="temp8">#CDDC39</color>
     <color name="temp9">#E91E63</color>
     <color name="temp10">#009688</color>
+
+
+    <color name="activeUser">#008000</color>
+    <color name="deActiveUser">#D50000</color>
 </resources>

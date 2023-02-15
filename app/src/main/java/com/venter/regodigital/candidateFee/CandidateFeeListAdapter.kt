@@ -37,6 +37,7 @@ class CandidateFeeListAdapter(val cnt: Context):
                     intent.putExtra("id",candidate.id.toString())
                     intent.putExtra("fee",candidate.cource_fee.toInt())
                     intent.putExtra("paidFee",paidFee.toInt())
+                    intent.putExtra("transReq",candidate.transReq)
                     intent.putExtra("name",name)
                     cnt.startActivity(intent)
                 }

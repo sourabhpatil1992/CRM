@@ -58,7 +58,9 @@ class ExpensesDashboardActivity : AppCompatActivity() {
             startActivity(intent)
         }
         binding.floatingPrintButton.setOnClickListener {
-            val builders = AlertDialog.Builder(this)
+            val intent = Intent(this, ExpensesReportActivity::class.java)
+            startActivity(intent)
+            /*val builders = AlertDialog.Builder(this)
             builders.setTitle("Transaction Report")
             builders.setMessage("Print Transaction Report of :")
             val layout = LinearLayout(this)
@@ -102,7 +104,7 @@ class ExpensesDashboardActivity : AppCompatActivity() {
             builders.setIcon(ContextCompat.getDrawable(this, R.drawable.regologo))
             val alertDialog: AlertDialog = builders.create()
             alertDialog.setCancelable(true)
-            alertDialog.show()
+            alertDialog.show()*/
         }
     }
 
@@ -143,6 +145,7 @@ class ExpensesDashboardActivity : AppCompatActivity() {
                 applicationContext.getColor(R.color.temp9),
                 applicationContext.getColor(R.color.temp10)
             )
+
             if (data.totalReportDebit!!.size > 0) {
                 binding.linTotalReport.visibility = View.VISIBLE
                 val totalReport = data.totalReportDebit
@@ -151,6 +154,7 @@ class ExpensesDashboardActivity : AppCompatActivity() {
 
                         sum += it!!.amt
                 }
+                binding.txtTotalExpenses.setText(sum.toString()+"/-")
                 for (i in totalReport) {
 
                         binding.piechartTotal.addPieSlice(
@@ -190,6 +194,7 @@ class ExpensesDashboardActivity : AppCompatActivity() {
                 totalReport.forEach {
                         sum += it!!.amt
                 }
+                binding.txtMonthExpenses.setText(sum.toString()+"/-")
                 for (i in totalReport) {
 
                         binding.piechartMonth.addPieSlice(
@@ -231,6 +236,7 @@ class ExpensesDashboardActivity : AppCompatActivity() {
 
                     sum += it!!.amt
                 }
+                binding.txtTotalIcome.setText(sum.toString()+"/-")
                 for (i in totalReport) {
 
                     binding.piechartTotalincome.addPieSlice(
@@ -270,6 +276,8 @@ class ExpensesDashboardActivity : AppCompatActivity() {
                 totalReport.forEach {
                     sum += it!!.amt
                 }
+                binding.txtMonthIcome.setText(sum.toString()+"/-")
+
                 for (i in totalReport) {
 
                     binding.piechartMonthincome.addPieSlice(

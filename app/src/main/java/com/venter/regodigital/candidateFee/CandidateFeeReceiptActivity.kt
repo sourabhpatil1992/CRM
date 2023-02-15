@@ -10,6 +10,8 @@ import androidx.activity.viewModels
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.venter.regodigital.Dashboard.AdminDashboard
 import com.venter.regodigital.databinding.ActivityCandidateFeeReceiptBinding
+import com.venter.regodigital.models.FeeLedger
+import com.venter.regodigital.models.FeeLedgerDet
 import com.venter.regodigital.utils.Constans.TAG
 import com.venter.regodigital.utils.NetworkResult
 import com.venter.regodigital.viewModelClass.CandidateViewModel
@@ -20,13 +22,13 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 @AndroidEntryPoint
-class CandidateFeeReceiptActivity : AppCompatActivity()
-{
-    private var _binding:ActivityCandidateFeeReceiptBinding?= null
-    private val binding:ActivityCandidateFeeReceiptBinding
-    get() = _binding!!
+class CandidateFeeReceiptActivity : AppCompatActivity() {
+    private var _binding: ActivityCandidateFeeReceiptBinding? = null
+    private val binding: ActivityCandidateFeeReceiptBinding
+        get() = _binding!!
 
     private val candidateViewModel by viewModels<CandidateViewModel>()
+    private var candidateFeeLedger: FeeLedger? = null
 
     private var cId = ""
 
@@ -37,11 +39,19 @@ class CandidateFeeReceiptActivity : AppCompatActivity()
 
         cId = intent.getStringExtra("id").toString()
         binding.txtName.text = intent.getStringExtra("name").toString()
+        candidateFeeLedger = intent.getParcelableExtra<FeeLedger>("rcpt")
 
-        binding.btnRcptCal.setOnClickListener{
+        if (candidateFeeLedger != null) {
+            binding.edtRemark.setText(candidateFeeLedger!!.remark.toString())
+            binding.edtAmt.setText(candidateFeeLedger!!.amt.toInt().toString())
+            binding.edtRcptDate.setText(candidateFeeLedger!!.date)
+            binding.edtNxtPay.setText(intent.getStringExtra("nextDate").toString())
+        }
+
+        binding.btnRcptCal.setOnClickListener {
             calView("Receipt")
         }
-        binding.btnNxtPayCal.setOnClickListener{
+        binding.btnNxtPayCal.setOnClickListener {
             calView("Next")
         }
         binding.btnSubmit.setOnClickListener {
@@ -53,46 +63,74 @@ class CandidateFeeReceiptActivity : AppCompatActivity()
     }
 
     private fun submitData() {
-        try{
-            if(cId !="" && binding.edtRcptDate.text.isNotEmpty() && binding.edtNxtPay.text.isNotEmpty() && binding.edtRemark.text.isNotEmpty() && binding.edtAmt.text.isNotEmpty())
-            {
+        try {
+            if (cId != "" && binding.edtRcptDate.text.isNotEmpty() && binding.edtNxtPay.text.isNotEmpty() && binding.edtRemark.text.isNotEmpty() && binding.edtAmt.text.isNotEmpty()) {
                 try {
                     val dateFormat = SimpleDateFormat("dd-MM-yyyy")
                     dateFormat.parse(binding.edtRcptDate.text.toString())
                     dateFormat.parse(binding.edtNxtPay.text.toString())
 
-                    candidateViewModel.candidateFeeReceipt(cId,binding.edtRcptDate.text.toString(),binding.edtAmt.text.toString(),binding.edtRemark.text.toString(),binding.edtNxtPay.text.toString(),binding.txtName.text.toString())
+                    if (candidateFeeLedger != null) {
+                        candidateViewModel.candidateFeeReceipt(
+                            cId,
+                            binding.edtRcptDate.text.toString(),
+                            binding.edtAmt.text.toString(),
+                            binding.edtRemark.text.toString(),
+                            binding.edtNxtPay.text.toString(),
+                            binding.txtName.text.toString(),
+                            candidateFeeLedger!!.trans_id
+                        )
+
+                    } else
+                        candidateViewModel.candidateFeeReceipt(
+                            cId,
+                            binding.edtRcptDate.text.toString(),
+                            binding.edtAmt.text.toString(),
+                            binding.edtRemark.text.toString(),
+                            binding.edtNxtPay.text.toString(),
+                            binding.txtName.text.toString(),
+                            0
+                        )
+
                     candidateViewModel.stringResData.observe(this)
                     {
                         binding.progressbar.visibility = View.GONE
-                        when(it)
-                        {
-                            is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
+                        when (it) {
+                            is NetworkResult.Loading -> binding.progressbar.visibility =
+                                View.VISIBLE
 
-                            is NetworkResult.Error -> Toast.makeText(this,it.message.toString(),Toast.LENGTH_SHORT).show()
+                            is NetworkResult.Error -> Toast.makeText(
+                                this,
+                                it.message.toString(),
+                                Toast.LENGTH_SHORT
+                            ).show()
 
-                            is NetworkResult.Success ->{
-                                Toast.makeText(this,"Receipt Saved Successfully.",Toast.LENGTH_SHORT).show()
-                                val intent = Intent(this,AdminDashboard::class.java)
+                            is NetworkResult.Success -> {
+                                Toast.makeText(
+                                    this,
+                                    "Receipt Saved Successfully.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                val intent = Intent(this, AdminDashboard::class.java)
                                 startActivity(intent)
                                 this.finishAffinity()
                             }
                         }
                     }
-                }
-                catch (e:Exception)
-                {
-                    Toast.makeText(this,"Please Insert Date in DD-MM-YYYY format.",Toast.LENGTH_SHORT).show()
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        this,
+                        "Please Insert Date in DD-MM-YYYY format.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
-            }
-            else
-            {
-                Toast.makeText(this,"Please fill all details.",Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Please fill all details.", Toast.LENGTH_SHORT).show()
             }
 
-        }catch (e:Exception){
-            Log.d(TAG,"Error in CandidateFeeReceiptActivity.kt submitData() is "+e.message)
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateFeeReceiptActivity.kt submitData() is " + e.message)
         }
     }
 
@@ -116,16 +154,14 @@ class CandidateFeeReceiptActivity : AppCompatActivity()
                 val format = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
 
                 val formatted = format.format(utc.time).toString()
-                if(date == "Receipt")
-                binding.edtRcptDate.setText(formatted)
+                if (date == "Receipt")
+                    binding.edtRcptDate.setText(formatted)
                 else
                     binding.edtNxtPay.setText(formatted)
 
             }
-        }
-        catch (e:Exception)
-        {
-            Log.d(TAG,"Error in CandidateFeeReceiptActivity.kt calView() is "+e.message)
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateFeeReceiptActivity.kt calView() is " + e.message)
         }
 
     }

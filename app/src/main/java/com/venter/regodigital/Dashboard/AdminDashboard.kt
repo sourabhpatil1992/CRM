@@ -7,6 +7,7 @@ import com.venter.regodigital.Candidate.CandidateMang
 import com.venter.regodigital.candidateFee.FeeDashboard
 import com.venter.regodigital.databinding.ActivityAdminDashboardBinding
 import com.venter.regodigital.officeexpenses.ExpensesDashboardActivity
+import com.venter.regodigital.userledger.UserLedgerActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,6 +32,11 @@ class AdminDashboard : AppCompatActivity() {
 
         binding.officeExpenses.setOnClickListener{
             val intent = Intent(this,ExpensesDashboardActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.userLedger.setOnClickListener {
+            val intent = Intent(this,UserLedgerActivity::class.java)
             startActivity(intent)
         }
     }

@@ -388,11 +388,17 @@ class CandidateCertificate : AppCompatActivity() {
 
             val letterDate = EditText(this)
             val letterDateText = TextView(this)
+            val jobActivityText = TextView(this)
+            val jobActivityEdit  = EditText(this)
+
             letterDate.inputType = 20
             letterDate.setHint("Letter Date")
             letterDate.filters = arrayOf(InputFilter.LengthFilter(10))
             letterDateText.setTextColor(resources.getColor(R.color.black))
             letterDateText.setText("Letter Date")
+            jobActivityText.setText("Job Activity")
+            jobActivityText.setTextColor(resources.getColor(R.color.black))
+            jobActivityEdit.setHint("Job Activity")
 
             val relaseDate = EditText(this)
             val relaseDateText = TextView(this)
@@ -416,6 +422,7 @@ class CandidateCertificate : AppCompatActivity() {
             if (data.expletter_date != null && data.expletter_date != "" && data.expletter_date != "null") {
                 letterDate.setText(data.expletter_date)
                 relaseDate.setText(data.last_date)
+                jobActivityEdit.setText(data.jobActivity)
             }
 
             layout.setPadding(40, 10, 40, 0);
@@ -424,6 +431,8 @@ class CandidateCertificate : AppCompatActivity() {
             layout.addView(letterDate)
             layout.addView(relaseDateText)
             layout.addView(relaseDate)
+            layout.addView(jobActivityText)
+            layout.addView(jobActivityEdit)
 
             layout.addView(rdoGrp)
 
@@ -442,6 +451,7 @@ class CandidateCertificate : AppCompatActivity() {
                             candidateId.toString(),
                             letterDate.text.toString(),
                             relaseDate.text.toString(),
+                            jobActivityEdit.text.toString(),
                             withStamp.isChecked
                         )
 

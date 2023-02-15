@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.venter.regodigital.models.*
 import com.venter.regodigital.repository.UserAuthRepository
 import com.venter.regodigital.repository.UserRepository
+import com.venter.regodigital.userledger.UserAddActivity
 import com.venter.regodigital.utils.Constans.TAG
 import com.venter.regodigital.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -116,11 +117,12 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         cId: String,
         letterDate: String,
         releaseDate: String,
+        jobActivity: String,
         stamp: Boolean
     ) {
         try {
             viewModelScope.launch {
-                userRepository.printExperienceLetter(cId, letterDate, releaseDate, stamp)
+                userRepository.printExperienceLetter(cId, letterDate, releaseDate, stamp,jobActivity)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt printExperienceLetter() is " + e.message)
@@ -221,7 +223,7 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     }
 
-    val feeLedgerResLiveData: LiveData<NetworkResult<List<FeeLedger>>>
+    val feeLedgerResLiveData: LiveData<NetworkResult<FeeLedgerDet>>
         get() = userRepository.feeLedgerResLiveData
 
     fun getCandidateFeeLedger(cId:String)
@@ -236,11 +238,11 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     }
 
-    fun candidateFeeReceipt( cId: String,rcptDate: String,rcptAmt: String, remark: String, nextPayDate: String,candidateName:String)
+    fun candidateFeeReceipt( cId: String,rcptDate: String,rcptAmt: String, remark: String, nextPayDate: String,candidateName:String,rcptId:Int?)
     {
         try {
             viewModelScope.launch {
-                userRepository.submitFeeReceipt(cId,rcptDate,rcptAmt, remark, nextPayDate,candidateName)
+                userRepository.submitFeeReceipt(cId,rcptDate,rcptAmt, remark, nextPayDate,candidateName,rcptId)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt getCandidateFeeLedger() is " + e.message)
@@ -269,6 +271,56 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt expensesReport() is " + e.message)
+        }
+
+    }
+
+    val expenseReportPrintResLiveData: LiveData<NetworkResult<List<expensesDet>>>
+        get() = userRepository.expenseReportPrintResLiveData
+    fun expensesReportPrint(toDate:String,fromDate:String)
+    {
+        try {
+            viewModelScope.launch {
+                userRepository.expenseReportPrint(toDate,fromDate)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt expensesReportPrint() is " + e.message)
+        }
+
+    }
+    fun createUser(userName:String,mobNo:String,emailId:String,designation:String,userType:String,userId:Int)
+    {
+        try {
+            viewModelScope.launch {
+                userRepository.createUser(userName,mobNo,emailId,designation,userType,userId)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt createUser() is " + e.message)
+        }
+
+    }
+
+    val userListResLiveData: LiveData<NetworkResult<List<UserListRes>>>
+        get() = userRepository.userListResLiveData
+    fun userList()
+    {
+        try {
+            viewModelScope.launch {
+                userRepository.userList()
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt userList() is " + e.message)
+        }
+
+    }
+    fun addRawData(spic:MultipartBody.Part)
+    {
+        try {
+            viewModelScope.launch {
+                userRepository.addRawData(spic)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt userList() is " + e.message)
         }
 
     }

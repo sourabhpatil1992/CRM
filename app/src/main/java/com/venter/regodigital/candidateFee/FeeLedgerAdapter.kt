@@ -15,7 +15,7 @@ import com.venter.regodigital.models.FeeLedger
 import com.venter.regodigital.utils.Constans
 
 
-class FeeLedgerAdapter(val cnt: Context):
+class FeeLedgerAdapter(val cnt: Context,val rcpt:feeRcpt):
     ListAdapter<FeeLedger, FeeLedgerAdapter.CandidateListHolder>(ComparatorDiffUtil()) {
 
     inner class CandidateListHolder(private val binding: LayoutFeetransBinding) :
@@ -26,14 +26,15 @@ class FeeLedgerAdapter(val cnt: Context):
                binding.txtDate.text = fee.date
                 binding.txtRemark.text = fee.remark
                 binding.txtAmt.text = fee.amt.toInt().toString()
-//                binding.candidateFee.setOnClickListener {
-//                    var intent = Intent(cnt, FeeReceiptActivity::class.java)
+                binding.feeLedger.setOnClickListener {
+                   // var intent = Intent(cnt, CandidateFeeReceiptActivity::class.java)
+                    rcpt.onClick(position)
 //                    intent.putExtra("id",candidate.id.toString())
 //                    intent.putExtra("fee",candidate.cource_fee.toString())
 //                    intent.putExtra("paidFee",paidFee.toString())
 //                    intent.putExtra("name",name)
-//                    cnt.startActivity(intent)
-//                }
+                    //cnt.startActivity(intent)
+                }
             }catch (e:Exception)
             {
                 Log.d(Constans.TAG,"Error in FeeLedgerAdapter.kt bind() is "+e.message)
@@ -62,4 +63,10 @@ class FeeLedgerAdapter(val cnt: Context):
         val temp = getItem(position)
         holder.bind(temp)
     }
+}
+
+interface feeRcpt
+{
+    fun onClick(rcptId:Int)
+
 }

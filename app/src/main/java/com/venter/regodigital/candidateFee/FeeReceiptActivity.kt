@@ -9,13 +9,15 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.venter.regodigital.databinding.ActivityFeeReceiptBinding
+import com.venter.regodigital.models.FeeLedger
+import com.venter.regodigital.models.FeeLedgerDet
 import com.venter.regodigital.utils.Constans.TAG
 import com.venter.regodigital.utils.NetworkResult
 import com.venter.regodigital.viewModelClass.CandidateViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FeeReceiptActivity : AppCompatActivity() {
+class FeeReceiptActivity : AppCompatActivity(),feeRcpt {
     private var _binding: ActivityFeeReceiptBinding? = null
     private val binding: ActivityFeeReceiptBinding
         get() = _binding!!
@@ -24,14 +26,17 @@ class FeeReceiptActivity : AppCompatActivity() {
 
     private lateinit var adapter: FeeLedgerAdapter
 
+    private lateinit var candidateFeeLedger: FeeLedgerDet
+    private lateinit var  name:String
+
     private lateinit var candidateId: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityFeeReceiptBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter = FeeLedgerAdapter(this)
-        val name = intent.getStringExtra("name").toString()
+        adapter = FeeLedgerAdapter(this,this)
+        name = intent.getStringExtra("name").toString()
         candidateId = intent.getStringExtra("id").toString()
         binding.txtName.text = name
         val fee = intent.getIntExtra("fee",0)
@@ -39,6 +44,10 @@ class FeeReceiptActivity : AppCompatActivity() {
         binding.txtTotalFee.text = fee.toString()
         binding.txtPaidFee.text = paidFee.toString()
         binding.txtPendingFee.text = (fee-paidFee).toString()
+        binding.txtTransReq.text = if(intent.getStringExtra("transReq").toString()=="true")
+            "Yes"
+        else
+            "No"
 
 
         candidateViewModel.getCandidateFeeLedger(candidateId)
@@ -61,7 +70,9 @@ class FeeReceiptActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
                 is NetworkResult.Success -> {
-                    adapter.submitList(it.data)
+                    candidateFeeLedger = it.data!!
+                    adapter.submitList(it.data!!.feeLedger)
+                    binding.txtNextPayDate.text = it.data.nextPaymentDate
                     binding.rcCandidate.layoutManager =
                         StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
                     binding.rcCandidate.adapter = adapter
@@ -69,5 +80,14 @@ class FeeReceiptActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    override fun onClick(rcptId: Int) {
+        val intent = Intent(this, CandidateFeeReceiptActivity::class.java)
+        intent.putExtra("id", candidateId.toString())
+        intent.putExtra("name", name)
+        intent.putExtra("rcpt",candidateFeeLedger.feeLedger[rcptId])
+        intent.putExtra("nextDate",candidateFeeLedger.nextPaymentDate)
+        startActivity(intent)
     }
 }

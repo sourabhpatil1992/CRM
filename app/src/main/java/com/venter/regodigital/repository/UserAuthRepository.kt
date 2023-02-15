@@ -8,6 +8,7 @@ import com.venter.regodigital.models.*
 import com.venter.regodigital.utils.Constans
 import com.venter.regodigital.utils.Constans.TAG
 import com.venter.regodigital.utils.NetworkResult
+import okhttp3.MultipartBody
 import org.json.JSONObject
 import retrofit2.http.Query
 import javax.inject.Inject
@@ -211,11 +212,12 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         cId: String,
         letterDate: String,
         relaseDate: String,
-        stamp: Boolean
+        stamp: Boolean,
+        jobActivity:String
     ) {
         try {
             _stringResLiveData.postValue(NetworkResult.Loading())
-            val response = userApi.printExperienceLetter(cId, letterDate, relaseDate, stamp)
+            val response = userApi.printExperienceLetter(cId, letterDate, relaseDate, stamp,jobActivity)
 
             if (response.isSuccessful && response.body() != null) {
 
@@ -450,8 +452,8 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
     }
 
-    private val _feeLedgerResLiveData = MutableLiveData<NetworkResult<List<FeeLedger>>>()
-    val feeLedgerResLiveData: LiveData<NetworkResult<List<FeeLedger>>>
+    private val _feeLedgerResLiveData = MutableLiveData<NetworkResult<FeeLedgerDet>>()
+    val feeLedgerResLiveData: LiveData<NetworkResult<FeeLedgerDet>>
         get() = _feeLedgerResLiveData
     suspend fun getCandidateFeeLedger(cId: String)
     {
@@ -478,11 +480,11 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
     }
 
-    suspend fun submitFeeReceipt( cId: String,rcptDate: String,rcptAmt: String, remark: String, nextPayDate: String,candidateNaem:String)
+    suspend fun submitFeeReceipt( cId: String,rcptDate: String,rcptAmt: String, remark: String, nextPayDate: String,candidateNaem:String,rcptId:Int?)
     {
         try {
             _stringResLiveData.postValue(NetworkResult.Loading())
-            val response = userApi.candidateFeeReceipt(cId,rcptDate,rcptAmt, remark, nextPayDate,candidateNaem)
+            val response = userApi.candidateFeeReceipt(cId,rcptDate,rcptAmt, remark, nextPayDate,candidateNaem,rcptId)
 
             if (response.isSuccessful && response.body() != null) {
 
@@ -558,6 +560,118 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
         catch (e: Exception) {
             Log.d(TAG, "Error in UserAuthRepository.kt expenseReport() is " + e.message)
+        }
+    }
+
+    private val _expenseReportPrintResLiveData = MutableLiveData<NetworkResult<List<expensesDet>>>()
+    val expenseReportPrintResLiveData: LiveData<NetworkResult<List<expensesDet>>>
+        get() = _expenseReportPrintResLiveData
+    suspend fun expenseReportPrint(toDate:String,fromData: String)
+    {
+        try {
+            _expenseReportPrintResLiveData.postValue(NetworkResult.Loading())
+            val response = userApi.expenseReportPrint(toDate,fromData)
+
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _expenseReportPrintResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _expenseReportPrintResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _expenseReportPrintResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        }
+        catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.kt expenseReport() is " + e.message)
+        }
+    }
+
+    suspend fun createUser(userName:String,mobNo:String,emailId:String,designation:String,userType:String,userId:Int)
+    {
+        try {
+            _stringResLiveData.postValue(NetworkResult.Loading())
+            val response =
+                userApi.createUser(userName,mobNo,emailId,designation,userType,userId)
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        } catch (e: Exception) {
+            Log.d(Constans.TAG, "Error in UserAuthRepository.kt createUser() is " + e.message)
+        }
+    }
+
+    private val _userListResLiveData = MutableLiveData<NetworkResult<List<UserListRes>>>()
+    val userListResLiveData: LiveData<NetworkResult<List<UserListRes>>>
+        get() = _userListResLiveData
+
+    suspend fun userList()
+    {
+        try {
+            _userListResLiveData.postValue(NetworkResult.Loading())
+            val response =
+                userApi.userList()
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _userListResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _userListResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _userListResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.kt userList() is " + e.message)
+        }
+    }
+
+    suspend fun addRawData(spic: MultipartBody.Part)
+    {
+        try {
+            _stringResLiveData.postValue(NetworkResult.Loading())
+            val response =
+                userApi.addRawData(spic)
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.kt addRawData() is " + e.message)
         }
     }
 
