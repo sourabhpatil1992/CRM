@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.Picasso
 import com.venter.regodigital.Candidate.CandidateCertificate
 import com.venter.regodigital.Candidate.CandidateListAdapter
 import com.venter.regodigital.R
@@ -32,6 +34,12 @@ class UserListAdapate(val cnt: Context, val statusUser: statusUser) :
                     binding.viewActive.setBackgroundColor(cnt.getColor(R.color.activeUser))
                 else
                     binding.viewActive.setBackgroundColor(cnt.getColor(R.color.deActiveUser))
+
+                Picasso.get()
+                    .load(Constans.BASE_URL + "assets/userProfile/" + user.id + ".jpeg")
+                    .fit()
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                    .into(binding.imgProfile)
 
                 binding.linUserStatus.setOnClickListener {
                     if (user.status == "1") {

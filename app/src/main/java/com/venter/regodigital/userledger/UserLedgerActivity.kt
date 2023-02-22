@@ -17,7 +17,7 @@ import com.venter.regodigital.viewModelClass.CandidateViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class UserLedgerActivity : AppCompatActivity() ,statusUser{
+class UserLedgerActivity : AppCompatActivity(), statusUser {
     private var _binding: ActivityUserLedgerBinding? = null
     private val binding: ActivityUserLedgerBinding
         get() = _binding!!
@@ -26,14 +26,13 @@ class UserLedgerActivity : AppCompatActivity() ,statusUser{
 
     private lateinit var adapter: UserListAdapate
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityUserLedgerBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
 
-        adapter = UserListAdapate(this,this)
+        adapter = UserListAdapate(this, this)
 
         binding.floatingActionButton.setOnClickListener {
             val intent = Intent(this, UserAddActivity::class.java)
@@ -48,17 +47,20 @@ class UserLedgerActivity : AppCompatActivity() ,statusUser{
             candidateViewModel.userListResLiveData.observe(this)
             {
                 binding.progressbar.visibility = View.GONE
-                when(it)
-                {
-                    is NetworkResult.Loading ->  binding.progressbar.visibility = View.VISIBLE
-                    is NetworkResult.Error -> Toast.makeText(this,it.message.toString(),Toast.LENGTH_SHORT).show()
-                    is NetworkResult.Success ->{setRcView(it.data)}
+                when (it) {
+                    is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
+                    is NetworkResult.Error -> Toast.makeText(
+                        this,
+                        it.message.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    is NetworkResult.Success -> {
+                        setRcView(it.data)
+                    }
                 }
             }
-        }
-        catch (e:Exception)
-        {
-            Log.d(TAG,"Error in UserLedgerActivity.kt setView() is "+e.message)
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserLedgerActivity.kt setView() is " + e.message)
         }
     }
 
@@ -76,12 +78,24 @@ class UserLedgerActivity : AppCompatActivity() ,statusUser{
     }
 
     override fun changeUserStatus(userId: Int, status: Int) {
-       try {
-
-       }catch (e:Exception)
-       {
-           Log.d(TAG,"Error in UserLedgerActivity.kt changeUserStatus() is "+e.message)
-       }
+        try {
+            candidateViewModel.userStatus(userId, status)
+            candidateViewModel.stringResData.observe(this)
+            {
+                binding.progressbar.visibility = View.GONE
+                when (it) {
+                    is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
+                    is NetworkResult.Error -> Toast.makeText(this, it.message!!, Toast.LENGTH_SHORT)
+                        .show()
+                    is NetworkResult.Success -> {
+                        Toast.makeText(this, "Status Updated Successfully.", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserLedgerActivity.kt changeUserStatus() is " + e.message)
+        }
     }
 
 

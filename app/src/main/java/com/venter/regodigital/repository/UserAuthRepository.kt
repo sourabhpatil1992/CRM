@@ -649,12 +649,38 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
     }
 
-    suspend fun addRawData(spic: MultipartBody.Part)
+    suspend fun userStatus(userId:Int,status:Int )
     {
         try {
             _stringResLiveData.postValue(NetworkResult.Loading())
             val response =
-                userApi.addRawData(spic)
+                userApi.userStatus(userId,status)
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.kt userStatus() is " + e.message)
+        }
+    }
+
+    suspend fun addMultipleRawData()
+    {
+        try {
+            _stringResLiveData.postValue(NetworkResult.Loading())
+            val response =
+                userApi.addMultipleRawData()
 
             if (response.isSuccessful && response.body() != null) {
 
@@ -672,6 +698,35 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
 
         } catch (e: Exception) {
             Log.d(TAG, "Error in UserAuthRepository.kt addRawData() is " + e.message)
+        }
+    }
+
+    private val _allrawDataListResLiveData = MutableLiveData<NetworkResult<List<RawDataList>>>()
+    val allrawDataListResLiveData: LiveData<NetworkResult<List<RawDataList>>>
+        get() = _allrawDataListResLiveData
+    suspend fun getAllRawData()
+    {
+        try {
+            _allrawDataListResLiveData.postValue(NetworkResult.Loading())
+            val response =
+                userApi.getAllRawData()
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _allrawDataListResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _allrawDataListResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _allrawDataListResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.kt getAllRaw() is " + e.message)
         }
     }
 

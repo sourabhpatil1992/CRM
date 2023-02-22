@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.venter.regodigital.Candidate.CandidateMang
+import com.venter.regodigital.EmployeeMangment.EmpMangmentActivity
 import com.venter.regodigital.candidateFee.FeeDashboard
 import com.venter.regodigital.databinding.ActivityAdminDashboardBinding
 import com.venter.regodigital.officeexpenses.ExpensesDashboardActivity
@@ -37,6 +38,11 @@ class AdminDashboard : AppCompatActivity() {
 
         binding.userLedger.setOnClickListener {
             val intent = Intent(this,UserLedgerActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.empMang.setOnClickListener {
+            val intent = Intent(this,EmpMangmentActivity::class.java)
             startActivity(intent)
         }
     }

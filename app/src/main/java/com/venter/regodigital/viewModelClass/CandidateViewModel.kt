@@ -313,14 +313,41 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         }
 
     }
-    fun addRawData(spic:MultipartBody.Part)
+
+    fun userStatus(userId: Int,status:Int)
     {
         try {
             viewModelScope.launch {
-                userRepository.addRawData(spic)
+                userRepository.userStatus(userId,status)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt userList() is " + e.message)
+        }
+
+    }
+    fun addMultipleRawData()
+    {
+        try {
+            viewModelScope.launch {
+                userRepository.addMultipleRawData()
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt userList() is " + e.message)
+        }
+
+    }
+
+    val allrawDataListResLiveData: LiveData<NetworkResult<List<RawDataList>>>
+        get() = userRepository.allrawDataListResLiveData
+
+    fun getAllRawData()
+    {
+        try {
+            viewModelScope.launch {
+                userRepository.getAllRawData()
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getAllRawData() is " + e.message)
         }
 
     }

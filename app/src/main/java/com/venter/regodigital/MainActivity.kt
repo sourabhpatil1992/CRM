@@ -34,7 +34,8 @@ class MainActivity : AppCompatActivity() {
                     if (tokenManger.getToken() != null) {
 
                         var intents =Intent()
-                        if(tokenManger.getUserType()=="admin")
+
+                        if(tokenManger.getUserType()=="Admin")
                          intents = Intent(this, AdminDashboard::class.java)
                         else
                             intents = Intent(this, EmpDashboard::class.java)

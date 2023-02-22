@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/user_icon" />
+                android:background="@drawable/user_icon" />
 
             <ImageButton
                 android:id="@+id/btnDp"
@@ -147,6 +147,14 @@
                         android:text="Employee"
                         android:textSize="15sp"
                         android:checked="true"
+                        android:textColor="@color/black"/>
+                    <RadioButton
+                        android:id="@+id/rdobtnTl"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="Team Lead"
+                        android:textSize="15sp"
                         android:textColor="@color/black"/>
                     <RadioButton
                         android:id="@+id/rdobtnAdmin"

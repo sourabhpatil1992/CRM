@@ -360,6 +360,8 @@ class CandidateDet : AppCompatActivity() {
         val intent = Intent(this, CandidateProfileFrgnd::class.java)
         intent.putExtra("candidateId", candidateId)
         intent.putExtra("ProfileUri", ProfileUri.toString())
+        intent.putExtra("ProfileType", "Candidate")
+
         startForegroundService(intent)
 
     }

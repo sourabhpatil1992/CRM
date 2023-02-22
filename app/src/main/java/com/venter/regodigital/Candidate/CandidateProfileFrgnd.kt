@@ -50,8 +50,6 @@ class CandidateProfileFrgnd : Service() {
     private val scope = CoroutineScope(Dispatchers.IO + job)
 
 
-
-
     @Inject
     lateinit var syncApi: UserAuthApi
 
@@ -86,7 +84,12 @@ class CandidateProfileFrgnd : Service() {
 
 
             val pendingIntent =
-                PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE)
+                PendingIntent.getActivity(
+                    this,
+                    1,
+                    intent,
+                    PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
+                )
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 notificationChannel =
@@ -133,11 +136,11 @@ class CandidateProfileFrgnd : Service() {
 
     private fun store_doc(intent: Intent?) {
         val img = Uri.parse(intent!!.getStringExtra("ProfileUri"))
-        val candidateId:Int? = intent.getIntExtra("candidateId",0)
+        val candidateId: Int? = intent.getIntExtra("candidateId", 0)
+        val protfileType = intent!!.getStringExtra("ProfileType")!!
 
         scope.launch {
-            try
-            {
+            try {
                 val authInterceptor = AuthInterceptorWorker(applicationContext)
                 syncApi = Retrofit.Builder()
                     .client(OkHttpClient.Builder().addInterceptor(authInterceptor).build())
@@ -168,14 +171,11 @@ class CandidateProfileFrgnd : Service() {
                     MultipartBody.Part.createFormData("pic", file.name, requestBody)
 
                 val response = syncApi.createCandidateProfile(
-                    filePart,candidateId.toString()
+                    filePart, candidateId.toString(), protfileType
                 )
 
 
-                    stopSelf()
-
-
-
+                stopSelf()
 
 
             } catch (e: Exception) {

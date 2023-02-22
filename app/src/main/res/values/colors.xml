@@ -23,4 +23,8 @@
 
     <color name="activeUser">#008000</color>
     <color name="deActiveUser">#D50000</color>
+
+    <color name="warm">#CDDC39</color>
+    <color name="cold">#E91E63</color>
+    <color name="hot">#009688</color>
 </resources>

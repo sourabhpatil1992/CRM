@@ -57,11 +57,12 @@ class OtpActivity : AppCompatActivity() {
                         is NetworkResult.Loading -> { binding.progressbar.visibility = View.VISIBLE}
                         is NetworkResult.Error -> {Toast.makeText(this,it.message.toString(),Toast.LENGTH_SHORT).show()}
                         is NetworkResult.Success -> {
+                            //Log.d(TAG,it.data.toString())
                            tokenManger.saveToken(it.data!!.devToken.toString())
                             tokenManger.saveUserDet(it.data!!.user_type,it.data!!.user_id)
 
                             var intent = Intent()
-                            if(it.data!!.user_type == "admin")
+                            if(it.data!!.user_type == "Admin")
                                 intent = Intent(this, AdminDashboard::class.java)
                             else
                                 intent = Intent(this, EmpDashboard::class.java)

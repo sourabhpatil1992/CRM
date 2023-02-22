@@ -14,7 +14,8 @@ interface UserAuthApi {
     @POST("/candidateApi/candidateProfileDp")
     suspend fun createCandidateProfile(
         @Part spic: MultipartBody.Part,
-        @Query("cId") cId: String
+        @Query("cId") cId: String,
+        @Query("profileType")profileType:String
     ): Response<String>
 
 
@@ -124,11 +125,16 @@ interface UserAuthApi {
     @POST("/userManagement/userList")
     suspend fun userList() : Response<List<UserListRes>>
 
-    @Multipart
-    @POST("/userManagement/rawData")
-    suspend fun addRawData(
-        @Part spic: MultipartBody.Part
-    ): Response<String>
+    @POST("/userManagement/userStatus")
+    suspend fun userStatus(@Query("user_id") userId: Int,@Query("status") status: Int) : Response<String>
+
+    @POST("/candidateRawData/addMultipleRawData")
+    suspend fun addMultipleRawData(): Response<String>
+
+    @POST("/candidateRawData/getAllRawData")
+    suspend fun getAllRawData(): Response<List<RawDataList>>
+
+
 
 
 
