@@ -3,6 +3,7 @@ package com.venter.regodigital.EmployeeMangment
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.venter.regodigital.Dashboard.EmpDashboard
 import com.venter.regodigital.databinding.ActivityEmpMangmentBinding
 
 class EmpMangmentActivity : AppCompatActivity() {
@@ -15,6 +16,11 @@ class EmpMangmentActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.rawData.setOnClickListener {
             val intent = Intent(this,RawDataActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.empDashboard.setOnClickListener {
+            val intent = Intent(this,EmpDashboard::class.java)
             startActivity(intent)
         }
     }

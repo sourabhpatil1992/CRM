@@ -351,4 +351,85 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         }
 
     }
+
+
+
+    fun getEmpRawData()
+    {
+        try {
+            viewModelScope.launch {
+                userRepository.getEmpRawData()
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getEmpRawData() is " + e.message)
+        }
+
+    }
+
+    val othersrawDataListResLiveData: LiveData<NetworkResult<List<RawDataList>>>
+        get() = userRepository.othersrawDataListResLiveData
+    fun getOthersProsData(userId: Int)
+    {
+        try {
+            viewModelScope.launch {
+                userRepository.getOthersProsData(userId)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getEmpRawData() is " + e.message)
+        }
+
+    }
+
+    val userListLiveData: LiveData<NetworkResult<List<UserList>>>
+        get() = userRepository.userListLiveData
+    fun getEmpListRawData()
+    {
+        try {
+            viewModelScope.launch {
+                userRepository.getEmpListRawData()
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getEmpListRawData() is " + e.message)
+        }
+
+    }
+
+
+    val rawCandidateDataLiveData: LiveData<NetworkResult<RawCandidateData>>
+        get() = userRepository.rawCandidateDataLiveData
+
+    fun getRawCandidateData(Id: Int)
+    {
+        try {
+            viewModelScope.launch {
+                userRepository.getRawCandidateData(Id)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getRawCandidateData() is " + e.message)
+        }
+
+    }
+
+    fun setEmpRawDataComment(callTime: String, prosType: String, remark: String, folloupDate: String, selectedItem: String,candidateId:String) {
+        try {
+            viewModelScope.launch {
+                userRepository.setEmpRawDataComment(callTime,prosType, remark, folloupDate, selectedItem,candidateId)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getRawCandidateData() is " + e.message)
+        }
+    }
+
+
+    val intListResData: LiveData<NetworkResult<List<Int>>>
+        get() = userRepository.intListResLiveData
+    fun getFollowUpList(){
+        try {
+            viewModelScope.launch {
+                userRepository.getFollowUpList()
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getFollowUpList()() is " + e.message)
+        }
+    }
 }

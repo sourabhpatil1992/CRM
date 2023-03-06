@@ -1,5 +1,6 @@
 package com.venter.regodigital.EmployeeMangment
 
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,8 +14,9 @@ import com.venter.regodigital.databinding.LayoutRawdataBinding
 import com.venter.regodigital.models.CandidateFeeList
 import com.venter.regodigital.models.RawDataList
 import com.venter.regodigital.utils.Constans
+import com.venter.regodigital.utils.Constans.TAG
 
-class RawDataListAdapter :ListAdapter<RawDataList,RawDataListAdapter.RawListHolder>(ComparatorDiffUtil()) {
+class RawDataListAdapter(val cnt: Context) :ListAdapter<RawDataList,RawDataListAdapter.RawListHolder>(ComparatorDiffUtil()) {
 
     inner class RawListHolder(private val binding: LayoutRawdataBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -23,6 +25,18 @@ class RawDataListAdapter :ListAdapter<RawDataList,RawDataListAdapter.RawListHold
 
                 binding.txtName.text = candidate.candidate_name
                 binding.txtMobNo.text = candidate.mob_no
+
+                binding.linRawDataLin.setOnClickListener {
+                    try {
+                        val intent = Intent(cnt, RawDataDetActivity::class.java)
+                        intent.putExtra("rawDataId", candidate.id)
+                        cnt.startActivity(intent)
+                    }
+                    catch (e:Exception)
+                    {
+                        Log.d(TAG,"Error in RawDataListAdapter.kt bind() is "+e.message)
+                    }
+                }
 
             }catch (e:Exception)
             {

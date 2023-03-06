@@ -134,8 +134,24 @@ interface UserAuthApi {
     @POST("/candidateRawData/getAllRawData")
     suspend fun getAllRawData(): Response<List<RawDataList>>
 
+    @POST("/candidateRawData/getEmpRawData")
+    suspend fun getEmpRawData(): Response<List<RawDataList>>
+
+    @POST("/candidateRawData/getOtherProsData")
+    suspend fun getOtherProsData(@Query("otherUserId") userId: Int): Response<List<RawDataList>>
+
+    @POST("/candidateRawData/getEmpListRawData")
+    suspend fun getEmpListRawData(): Response<List<UserList>>
+    @POST("/candidateRawData/getRawCandidateDet")
+    suspend fun getRawCandidateDet(@Query("candidateId") candidateId: Int): Response<RawCandidateData>
 
 
+    @POST("/candidateRawData/setEmpRawDataComment")
+    suspend fun setEmpRawDataComment(@Query("callTime")callTime: String, @Query("prosType")prosType: String, @Query("remark")remark: String, @Query("folloupDate")folloupDate: String, @Query("selectedItem")selectedItem: String, @Query("candidateId")candidateId: String): Response<String>
+
+    //Get Candidate Id list for today's Follow uo
+    @POST("/candidateRawData/getFollowUpList")
+    suspend fun getFollowUpList(): Response<List<Int>>
 
 
 }

@@ -28,7 +28,7 @@ class RawDataActivity : AppCompatActivity() {
         _binding = ActivityRawDataBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter = RawDataListAdapter()
+        adapter = RawDataListAdapter(this)
 
         binding.floatingActionButton.setOnClickListener {
            addData()
@@ -75,7 +75,7 @@ class RawDataActivity : AppCompatActivity() {
                         binding.rcCandidate.layoutManager =
                             StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
                         binding.rcCandidate.adapter = adapter
-                        Log.d(TAG,it.data!!.toString())
+                      
                     }
                 }
                 //candidateViewModel.allrawDataListResLiveData.removeObservers(this)

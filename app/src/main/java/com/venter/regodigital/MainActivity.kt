@@ -1,16 +1,23 @@
 package com.venter.regodigital
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import com.venter.regodigital.Dashboard.AdminDashboard
 import com.venter.regodigital.Dashboard.EmpDashboard
 import com.venter.regodigital.Login.LogInActivity
+
 import com.venter.regodigital.utils.Constans.TAG
 import com.venter.regodigital.utils.TokenManger
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint

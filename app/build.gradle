@@ -9,14 +9,14 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.venter.regodigital"
         minSdk 29
         targetSdk 32
         versionCode 1
-        versionName "1.0"
+        versionName "1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
@@ -129,7 +130,11 @@ dependencies {
     //ViePager Library
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
+    //Razorpay Library
+    implementation 'com.razorpay:checkout:1.6.26'
 
     implementation 'com.github.blackfizz:eazegraph:1.2.2@aar'
     implementation 'com.nineoldandroids:library:2.4.0'
+
+    implementation 'com.facebook.android:facebook-android-sdk:15.2.0'
 }
