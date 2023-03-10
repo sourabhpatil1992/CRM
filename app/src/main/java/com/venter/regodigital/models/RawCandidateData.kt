@@ -9,6 +9,7 @@ data class RawCandidateData(
     val appDate:String,
     val Qualification:String,
     val PassYear:String,
+    val prospect_type:String,
     val commentList:List<RawDataComment>
 )
 

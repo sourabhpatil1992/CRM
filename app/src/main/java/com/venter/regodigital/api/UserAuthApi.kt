@@ -147,11 +147,28 @@ interface UserAuthApi {
 
 
     @POST("/candidateRawData/setEmpRawDataComment")
-    suspend fun setEmpRawDataComment(@Query("callTime")callTime: String, @Query("prosType")prosType: String, @Query("remark")remark: String, @Query("folloupDate")folloupDate: String, @Query("selectedItem")selectedItem: String, @Query("candidateId")candidateId: String): Response<String>
+    suspend fun setEmpRawDataComment(
+        @Query("callTime") callTime: String,
+        @Query("prosType") prosType: String,
+        @Query("remark") remark: String,
+        @Query("folloupDate") folloupDate: String,
+        @Query("selectedItem") selectedItem: String,
+        @Query("candidateId") candidateId: String,
+        @Query("prosUpdate")update: Int
+    ): Response<String>
 
-    //Get Candidate Id list for today's Follow uo
+    //Get Candidate Id list for today's Follow up
     @POST("/candidateRawData/getFollowUpList")
     suspend fun getFollowUpList(): Response<List<Int>>
+
+
+    //Get the Employee report for the employee dashboard from today's of manual date
+    @POST("/candidateRawData/getEmpReport")
+    suspend fun getEmpReport(@Query("fromDate")fromDate: String,@Query("toDate")toDate: String): Response<EmpReport>
+
+    //Get Salary Slip List For the use for The CandidateDocList
+    @POST("/candidateApi/getSalarySlips")
+    suspend fun getSalaryList(@Query("cId")cId: Int): Response<List<SalarySlipDet>>
 
 
 }

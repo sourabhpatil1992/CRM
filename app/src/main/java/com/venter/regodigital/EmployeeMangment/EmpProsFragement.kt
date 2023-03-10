@@ -93,16 +93,16 @@ class EmpProsFragement : Fragment() {
                         true
                     ) || it.mob_no.contains(text) || (it.id.toString() == text)
                 ) {
-                    if (binding.chkCold.isChecked && it.prospect_type == "Cold")
-                        rawList.add(it)
+                  /*  if (binding.chkCold.isChecked && it.prospect_type == "Cold")
+                        rawList.add(it)*/
                     if (binding.chkWarm.isChecked && it.prospect_type == "Warm")
                         rawList.add(it)
                     if (binding.chkHot.isChecked && it.prospect_type == "Hot")
                         rawList.add(it)
                 }
             } else {
-                if (binding.chkCold.isChecked && it.prospect_type == "Cold")
-                    rawList.add(it)
+                /*if (binding.chkCold.isChecked && it.prospect_type == "Cold")
+                    rawList.add(it)*/
                 if (binding.chkWarm.isChecked && it.prospect_type == "Warm")
                     rawList.add(it)
                 if (binding.chkHot.isChecked && it.prospect_type == "Hot")

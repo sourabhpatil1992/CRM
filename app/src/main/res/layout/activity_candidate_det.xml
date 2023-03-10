@@ -99,8 +99,7 @@
                     android:layout_marginRight="10dp"
                     android:background="@color/white"
                     android:orientation="vertical"
-                    android:visibility="gone"
-                    >
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -247,6 +246,7 @@
                             android:layout_weight="0.5"
                             android:text="Female" />
                     </RadioGroup>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -758,6 +758,7 @@
                     android:background="@color/white"
                     android:orientation="vertical"
                     android:visibility="gone">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -771,6 +772,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
+
                         <RadioButton
                             android:id="@+id/rdobtnYes"
                             android:layout_width="0dp"
@@ -786,6 +788,34 @@
                             android:checked="true"
                             android:text="No" />
                     </RadioGroup>
+
+                    <LinearLayout
+                        android:id="@+id/linTransFee"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Transaction Fee :"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+                        <EditText
+                            android:id="@+id/edtTransFee"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Course Fee"
+                            android:inputType="numberDecimal"
+                            android:text="0"
+                            android:textColor="@color/black"
+                            android:textColorHint="#716F6F"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -804,8 +834,6 @@
                         android:textColor="@color/black"
                         android:textColorHint="#716F6F"
                         android:textSize="15sp" />
-
-
 
 
                 </LinearLayout>

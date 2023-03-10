@@ -1,51 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".EmployeeMangment.EmpProsFragement"
-    android:background="#f0f1ff">
+    android:background="#f0f1ff"
+    tools:context=".EmployeeMangment.EmpProsFragement">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-       >
-<LinearLayout
-    android:id="@+id/linEmpSpin"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:visibility="gone"
-    android:layout_marginTop="10dp">
-    <Spinner
-        android:id="@+id/spinEmpName"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
+        android:orientation="vertical">
 
-</LinearLayout>
         <LinearLayout
-            android:layout_marginTop="10dp"
+            android:id="@+id/linEmpSpin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <Spinner
+                android:id="@+id/spinEmpName"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
+
             <EditText
                 android:id="@+id/edtSearch"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
-                android:layout_weight="0.8"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="5dp"
+                android:layout_weight="0.8"
                 android:background="@drawable/round_back_black"
                 android:drawableLeft="@drawable/ic_baseline_search_24"
                 android:drawablePadding="10dp"
                 android:hint="Search"
                 android:paddingLeft="20dp"
                 android:paddingTop="5dp"
-                android:layout_marginTop="10dp"
                 android:paddingBottom="5dp"
                 android:textColor="@color/black"
                 android:textColorHint="#9E9B9B"
@@ -70,56 +73,59 @@
                 android:textColor="@color/white"
                 android:textSize="15sp" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/linviewFilter"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Filter"
-                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
             <CheckBox
                 android:id="@+id/chkHot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hot"
                 android:checked="true"
-                android:textColor="@color/black"/>
+                android:text="Hot"
+                android:textColor="@color/black" />
+
             <CheckBox
                 android:id="@+id/chkWarm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Warm"
                 android:checked="true"
-                android:textColor="@color/black"/>
+                android:text="Warm"
+                android:textColor="@color/black" />
+
             <CheckBox
                 android:id="@+id/chkCold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cold"
                 android:checked="true"
-                android:textColor="@color/black"/>
+                android:text="Cold"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/txtApply"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:text="Apply"
                 android:layout_marginRight="10dp"
-                android:textStyle="bold"
+                android:text="Apply"
+                android:textColor="#3E67FD"
                 android:textSize="18sp"
-                android:textColor="#3E67FD"/>
-
+                android:textStyle="bold" />
 
 
         </LinearLayout>
@@ -130,16 +136,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
-            tools:listitem="@layout/layout_rawdata"
-            />
+            android:layout_marginRight="10dp"
+            tools:listitem="@layout/layout_rawdata" />
 
     </LinearLayout>
-
-
-
-
 
 
     <com.github.ybq.android.spinkit.SpinKitView

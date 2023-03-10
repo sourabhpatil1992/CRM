@@ -1,10 +1,7 @@
 package com.venter.regodigital.EmployeeMangment
 
 import android.R
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
@@ -17,8 +14,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.venter.regodigital.Dashboard.AdminDashboard
-
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.venter.regodigital.databinding.ActivityRawDataDetBinding
 import com.venter.regodigital.models.RawCandidateData
 import com.venter.regodigital.utils.Constans.TAG
@@ -26,6 +22,7 @@ import com.venter.regodigital.utils.NetworkResult
 import com.venter.regodigital.viewModelClass.CandidateViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
+import java.util.*
 
 
 @AndroidEntryPoint
@@ -103,7 +100,7 @@ class RawDataDetActivity : AppCompatActivity() {
 
     private fun setComment() {
         try {
-                //Get Call Time
+            //Get Call Time
             var callTime = "0"
             val managedCursor: Cursor? =
                 this.contentResolver.query(CallLog.Calls.CONTENT_URI, null, null, null, null)
@@ -121,9 +118,8 @@ class RawDataDetActivity : AppCompatActivity() {
             var candNo = ""
             if (managedCursor.getString(number).isNotEmpty()) {
 
-                 candNo  = managedCursor.getString(number).replace("+91", "")
-                if(data!!.mob_no.contains(candNo))
-                {
+                candNo = managedCursor.getString(number).replace("+91", "")
+                if (data!!.mob_no.contains(candNo)) {
                     callTime = managedCursor.getInt(duration).toString()
                 }
             }
@@ -143,7 +139,7 @@ class RawDataDetActivity : AppCompatActivity() {
             callTimeText.setTextColor(getColor(R.color.black))
             layout.addView(callTimeText)
             val callTText = TextView(this)
-            callTText.text = callTime.toString()+" Sec"
+            callTText.text = callTime.toString() + " Sec"
             callTText.textSize = 20F
             callTText.setTextColor(getColor(R.color.black))
             layout.addView(callTText)
@@ -155,7 +151,7 @@ class RawDataDetActivity : AppCompatActivity() {
             prospectText.setTextColor(getColor(R.color.black))
             layout.addView(prospectText)
 
-            val prosType = arrayOf("Warm", "Hot", "Cold")
+            val prosType = arrayOf("Warm", "Hot", "Cold", "Admission")
             val prospectSpinner = Spinner(this)
             val adapters = ArrayAdapter<String>(
                 this,
@@ -184,14 +180,41 @@ class RawDataDetActivity : AppCompatActivity() {
             letterDateText.setTextColor(resources.getColor(com.venter.regodigital.R.color.black))
             letterDateText.setText("Follow-up Date")
 
+            //For Folloup Date we are putting the Date Edit Text and and calnder Button for the Calder View
+            val linDate = LinearLayout(this)
+            linDate.orientation = LinearLayout.HORIZONTAL
             val letterDate = EditText(this)
             letterDate.textSize = 20F
             letterDate.inputType = 20
             letterDate.setHint("DD-MM-YYYY")
             letterDate.filters = arrayOf(InputFilter.LengthFilter(10))
+            linDate.addView(letterDate)
+
+            val calView = ImageButton(this)
+            calView.setBackgroundResource(R.drawable.ic_menu_my_calendar);
+
+            linDate.addView(calView)
 
             layout.addView(letterDateText)
-            layout.addView(letterDate)
+            val layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            linDate.setLayoutParams(layoutParams)
+
+            layout.addView(linDate)
+            linDate.setOnClickListener {
+                setDate(letterDate)
+            }
+            letterDate.setOnClickListener {
+                setDate(letterDate)
+            }
+            letterDateText.setOnClickListener {
+                setDate(letterDate)
+            }
+            calView.setOnClickListener {
+                setDate(letterDate)
+            }
 
             //Marketing Template
             val marketingText = TextView(this)
@@ -200,7 +223,7 @@ class RawDataDetActivity : AppCompatActivity() {
             marketingText.setTextColor(getColor(R.color.black))
             layout.addView(marketingText)
 
-            val tempType = arrayOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
+            val tempType = arrayOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "0")
             val tempSpinner = Spinner(this)
             val adapterss = ArrayAdapter<String>(
                 this,
@@ -219,19 +242,25 @@ class RawDataDetActivity : AppCompatActivity() {
                         val dateFormat = SimpleDateFormat("dd-MM-yyyy")
                         dateFormat.parse(letterDate.text.toString())
 
-
+                        val update =
+                           if (data!!.prospect_type != prospectSpinner.selectedItem.toString())
+                        1
+                        else
+                            0
                         submitData(
                             callTime,
                             prospectSpinner.selectedItem.toString(),
                             RemarkEditText.text.toString(),
                             letterDate.text.toString(),
-                            tempSpinner.selectedItem.toString()
+                            tempSpinner.selectedItem.toString(),update
                         )
                     }
-                }
-                catch (e:Exception)
-                {
-                    Toast.makeText(this,"Please fill date in DD-MM-YYYY format",Toast.LENGTH_SHORT).show()
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        this,
+                        "Please fill date in DD-MM-YYYY format",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
             builders.setNeutralButton("Cancel") { dialogInterface, which ->
@@ -257,9 +286,23 @@ class RawDataDetActivity : AppCompatActivity() {
 
     }
 
-    private fun submitData(callTime: String,prosType: String, remark: String, folloupDate: String, selectedItem: String) {
-        try{
-            candidateViewModel.setEmpRawDataComment(callTime,prosType, remark, folloupDate, selectedItem,dataId.toString())
+    private fun submitData(
+        callTime: String,
+        prosType: String,
+        remark: String,
+        folloupDate: String,
+        selectedItem: String,
+        update: Int
+    ) {
+        try {
+            candidateViewModel.setEmpRawDataComment(
+                callTime,
+                prosType,
+                remark,
+                folloupDate,
+                selectedItem,
+                dataId.toString(),update
+            )
             candidateViewModel.stringResData.observe(this)
             {
                 binding.progressbar.visibility = View.GONE
@@ -286,7 +329,7 @@ class RawDataDetActivity : AppCompatActivity() {
                     }
                 }
             }
-        }catch (e:Exception){
+        } catch (e: Exception) {
             Log.d(TAG, "Error in RawDataDetActivity.kt submitData() is " + e.message)
         }
 
@@ -297,5 +340,30 @@ class RawDataDetActivity : AppCompatActivity() {
         data = cdata
         binding.viewPager.adapter = CandDetViewPagerAdapter(supportFragmentManager)
         binding.tabLayout.setupWithViewPager(binding.viewPager)
+    }
+
+    private fun setDate(letterDate: TextView) {
+        val materialDateBuilder: MaterialDatePicker.Builder<*> =
+            MaterialDatePicker.Builder.datePicker()
+
+        materialDateBuilder.setTitleText("SELECT A DATE")
+
+
+        val materialDatePicker = materialDateBuilder.build()
+
+
+        materialDatePicker.show(supportFragmentManager, "MATERIAL_DATE_PICKER")
+
+        materialDatePicker.addOnPositiveButtonClickListener {
+
+            val utc = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+            utc.timeInMillis = it as Long
+            val format = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
+
+            val formatted = format.format(utc.time).toString()
+            letterDate.setText(formatted)
+
+            //candidateViewModel.getEmpReport(binding.txtFromDate.text.toString(),binding.txtToDate.text.toString())
+        }
     }
 }

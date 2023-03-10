@@ -2,18 +2,14 @@ package com.venter.regodigital.viewModelClass
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.venter.regodigital.models.*
 import com.venter.regodigital.repository.UserAuthRepository
-import com.venter.regodigital.repository.UserRepository
-import com.venter.regodigital.userledger.UserAddActivity
 import com.venter.regodigital.utils.Constans.TAG
 import com.venter.regodigital.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import okhttp3.MultipartBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -410,10 +406,18 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     }
 
-    fun setEmpRawDataComment(callTime: String, prosType: String, remark: String, folloupDate: String, selectedItem: String,candidateId:String) {
+    fun setEmpRawDataComment(
+        callTime: String,
+        prosType: String,
+        remark: String,
+        folloupDate: String,
+        selectedItem: String,
+        candidateId: String,
+        update: Int
+    ) {
         try {
             viewModelScope.launch {
-                userRepository.setEmpRawDataComment(callTime,prosType, remark, folloupDate, selectedItem,candidateId)
+                userRepository.setEmpRawDataComment(callTime,prosType, remark, folloupDate, selectedItem,candidateId,update)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt getRawCandidateData() is " + e.message)
@@ -430,6 +434,32 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt getFollowUpList()() is " + e.message)
+        }
+    }
+
+    val empReptResLiveData: LiveData<NetworkResult<EmpReport>>
+        get() = userRepository.empReptResLiveData
+
+    fun getEmpReport(fromDate:String,toDate: String){
+        try {
+            viewModelScope.launch {
+                userRepository.getEmpReport(fromDate,toDate)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getFollowUpList()() is " + e.message)
+        }
+    }
+
+
+    val salarySlipResLiveData: LiveData<NetworkResult<List<SalarySlipDet>>>
+        get() = userRepository.salarySlipResLiveData
+    fun getSalaryList(cId:Int){
+        try {
+            viewModelScope.launch {
+                userRepository.getSalaryList(cId)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getSalaryList() is " + e.message)
         }
     }
 }

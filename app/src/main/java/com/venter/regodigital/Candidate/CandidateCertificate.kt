@@ -1,14 +1,11 @@
 package com.venter.regodigital.Candidate
 
-import android.R.attr.left
-import android.R.attr.right
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.text.InputFilter
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
@@ -19,7 +16,6 @@ import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
 import com.venter.regodigital.R
 import com.venter.regodigital.databinding.ActivityCandidateCertificateBinding
-import com.venter.regodigital.databinding.LayoutMsgboxBinding
 import com.venter.regodigital.models.CanCertDetRes
 import com.venter.regodigital.utils.Constans.BASE_URL
 import com.venter.regodigital.utils.Constans.TAG
@@ -74,47 +70,65 @@ class CandidateCertificate : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.btnDoc.setOnClickListener {
+            val intent = Intent(this, CandidateDoc::class.java)
+            intent.putExtra("Doc",data)
+            intent.putExtra("id",candidateId.toString())
+            startActivity(intent)
+        }
+
     }
 
     private fun setView() {
-        binding.lincandidateView.visibility = View.VISIBLE
-        binding.btnEdit.visibility = View.VISIBLE
-        binding.txtCandidateName.text = "${data.first_name} ${data.middel_name} ${data.last_name}"
-        binding.txtMobNo.text = "+91-${data.mobile_no}"
-        binding.txtEmailId.text = data.email_id
-        binding.txtAddress.text = data.address
-        binding.txtDegree.text = data.edu_degree
-        binding.txtPassYear.text = data.passing_year
-        binding.txtJobPosition.text = data.current_job
-        binding.txtFee.text = data.cource_fee.toString()
-        binding.txtPaidFee.text = data.paid_fee.toString()
-        Picasso.get()
-            .load(BASE_URL + "assets/profile/" + candidateId + ".jpeg")
-            .fit()
-            .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-            .into(binding.imgProfile)
+        try {
 
-        binding.imgProfile.setOnClickListener {
-            val builders = AlertDialog.Builder(this)
-            builders.setTitle("Candidate Profile")
-            val img_per = ImageView(this)
-            img_per.setBackgroundResource(R.drawable.regologo)
+            binding.lincandidateView.visibility = View.VISIBLE
+            binding.btnEdit.visibility = View.VISIBLE
+            binding.btnDoc.visibility = View.VISIBLE
+            binding.txtCandidateName.text =
+                "${data.first_name} ${data.middel_name} ${data.last_name}"
+            binding.txtMobNo.text = "+91-${data.mobile_no}"
+            binding.txtEmailId.text = data.email_id
+            binding.txtAddress.text = data.address
+            binding.txtDegree.text = data.edu_degree
+            binding.txtPassYear.text = data.passing_year
+            binding.txtJobPosition.text = data.current_job
+            binding.txtFee.text = data.cource_fee.toString()
+            binding.txtPaidFee.text = data.paid_fee.toString()
+            binding.txtTransFee.text = data.transFee.toString()
+            if (data.transFee.toFloat() >0)
+                binding.linTransFee.visibility = View.VISIBLE
             Picasso.get()
                 .load(BASE_URL + "assets/profile/" + candidateId + ".jpeg")
                 .fit()
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .into(img_per)
-            builders.setView(img_per)
-            builders.setIcon(ContextCompat.getDrawable(this, R.drawable.regologo))
-            val alertDialog: AlertDialog = builders.create()
-            alertDialog.setCancelable(true)
-            alertDialog.show()
+                .into(binding.imgProfile)
+
+            binding.imgProfile.setOnClickListener {
+                val builders = AlertDialog.Builder(this)
+                builders.setTitle("Candidate Profile")
+                val img_per = ImageView(this)
+                img_per.setBackgroundResource(R.drawable.regologo)
+                Picasso.get()
+                    .load(BASE_URL + "assets/profile/" + candidateId + ".jpeg")
+                    .fit()
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                    .into(img_per)
+                builders.setView(img_per)
+                builders.setIcon(ContextCompat.getDrawable(this, R.drawable.regologo))
+                val alertDialog: AlertDialog = builders.create()
+                alertDialog.setCancelable(true)
+                alertDialog.show()
 
 
+            }
+
+
+            button_ops()
+        }catch (e:Exception)
+        {
+            Log.d(TAG,"Error in CandidateCertificate.kt setView() is "+e.message)
         }
-
-
-        button_ops()
 
 
     }
@@ -680,7 +694,7 @@ class CandidateCertificate : AppCompatActivity() {
                             candidateId.toString(),
                             month.selectedItem.toString(),year.text.toString(),jobPosition.text.toString(),newPackage.text.toString()
                         )
-                        serverRes("SalarySlip")
+                        serverRes("SalarySlip",month.selectedItem.toString(),year.text.toString())
                     }
                     catch (e: Exception) { Log.d(TAG, "Error in CandidateCertificate.kt SalarySlip() is " + e.message) }
 
@@ -922,7 +936,7 @@ class CandidateCertificate : AppCompatActivity() {
     }
 
 
-    private fun serverRes(action: String) {
+    private fun serverRes(action: String, month: String ="", year: String = "") {
         candidateViewModel.stringResData.observe(this) {
             binding.progressbar.visibility = View.GONE
             when (it) {
@@ -940,7 +954,7 @@ class CandidateCertificate : AppCompatActivity() {
                     ).show()
                     Handler().postDelayed({
                         binding.progressbar.visibility = View.GONE
-                        download_share(action)
+                        download_share(action,month,year)
                     }, 4000)
 
                 }
@@ -949,19 +963,34 @@ class CandidateCertificate : AppCompatActivity() {
     }
 
 
-    private fun download_share(action: String) {
+    private fun download_share(action: String, month: String, year: String) {
         try {
 
-            val urlString = when (action) {
+           /* val urlString = when (action) {
                 "Profile" -> BASE_URL + "assets/documents/candidateProfile.pdf"
                 "Offer" -> BASE_URL + "assets/documents/offerletter.pdf"
                 "Hike" -> BASE_URL + "assets/documents/candidateHikeLetter.pdf"
-                "Experience" -> BASE_URL + "assets/documents/exprianceLetter.pdf"
+                //"Experience" -> BASE_URL + "assets/documents/exprianceLetter.pdf"
+                "Experience" -> BASE_URL + "assets/documents/${data.first_name} ${data.last_name} Experience Letter.pdf"
                 "Reliving" -> BASE_URL + "assets/documents/relievingLetter.pdf"
                 "SalarySlip" ->BASE_URL + "assets/documents/candidateSalarySlip.pdf"
                 "Internship" -> BASE_URL + "assets/documents/candidateIntershipLetter.pdf"
                 "InternshipCert" -> BASE_URL + "assets/documents/candidateInternshipLetter.pdf"
                 "IdCard" -> BASE_URL + "assets/documents/IdCard.pdf"
+
+                else -> ""
+            }*/
+            val urlString = when (action) {
+                "Profile" -> BASE_URL + "assets/documents/${data.first_name} ${data.last_name} Profile.pdf"
+                "Offer" -> BASE_URL + "assets/documents/${data.first_name} ${data.last_name} Offer Letter.pdf"
+                "Hike" -> BASE_URL + "assets/documents/${data.first_name} ${data.last_name} Hike Letter.pdf"
+                //"Experience" -> BASE_URL + "assets/documents/exprianceLetter.pdf"
+                "Experience" -> BASE_URL + "assets/documents/${data.first_name} ${data.last_name} Experience Letter.pdf"
+                "Reliving" -> BASE_URL + "assets/documents/${data.first_name} ${data.last_name} Reliving Letter.pdf"
+                "SalarySlip" ->BASE_URL + "assets/documents/${data.first_name} ${data.last_name} ${month.toString()} $year.pdf"
+                "Internship" -> BASE_URL + "assets/documents/${data.first_name} ${data.last_name} Internship Letter.pdf"
+                "InternshipCert" -> BASE_URL + "assets/documents/${data.first_name} ${data.last_name} Internship Cert.pdf"
+                "IdCard" -> BASE_URL + "assets/documents/${data.first_name} ${data.last_name} Id Card.pdf"
 
                 else -> ""
             }

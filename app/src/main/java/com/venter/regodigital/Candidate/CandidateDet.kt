@@ -3,14 +3,16 @@ package com.venter.regodigital.Candidate
 import android.R
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
@@ -26,7 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
+
 
 @AndroidEntryPoint
 class CandidateDet : AppCompatActivity() {
@@ -195,8 +197,10 @@ class CandidateDet : AppCompatActivity() {
         binding.edtFee.setText(data.courseFee)
        if(data.transReq=="true")
            binding.rdobtnYes.isChecked = true
-        else
+       else
             binding.rdobtNo.isChecked = true
+
+        binding.edtTransFee.setText(data.transFee)
 
     }
 
@@ -252,6 +256,19 @@ class CandidateDet : AppCompatActivity() {
 
             }
         }
+
+        binding.rdogrpReqTrans.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId -> // checkedId is the RadioButton selected
+            val rb = findViewById<View>(checkedId) as RadioButton
+            if(rb.text =="Yes" && rb.isChecked)
+            {
+                binding.linTransFee.visibility = View.VISIBLE
+            }
+            else if(rb.text =="No" && rb.isChecked)
+            {
+                binding.edtTransFee.setText("0")
+                binding.linTransFee.visibility = View.GONE
+            }
+        })
     }
 
     override fun onDestroy() {
@@ -311,7 +328,9 @@ class CandidateDet : AppCompatActivity() {
                         currentJobTitle,
                         currentPackage,
                         binding.rdobtnYes.isChecked.toString(),
-                        binding.edtFee.text.toString()
+                        binding.edtFee.text.toString(),
+                        binding.edtTransFee.text.toString()
+                    
                     )
                 )
 

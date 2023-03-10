@@ -873,7 +873,8 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         remark: String,
         folloupDate: String,
         selectedItem: String,
-        candiateId: String
+        candiateId: String,
+        update: Int
     ) {
         try {
             _stringResLiveData.postValue(NetworkResult.Loading())
@@ -884,7 +885,8 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
                     remark,
                     folloupDate,
                     selectedItem,
-                    candiateId
+                    candiateId,
+                    update
                 )
 
             if (response.isSuccessful && response.body() != null) {
@@ -932,6 +934,65 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
 
         } catch (e: Exception) {
             Log.d(TAG, "Error in UserAuthRepository.kt getFollowUpList() is " + e.message)
+        }
+    }
+
+    private val _empReptResLiveData = MutableLiveData<NetworkResult<EmpReport>>()
+    val empReptResLiveData: LiveData<NetworkResult<EmpReport>>
+        get() = _empReptResLiveData
+
+    suspend fun getEmpReport(fromDate:String,toDate: String) {
+        try {
+            _empReptResLiveData.postValue(NetworkResult.Loading())
+            val response =
+                userApi.getEmpReport(fromDate,toDate)
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _empReptResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _empReptResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _empReptResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.kt getEmpReport() is " + e.message)
+        }
+    }
+
+
+
+    private val _salarySlipResLiveData = MutableLiveData<NetworkResult<List<SalarySlipDet>>>()
+    val salarySlipResLiveData: LiveData<NetworkResult<List<SalarySlipDet>>>
+        get() = _salarySlipResLiveData
+    suspend fun getSalaryList(cId:Int) {
+        try {
+           _salarySlipResLiveData.postValue(NetworkResult.Loading())
+            val response =
+                userApi.getSalaryList(cId)
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _salarySlipResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _salarySlipResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _salarySlipResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.kt getSalaryList() is " + e.message)
         }
     }
 

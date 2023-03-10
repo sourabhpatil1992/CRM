@@ -29,5 +29,6 @@ data class CandidetDetails(
     val curPackage:String?,
     val transReq:String,
     val courseFee:String,
+    val transFee:String,
 
     )
