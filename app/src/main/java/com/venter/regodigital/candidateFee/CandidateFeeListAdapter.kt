@@ -26,18 +26,20 @@ class CandidateFeeListAdapter(val cnt: Context):
                 val name = candidate.first_name+" "+candidate.middel_name+" "+candidate.last_name
                 binding.candidateName.text = name
                 binding.totalFee.text = candidate.cource_fee!!.toInt().toString()
+                binding.transactionFee.text = candidate.transComm!!.toInt().toString()
                val paidFee= if(candidate.paidFee != null)
                   candidate.paidFee!!.toInt()
                 else
                     0
                 binding.paidFee.text = paidFee.toString()
-                binding.pendingFee.text = (candidate.cource_fee!!.toInt() - paidFee).toString()
+                binding.pendingFee.text = ((candidate.cource_fee!!.toInt()+candidate.transComm!!.toInt()) - paidFee).toString()
                 binding.candidateFee.setOnClickListener {
                    var intent = Intent(cnt, FeeReceiptActivity::class.java)
                     intent.putExtra("id",candidate.id.toString())
                     intent.putExtra("fee",candidate.cource_fee.toInt())
                     intent.putExtra("paidFee",paidFee.toInt())
                     intent.putExtra("transReq",candidate.transReq)
+                    intent.putExtra("transComm",candidate.transComm.toInt())
                     intent.putExtra("name",name)
                     cnt.startActivity(intent)
                 }

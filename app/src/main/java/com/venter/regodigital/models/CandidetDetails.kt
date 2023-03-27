@@ -30,5 +30,6 @@ data class CandidetDetails(
     val transReq:String,
     val courseFee:String,
     val transFee:String,
+    val transComm:String?
 
     )

@@ -40,10 +40,12 @@ class FeeReceiptActivity : AppCompatActivity(),feeRcpt {
         candidateId = intent.getStringExtra("id").toString()
         binding.txtName.text = name
         val fee = intent.getIntExtra("fee",0)
+        val transactionFee = intent.getIntExtra("transComm", 0)
         val paidFee  = intent.getIntExtra("paidFee",0)
         binding.txtTotalFee.text = fee.toString()
+        binding.txtTransactionFee.text = transactionFee.toString()
         binding.txtPaidFee.text = paidFee.toString()
-        binding.txtPendingFee.text = (fee-paidFee).toString()
+        binding.txtPendingFee.text = ((fee+transactionFee)-paidFee).toString()
         binding.txtTransReq.text = if(intent.getStringExtra("transReq").toString()=="true")
             "Yes"
         else

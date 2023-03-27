@@ -4,19 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.venter.regodigital.candidateFee.FeeReceiptActivity
-import com.venter.regodigital.databinding.LayoutCandidatefeeBinding
 import com.venter.regodigital.databinding.LayoutRawdataBinding
-import com.venter.regodigital.models.CandidateFeeList
 import com.venter.regodigital.models.RawDataList
 import com.venter.regodigital.utils.Constans
 import com.venter.regodigital.utils.Constans.TAG
 
-class RawDataListAdapter(val cnt: Context) :ListAdapter<RawDataList,RawDataListAdapter.RawListHolder>(ComparatorDiffUtil()) {
+class RawDataListAdapter(val cnt: Context,val chkClick:chkListner,val chkVisible:Boolean=false) :ListAdapter<RawDataList,RawDataListAdapter.RawListHolder>(ComparatorDiffUtil()) {
 
     inner class RawListHolder(private val binding: LayoutRawdataBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -25,6 +23,11 @@ class RawDataListAdapter(val cnt: Context) :ListAdapter<RawDataList,RawDataListA
 
                 binding.txtName.text = candidate.candidate_name
                 binding.txtMobNo.text = candidate.mob_no
+
+                binding.checkBox.isChecked = candidate.selected
+
+                if(chkVisible)
+                    binding.checkBox.visibility = View.VISIBLE
 
                 binding.linRawDataLin.setOnClickListener {
                     try {
@@ -38,6 +41,20 @@ class RawDataListAdapter(val cnt: Context) :ListAdapter<RawDataList,RawDataListA
                     }
                 }
 
+                binding.checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+                    try {
+
+                        chkClick.chkSelect(candidate, binding.checkBox.isChecked)
+                    }
+                    catch (e:Exception)
+                    {
+                        //Log.d(TAG,"Error in RawDataListAdapter.kt binding.checkBox.setOnCheckedChangeListener() is "+e.message)
+                    }
+                }
+
+
+
+
             }catch (e:Exception)
             {
                 Log.d(Constans.TAG,"Error in RawDataListAdapter .kt bind() is "+e.message)
@@ -47,11 +64,11 @@ class RawDataListAdapter(val cnt: Context) :ListAdapter<RawDataList,RawDataListA
 
     class ComparatorDiffUtil : DiffUtil.ItemCallback<RawDataList>() {
         override fun areItemsTheSame(oldItem: RawDataList, newItem: RawDataList): Boolean {
-            return false
+            return true
         }
 
         override fun areContentsTheSame(oldItem: RawDataList, newItem: RawDataList): Boolean {
-           return false
+           return true
         }
 
 
@@ -67,5 +84,10 @@ class RawDataListAdapter(val cnt: Context) :ListAdapter<RawDataList,RawDataListA
         val temp = getItem(position)
         holder.bind(temp)
     }
+
+}
+
+interface chkListner{
+    fun chkSelect(candidate: RawDataList, checked: Boolean)
 
 }

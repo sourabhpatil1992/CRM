@@ -5,74 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f0f1ff"
-    tools:context=".EmployeeMangment.EmpProsFragement">
+    tools:context=".EmployeeMangment.AsmissionDataActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/linEmpSpin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical"
-            android:visibility="gone">
 
-            <Spinner
-                android:id="@+id/spinEmpName"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp" />
 
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/edtSearch"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="0.8"
-                android:background="@drawable/round_back_black"
-                android:drawableLeft="@drawable/ic_baseline_search_24"
-                android:drawablePadding="10dp"
-                android:hint="Search"
-                android:paddingLeft="20dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:textColor="@color/black"
-                android:textColorHint="#9E9B9B"
-                android:textSize="18sp" />
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/btnFilter"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="0.2"
-                android:background="@drawable/rounded_back_btn_blue"
-                android:contentDescription="Filter Button"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:src="@drawable/baseline_filter_alt_24"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linviewFilter"
@@ -108,13 +50,13 @@
                 android:text="Warm"
                 android:textColor="@color/black" />
 
-            <!--CheckBox
+            <CheckBox
                 android:id="@+id/chkCold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:text="Cold"
-                android:textColor="@color/black" /-->
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/txtApply"

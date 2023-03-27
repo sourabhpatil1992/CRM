@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EmployeeMangment.EmpReportFragment"
-    android:background="#f0f1ff"
-    >
+    tools:context=".EmployeeMangment.TelecallerReportActivity"
+    android:background="#f0f1ff">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,22 +21,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <LinearLayout
-                    android:id="@+id/linEmpSpin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <Spinner
-                        android:id="@+id/spinEmpName"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp" />
-
-                </LinearLayout>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

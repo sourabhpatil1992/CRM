@@ -6,6 +6,7 @@ data class CandidateFeeList(
     val middel_name: String,
     val last_name: String,
     val cource_fee: Double?,
+    val transComm:Double?,
     val paidFee: Double?,
     val transReq:String
 )

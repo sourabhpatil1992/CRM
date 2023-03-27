@@ -1,7 +1,9 @@
 package com.venter.regodigital.EmployeeMangment
 
+import android.Manifest
 import android.R
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
@@ -13,6 +15,7 @@ import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.venter.regodigital.databinding.ActivityRawDataDetBinding
@@ -82,10 +85,33 @@ class RawDataDetActivity : AppCompatActivity() {
 
                     val callIntent = Intent(Intent.ACTION_CALL)
                     callIntent.data = Uri.parse("tel:" + data!!.mob_no)
-                    startActivity(callIntent)
-                    Thread.sleep(2000)
+                    if (ContextCompat.checkSelfPermission(
+                            this,
+                            Manifest.permission.CALL_PHONE
+                        )
+                        != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        ActivityCompat.requestPermissions(
+                            this, arrayOf(Manifest.permission.CALL_PHONE),
+                            500
+                        )
+
+                        // MY_PERMISSIONS_REQUEST_CALL_PHONE is an
+                        // app-defined int constant. The callback method gets the
+                        // result of the request.
+                    } else {
+                        //You already have permission
+                        try {
+                            startActivity(callIntent)
+                        } catch (e: SecurityException) {
+                            e.printStackTrace()
+                        }
+                    }
+
+                   // Thread.sleep(2000)
                 }
             } catch (e: Exception) {
+                Toast.makeText(this,e.message,Toast.LENGTH_SHORT).show()
                 Log.d(TAG, "Error in RawDataDetActivity.kt binding.btnCall is  " + e.message)
             }
 
@@ -161,16 +187,33 @@ class RawDataDetActivity : AppCompatActivity() {
             prospectSpinner.adapter = adapters
             layout.addView(prospectSpinner)
 
+
+            val commentList = arrayOf(
+                "Not Responding","Call Busy","Out of Coverage area","Switch off","Invalid Number","Not Interested","Not ready to pay expecting salary",
+                "Interested for demo.\nNeed a Reminder call for Demo.",
+                "He/She will discuss with family and let you knows.",
+                "Interested Ready to visit the office location",
+                "Will join from ",
+                "Shared location and details",
+                "Traveling,Need to call back after some time. ",
+                "Interested for only placement not for course"
+            )
+
+
             //Remark
             val RemarkText = TextView(this)
             RemarkText.text = "Remark"
             RemarkText.textSize = 20F
             RemarkText.setTextColor(getColor(R.color.black))
             layout.addView(RemarkText)
-            val RemarkEditText = EditText(this)
+            val RemarkEditText= AutoCompleteTextView (this)
             RemarkEditText.setHint("Remark")
             RemarkEditText.textSize = 20F
             RemarkEditText.setTextColor(getColor(R.color.black))
+            val adapter: ArrayAdapter<String> =
+                ArrayAdapter<String>(this, R.layout.simple_dropdown_item_1line, commentList)
+            RemarkEditText.threshold = 1
+            RemarkEditText.setAdapter(adapter)
             layout.addView(RemarkEditText)
 
             //Next Follow-up Date

@@ -86,7 +86,7 @@ class FeeDashboard : AppCompatActivity()
             var paidFee = 0
 
             candidateFeeList.forEach {
-                totalFee += it.cource_fee!!.toInt()
+                totalFee += it.cource_fee!!.toInt() + it.transComm!!.toInt()
                 paidFee +=
                     if(it.paidFee!= null)
                         it.paidFee!!.toInt()

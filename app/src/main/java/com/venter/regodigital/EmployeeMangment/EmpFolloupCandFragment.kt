@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.venter.regodigital.Dashboard.EmpDashboard
-import com.venter.regodigital.R
 import com.venter.regodigital.databinding.FragmentEmpFolloupCandBinding
 import com.venter.regodigital.models.RawDataList
 import com.venter.regodigital.utils.Constans.TAG
@@ -26,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
  **/
 
 @AndroidEntryPoint
-class EmpFolloupCandFragment : Fragment() {
+class EmpFolloupCandFragment : Fragment(),chkListner {
 
     private var _binding: FragmentEmpFolloupCandBinding? = null
     private val binding: FragmentEmpFolloupCandBinding
@@ -34,22 +33,23 @@ class EmpFolloupCandFragment : Fragment() {
 
     private lateinit var adapter: RawDataListAdapter
 
-    private lateinit var act: EmpDashboard
-    var rawDataList: ArrayList<RawDataList> = ArrayList()
+    //private lateinit var act: EmpDashboard
+    lateinit var rawDataList: ArrayList<RawDataList>
     lateinit var followList: List<Int>
 
     private val candidateViewModel by viewModels<CandidateViewModel>()
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
+    /*override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         act = activity as EmpDashboard
+        rawDataList = ArrayList()
 
         act.rawData!!.forEach { it ->
             rawDataList.add(it)
         }
         showData()
 
-    }
+    }*/
 
     private fun showData() {
         try {
@@ -73,10 +73,11 @@ class EmpFolloupCandFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Create Binding
         _binding = FragmentEmpFolloupCandBinding.inflate(layoutInflater)
-        adapter = RawDataListAdapter(requireContext())
+        adapter = RawDataListAdapter(requireContext(),this)
+        rawDataList = ArrayList()
         followList = ArrayList()
         candidateViewModel.getFollowUpList()
         candidateViewModel.intListResData.observe(viewLifecycleOwner)
@@ -93,9 +94,36 @@ class EmpFolloupCandFragment : Fragment() {
             }
         }
 
+        candidateViewModel.getEmpRawData()
+        candidateViewModel.allrawDataListResLiveData.observe(viewLifecycleOwner)
+        {
+            binding.progressbar.visibility = View.GONE
+            when(it){
+                is NetworkResult.Loading ->{
+                    binding.progressbar.visibility = View.VISIBLE
+                }
+                is NetworkResult.Error -> {
+                    Toast.makeText(context, it.message.toString(), Toast.LENGTH_SHORT).show()
+                }
+                is NetworkResult.Success ->{
+                    it.data!!.forEach { it ->
+                        rawDataList.add(it)
+                    }
+                    showData()
+
+                }
+            }
+
+
+        }
+
 
 
         return binding.root
+    }
+
+    override fun chkSelect(candidate: RawDataList, checked: Boolean) {
+
     }
 
 

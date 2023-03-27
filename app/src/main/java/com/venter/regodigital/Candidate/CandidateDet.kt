@@ -41,7 +41,7 @@ class CandidateDet : AppCompatActivity() {
     private val candidateViewModel by viewModels<CandidateViewModel>()
 
     private var ProfileUri: Uri? = null
-    val salutation = arrayOf("Mr", "Ms", "Mrs")
+    val salutation = arrayOf("Mr.", "Ms.", "Mrs.")
 
     @Inject
     lateinit var tokenManger: TokenManger
@@ -195,12 +195,14 @@ class CandidateDet : AppCompatActivity() {
         binding.edtCurJobTitle.setText(data.curJobTitle)
         binding.edtCurPackage.setText(data.curPackage)
         binding.edtFee.setText(data.courseFee)
+
        if(data.transReq=="true")
            binding.rdobtnYes.isChecked = true
        else
             binding.rdobtNo.isChecked = true
 
         binding.edtTransFee.setText(data.transFee)
+        binding.edtTransComm.setText(data.transComm)
 
     }
 
@@ -280,7 +282,9 @@ class CandidateDet : AppCompatActivity() {
         try {
             if (binding.edttxtFirstName.text.isNotEmpty() && binding.edtMobile.text.isNotEmpty()
                 && binding.edtEmailId.text.isNotEmpty() && binding.edtAdd.text.isNotEmpty() && binding.edtPassYear.text.isNotEmpty() &&
-                binding.edtJobTitle.text.isNotEmpty() && binding.edtJoiningDate.text.isNotEmpty() && binding.edtJoinPackage.text.isNotEmpty() && binding.edtFee.text.isNotEmpty()
+                binding.edtJobTitle.text.isNotEmpty() && binding.edtJoiningDate.text.isNotEmpty() &&
+                binding.edtJoinPackage.text.isNotEmpty() && binding.edtFee.text.isNotEmpty() &&
+                binding.edtTransFee.text.isNotEmpty() && binding.edtTransComm.text.isNotEmpty()
             ) {
                 val dateFormat = SimpleDateFormat("dd-MM-yyyy")
 
@@ -329,7 +333,8 @@ class CandidateDet : AppCompatActivity() {
                         currentPackage,
                         binding.rdobtnYes.isChecked.toString(),
                         binding.edtFee.text.toString(),
-                        binding.edtTransFee.text.toString()
+                        binding.edtTransFee.text.toString(),
+                        binding.edtTransComm.text.toString()
                     
                     )
                 )

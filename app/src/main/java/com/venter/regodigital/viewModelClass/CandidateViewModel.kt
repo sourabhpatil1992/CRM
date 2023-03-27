@@ -333,6 +333,18 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     }
 
+    fun deleteMultipleRawData(rawList: ArrayList<RawDataList>)
+    {
+        try {
+            viewModelScope.launch {
+                userRepository.deleteMultipleRawData(rawList)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt deleteMultipleRawData() is " + e.message)
+        }
+
+    }
+
     val allrawDataListResLiveData: LiveData<NetworkResult<List<RawDataList>>>
         get() = userRepository.allrawDataListResLiveData
 
@@ -440,10 +452,20 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
     val empReptResLiveData: LiveData<NetworkResult<EmpReport>>
         get() = userRepository.empReptResLiveData
 
-    fun getEmpReport(fromDate:String,toDate: String){
+    fun getEmpReport(fromDate:String,toDate: String,empId: String){
         try {
             viewModelScope.launch {
-                userRepository.getEmpReport(fromDate,toDate)
+                userRepository.getEmpReport(fromDate,toDate,empId)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getFollowUpList()() is " + e.message)
+        }
+    }
+
+    fun getTelReport(fromDate:String,toDate: String){
+        try {
+            viewModelScope.launch {
+                userRepository.getTeleReport(fromDate,toDate)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt getFollowUpList()() is " + e.message)
@@ -460,6 +482,65 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt getSalaryList() is " + e.message)
+        }
+    }
+
+    fun setIncomingLead(canName:String,canMob:String){
+        try {
+            viewModelScope.launch {
+                userRepository.setIncomingLead(canName,canMob)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt setIncomingLead() is " + e.message)
+        }
+    }
+
+    fun getAddmissionData(){
+        try {
+            viewModelScope.launch {
+                userRepository.getAdmissionData()
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getAddmissionData() is " + e.message)
+        }
+    }
+
+    val msgListResLiveData : LiveData<NetworkResult<List<WhatsappTemplateMsg>>>
+        get() = userRepository.msgListResLiveData
+
+    fun getWhatsMsgList(){
+        try {
+            viewModelScope.launch {
+                userRepository.getMsgList()
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getWhatsMsgList() is " + e.message)
+        }
+    }
+
+    fun whatApiTemplateTextUpdate(temp:WhatsappTemplateMsg)
+    {
+        try {
+            viewModelScope.launch {
+                userRepository.whatsApiTextUpdate(temp)
+            }
+        }
+        catch (e:Exception)
+        {
+            Log.d(TAG,"Error in MsgViewModel.kt whatApiTemplateStatusUpdate() is "+e.message)
+        }
+    }
+
+    fun whatApiTemplateUpdate(temp:WhatsappTemplateMsg)
+    {
+        try {
+            viewModelScope.launch {
+                userRepository.updateTempWithoutImage(temp)
+            }
+        }
+        catch (e:Exception)
+        {
+            Log.d(TAG,"Error in MsgViewModel.kt whatApiTemplateUpdate() is "+e.message)
         }
     }
 }

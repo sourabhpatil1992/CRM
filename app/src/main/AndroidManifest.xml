@@ -6,14 +6,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.intent.action.PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
     <uses-permission android:name="android.net.conn.CONNECTIVITY_CHANGE" />
     <uses-permission android:name="android.intent.action.NEW_OUTGOING_CALL" />
-    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
@@ -30,12 +29,29 @@
         android:theme="@style/Theme.RegoDigital"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <service
+            android:name=".whatsTemp.ImageUploadFrgnd"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <activity
+            android:name=".whatsTemp.EditWhatsTemp"
+            android:exported="false" />
+        <activity
+            android:name=".whatsTemp.WhatsappTemplates"
+            android:exported="false" />
+        <activity
+            android:name=".EmployeeMangment.AsmissionDataActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmployeeMangment.TelecallerReportActivity"
+            android:exported="false" />
         <activity
             android:name=".Candidate.CandidateDoc"
             android:exported="false" />
         <activity
             android:name=".EmployeeMangment.RawDataDetActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".EmployeeMangment.RawDataActivity"
             android:exported="false" />

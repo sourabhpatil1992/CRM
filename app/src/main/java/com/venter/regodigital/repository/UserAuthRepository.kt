@@ -724,6 +724,32 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
     }
 
+    suspend fun deleteMultipleRawData(rawList: ArrayList<RawDataList>) {
+        try {
+            _stringResLiveData.postValue(NetworkResult.Loading())
+
+            val response =
+                userApi.deleteMultipleRawData(rawList)
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.kt addRawData() is " + e.message)
+        }
+    }
+
     private val _allrawDataListResLiveData = MutableLiveData<NetworkResult<List<RawDataList>>>()
     val allrawDataListResLiveData: LiveData<NetworkResult<List<RawDataList>>>
         get() = _allrawDataListResLiveData
@@ -941,11 +967,36 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
     val empReptResLiveData: LiveData<NetworkResult<EmpReport>>
         get() = _empReptResLiveData
 
-    suspend fun getEmpReport(fromDate:String,toDate: String) {
+    suspend fun getEmpReport(fromDate:String,toDate: String,empId: String) {
         try {
             _empReptResLiveData.postValue(NetworkResult.Loading())
             val response =
-                userApi.getEmpReport(fromDate,toDate)
+                userApi.getEmpReport(fromDate,toDate,empId)
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _empReptResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _empReptResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _empReptResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.kt getEmpReport() is " + e.message)
+        }
+    }
+
+    suspend fun getTeleReport(fromDate:String,toDate: String) {
+        try {
+            _empReptResLiveData.postValue(NetworkResult.Loading())
+            val response =
+                userApi.getTeleReport(fromDate,toDate)
 
             if (response.isSuccessful && response.body() != null) {
 
@@ -993,6 +1044,122 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
 
         } catch (e: Exception) {
             Log.d(TAG, "Error in UserAuthRepository.kt getSalaryList() is " + e.message)
+        }
+    }
+
+    suspend fun setIncomingLead(canName:String,canMob:String)
+    {
+        try {
+            _stringResLiveData.postValue(NetworkResult.Loading())
+            val response = userApi.setIncomingLead(canName,canMob)
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        }
+        catch (e: Exception) {
+            Log.d(
+                Constans.TAG,
+                "Error in UserAuthRepository.kt setIncomingLead() is " + e.message
+            )
+        }
+
+    }
+
+    suspend fun getAdmissionData()
+    {
+        try {
+            _allrawDataListResLiveData.postValue(NetworkResult.Loading())
+            val response =
+                userApi.getAdmissionData()
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _allrawDataListResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _allrawDataListResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _allrawDataListResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.kt getAdmissionData() is " + e.message)
+        }
+    }
+
+
+
+    private val _msgListResLiveData = MutableLiveData<NetworkResult<List<WhatsappTemplateMsg>>>()
+    val msgListResLiveData : LiveData<NetworkResult<List<WhatsappTemplateMsg>>>
+        get() = _msgListResLiveData
+    suspend fun getMsgList()
+    {
+        try {
+            _msgListResLiveData .postValue(NetworkResult.Loading())
+            val response = userApi.getWhatsMsgList()
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _msgListResLiveData .postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _msgListResLiveData .postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _msgListResLiveData .postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        }
+        catch (e: Exception) {
+            Log.d(
+                TAG,
+                "Error in UserAuthRepository.kt getMsgList() is " + e.message
+            )
+        }
+    }
+
+
+    suspend fun whatsApiTextUpdate(temp:WhatsappTemplateMsg) {
+        try {
+
+
+            userApi.updateWhatsApiTempText(temp)
+
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserApiRepostitory.kt whatsApiTextUpdate is " + e.message)
+        }
+    }
+
+    suspend fun updateTempWithoutImage(temp:WhatsappTemplateMsg)
+    {
+        try {
+
+
+            userApi.updateTempWithoutImage(temp)
+
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserApiRepostitory.kt updateTempWithoutImage is " + e.message)
         }
     }
 

@@ -11,7 +11,10 @@ import com.venter.regodigital.R
 import com.venter.regodigital.databinding.FragmentRawCandetDetFragemtnBinding
 import com.venter.regodigital.models.RawCandidateData
 import com.venter.regodigital.utils.Constans.TAG
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 
 class RawCandetDetFragemtn : Fragment() {
     private var _binding: FragmentRawCandetDetFragemtnBinding? = null
@@ -24,19 +27,19 @@ class RawCandetDetFragemtn : Fragment() {
         super.onActivityCreated(savedInstanceState)
         act = activity as RawDataDetActivity
 
-        setView(act.data!!)
+        setView(act.data)
     }
 
-    private fun setView(data: RawCandidateData) {
+    private fun setView(data: RawCandidateData?) {
         try {
-            binding.txtCandidateName.text = data.candidate_name
-            binding.txtMobNo.text = data.mob_no
-            binding.txtEmail.text = data.emailId
-            binding.txtLocation.text = data.curr_location
-            binding.txtScrApp.text = data.SourceOfApplication
-            binding.txtDateapp.text = data.appDate
-            binding.txtQualification.text = data.Qualification
-            binding.txtPassing.text = data.PassYear
+            binding.txtCandidateName.text = data?.candidate_name
+            binding.txtMobNo.text = data?.mob_no
+            binding.txtEmail.text = data?.emailId
+            binding.txtLocation.text = data?.curr_location
+            binding.txtScrApp.text = data?.SourceOfApplication
+            binding.txtDateapp.text = data?.appDate
+            binding.txtQualification.text = data?.Qualification
+            binding.txtPassing.text = data?.PassYear
 
 
         } catch (e: Exception) {

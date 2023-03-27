@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.venter.regodigital.Dashboard.EmpDashboard
 import com.venter.regodigital.databinding.ActivityEmpMangmentBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class EmpMangmentActivity : AppCompatActivity() {
     private var _binding:ActivityEmpMangmentBinding? = null
     private val binding:ActivityEmpMangmentBinding
@@ -21,6 +24,15 @@ class EmpMangmentActivity : AppCompatActivity() {
 
         binding.empDashboard.setOnClickListener {
             val intent = Intent(this,EmpDashboard::class.java)
+            startActivity(intent)
+        }
+
+        binding.teleReport.setOnClickListener {
+            val intent = Intent(this,TelecallerReportActivity::class.java)
+            startActivity(intent)
+        }
+        binding.admission.setOnClickListener {
+            val intent = Intent(this,AsmissionDataActivity::class.java)
             startActivity(intent)
         }
     }

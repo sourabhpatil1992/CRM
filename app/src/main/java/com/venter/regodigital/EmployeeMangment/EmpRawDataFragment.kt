@@ -1,13 +1,18 @@
 package com.venter.regodigital.EmployeeMangment
 
 import android.os.Bundle
+import android.text.InputFilter
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -15,7 +20,6 @@ import com.venter.regodigital.Dashboard.EmpDashboard
 import com.venter.regodigital.R
 import com.venter.regodigital.databinding.FragmentEmpRawDataBinding
 import com.venter.regodigital.models.RawDataList
-import com.venter.regodigital.utils.Constans
 import com.venter.regodigital.utils.Constans.TAG
 import com.venter.regodigital.utils.NetworkResult
 import com.venter.regodigital.viewModelClass.CandidateViewModel
@@ -23,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class EmpRawDataFragment : Fragment() {
+class EmpRawDataFragment : Fragment(),chkListner {
 
     private var _binding: FragmentEmpRawDataBinding? = null
     private val binding: FragmentEmpRawDataBinding
@@ -31,22 +35,12 @@ class EmpRawDataFragment : Fragment() {
 
     private lateinit var adapter: RawDataListAdapter
 
-    private lateinit var act: EmpDashboard
+
     var rawDataList: ArrayList<RawDataList> =ArrayList()
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        act = activity as EmpDashboard
-       // rawData = act.rawData
+    private val candidateViewModel by viewModels<CandidateViewModel>()
 
-        act.rawData!!.forEach { it->
 
-            if(it.prospect_type.isNullOrEmpty())
-                rawDataList.add(it)
-
-        }
-        showData()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,14 +49,41 @@ class EmpRawDataFragment : Fragment() {
     ): View? {
         _binding = FragmentEmpRawDataBinding.inflate(layoutInflater)
 
-        adapter = RawDataListAdapter(requireContext())
+        rawDataList =ArrayList()
+        adapter = RawDataListAdapter(requireContext(),this)
 
-        /* binding.floatingActionButton.setOnClickListener {
+         binding.floatingActionButton.setOnClickListener {
              addData()
          }
- */
-        binding.edtSearch.doOnTextChanged { _, _, _, _ ->
-           searchList()
+
+
+        candidateViewModel.getEmpRawData()
+        candidateViewModel.allrawDataListResLiveData.observe(viewLifecycleOwner)
+        {
+            binding.progressbar.visibility = View.GONE
+            when(it){
+                is NetworkResult.Loading ->{
+                    binding.progressbar.visibility = View.VISIBLE
+                }
+                is NetworkResult.Error -> {
+                    Toast.makeText(context, it.message.toString(), Toast.LENGTH_SHORT).show()
+                }
+                is NetworkResult.Success ->{
+                    it.data?.forEach{
+                        if(it.prospect_type.isNullOrEmpty())
+                            rawDataList.add(it)
+
+                    }
+                    showData()
+                    binding.edtSearch.doOnTextChanged { _, _, _, _ ->
+                        searchList()
+                    }
+
+
+                }
+            }
+
+
         }
 
 
@@ -70,18 +91,28 @@ class EmpRawDataFragment : Fragment() {
     }
 
     private fun searchList() {
-        if(rawDataList.isNotEmpty() && binding.edtSearch.text.isNotEmpty())
-        {
-            val text = binding.edtSearch.text.toString()
-            var rawData: ArrayList<RawDataList> =ArrayList()
-            rawDataList.forEach { it ->
-                if(it.candidate_name.contains(text,true) || it.mob_no.contains(text) || it.prospect_type.contains(text,true))
-                    rawData.add(it)
+        try {
+            if (rawDataList.isNotEmpty() && !binding.edtSearch.text.isNullOrEmpty()) {
+                val text = binding.edtSearch.text.toString()
+                var rawData: ArrayList<RawDataList> = ArrayList()
+                rawDataList.forEach { it ->
+                    if (it.candidate_name.contains(
+                            text,
+                            true
+                        ) || it.mob_no.contains(text) || it.prospect_type!!.contains(text, true)
+                    )
+                        rawData.add(it)
+                }
+                adapter.submitList(rawData)
+                binding.rcCandidate.layoutManager =
+                    StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+                binding.rcCandidate.adapter = adapter
             }
-            adapter.submitList(rawData)
-            binding.rcCandidate.layoutManager =
-                StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-            binding.rcCandidate.adapter = adapter
+        }
+        catch (e:Exception)
+        {
+            Log.d(TAG,"Error in EmpRawDataFrgament.kt searchlist() is "+e.message)
+            Toast.makeText(context,e.message,Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -99,12 +130,76 @@ class EmpRawDataFragment : Fragment() {
     }
 
     private fun addData() {
+        try{
+
+            val builders = AlertDialog.Builder(requireContext())
+            builders.setTitle("Experience Letter")
+            val layout = LinearLayout(requireContext())
+            layout.orientation = LinearLayout.VERTICAL
+
+            val txtCanName = TextView(context)
+            val edtCanName = EditText(context)
+            txtCanName.text = "Candidate Name"
+            edtCanName.setTextColor(resources.getColor(R.color.black))
+            edtCanName.filters = arrayOf(InputFilter.LengthFilter(20))
+            txtCanName.setTextColor(resources.getColor(R.color.black))
+            edtCanName.hint = "Candidate Name"
+            layout.addView(txtCanName)
+            layout.addView(edtCanName)
+
+            val txtMobNo = TextView(context)
+            val edtMobNo  = EditText(context)
+            edtMobNo.setTextColor(resources.getColor(R.color.black))
+            txtMobNo.setTextColor(resources.getColor(R.color.black))
+            edtMobNo.filters = arrayOf(InputFilter.LengthFilter(10))
+            edtMobNo.inputType = 2
+            txtMobNo.text = "Mobile No"
+            edtMobNo.hint = "Mobile No"
+            layout.addView(txtMobNo)
+            layout.addView(edtMobNo)
+
+            layout.setPadding(40, 10, 40, 0);
+            builders.setView(layout)
+
+            builders.setPositiveButton("Create") { dialogInterface, which ->
+
+                if (edtMobNo.text.length==10 && edtCanName.text.isNotEmpty()) {
+                    try {
+
+                        candidateViewModel.setIncomingLead(edtCanName.text.toString(),edtMobNo.text.toString())
+                    }
+                    catch (e: Exception) { Log.d(TAG, "Error in EmpRawDataFragment.kt addData() is " + e.message) }
+
+                } else
+                    Toast.makeText(
+                        context,
+                        "Please fill all data correctly.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+            }
+
+            builders.setNeutralButton("Cancel") { dialogInterface, which ->
+
+            }
+            builders.setIcon(ContextCompat.getDrawable(requireContext(), R.drawable.regologo))
+            val alertDialog: AlertDialog = builders.create()
+            alertDialog.setCancelable(true)
+            alertDialog.show()
+
+        }
+        catch (e:Exception){
+            Log.d(TAG,"Error in  EmpRawDataFragment.kt addData() is "+e.message)
+        }
 
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun chkSelect(candidate: RawDataList, checked: Boolean) {
+
     }
 
 

@@ -93,7 +93,7 @@
                     >
 
                     <RelativeLayout
-                        android:id="@+id/empReport"
+                        android:id="@+id/teleReport"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@color/white">
@@ -112,7 +112,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
-                            android:text="Employee Report"
+                            android:text="Telecaller Report"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
@@ -185,7 +185,7 @@
                     >
 
                     <RelativeLayout
-                        android:id="@+id/prospect"
+                        android:id="@+id/admission"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@color/white">
@@ -204,7 +204,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
-                            android:text="Prospect Data"
+                            android:text="Admission Data"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 

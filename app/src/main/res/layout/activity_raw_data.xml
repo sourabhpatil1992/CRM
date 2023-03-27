@@ -41,6 +41,21 @@
         android:clickable="true"
         app:srcCompat="@drawable/baseline_refresh_24" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingDelButton"
+        android:contentDescription="Delete Candidate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="80dp"
+        android:layout_weight="1"
+        app:rippleColor="@color/white"
+        android:clickable="true"
+        app:srcCompat="@drawable/baseline_delete_24" />
+
     <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/progressbar"
         style="@style/SpinKitView.ChasingDots"

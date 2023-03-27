@@ -7,6 +7,7 @@ import retrofit2.http.*
 
 interface UserAuthApi {
 
+    //Candidate Api
     @POST("/candidateApi/createCandidate")
     suspend fun createCandidate(@Body candidate: CandidetDetails): Response<CandidateCrateRes>
 
@@ -101,6 +102,12 @@ interface UserAuthApi {
     @POST("/candidateApi/candidateDet")
     suspend fun getCandidateDet(@Query("cId") cId: String) : Response<CandidetDetails>
 
+    @POST("/candidateApi/getSalarySlips")
+    suspend fun getSalaryList(@Query("cId")cId: Int): Response<List<SalarySlipDet>>
+
+
+    //Candidate Fee Api
+
     @POST("/candidateFeeApi/feeList")
     suspend fun getCandidateFeeDet() : Response<List<CandidateFeeList>>
 
@@ -110,6 +117,8 @@ interface UserAuthApi {
     @POST("/candidateFeeApi/candidateFeeReceipt")
     suspend fun candidateFeeReceipt(@Query("cId") cId: String,@Query("rcptDate") rcptDate: String,@Query("rcptAmt") rcptAmt: String,@Query("remark") remark: String,@Query("nextPayDate") nextPayDate: String,@Query("candidateName") candidateName: String,@Query("rcptId")rcptId:Int?) : Response<String>
 
+
+    //Expense Mangament Api
     @POST("/expenseManagement/expenseReceipt")
     suspend fun expenseReceipt(@Query("rcptDate") rcptDate: String,@Query("transCat") transCat: String,@Query("tranType") tranType: String,@Query("traDesc") traDesc: String,@Query("rcptAmt") rcptAmt: String) : Response<String>
 
@@ -118,6 +127,8 @@ interface UserAuthApi {
     @POST("/expenseManagement/expenseReportPrint")
     suspend fun expenseReportPrint(@Query("toDate") toDate: String,@Query("fromDate") fromDate: String) : Response<List<expensesDet>>
 
+
+    //User Mangment API
     @POST("/userManagement/createUser")
     suspend fun createUser(@Query("userName") userName: String,@Query("mobileNo") mobileNo: String,@Query("emailId") emailId: String,@Query("jobDesignation") jobDesignation: String,@Query("userType") userType: String,@Query("user_id") userId: Int) : Response<String>
 
@@ -128,8 +139,12 @@ interface UserAuthApi {
     @POST("/userManagement/userStatus")
     suspend fun userStatus(@Query("user_id") userId: Int,@Query("status") status: Int) : Response<String>
 
+
+    //CandidateRawData Api
     @POST("/candidateRawData/addMultipleRawData")
     suspend fun addMultipleRawData(): Response<String>
+    @POST("/candidateRawData/deleteMultipleRawData")
+    suspend fun deleteMultipleRawData(@Body rawList: ArrayList<RawDataList> ): Response<String>
 
     @POST("/candidateRawData/getAllRawData")
     suspend fun getAllRawData(): Response<List<RawDataList>>
@@ -164,11 +179,45 @@ interface UserAuthApi {
 
     //Get the Employee report for the employee dashboard from today's of manual date
     @POST("/candidateRawData/getEmpReport")
-    suspend fun getEmpReport(@Query("fromDate")fromDate: String,@Query("toDate")toDate: String): Response<EmpReport>
+    suspend fun getEmpReport(@Query("fromDate")fromDate: String,@Query("toDate")toDate: String,@Query("Empid")empId: String): Response<EmpReport>
+
+    @POST("/candidateRawData/getTeleReport")
+    suspend fun getTeleReport(@Query("fromDate")fromDate: String,@Query("toDate")toDate: String): Response<EmpReport>
 
     //Get Salary Slip List For the use for The CandidateDocList
-    @POST("/candidateApi/getSalarySlips")
-    suspend fun getSalaryList(@Query("cId")cId: Int): Response<List<SalarySlipDet>>
+
+
+    @POST("/candidateRawData/setIncomingLead")
+    suspend fun setIncomingLead(@Query("canName")canName: String,@Query("mobNo")mobNo: String): Response<String>
+
+    @POST("/candidateRawData/getAdmissionData")
+    suspend fun getAdmissionData(): Response<List<RawDataList>>
+
+
+    //WhatsApp Temp
+    @POST("/whatsAppTemp/getMsgList")
+    suspend fun getWhatsMsgList():Response<List<WhatsappTemplateMsg>>
+
+
+    @POST("/whatsAppTemp/UpdateTempText")
+    suspend fun updateWhatsApiTempText(@Body temp:WhatsappTemplateMsg)
+
+    @Multipart
+    @POST("/whatsAppTemp/UpdateWhatsApiAttachments")
+    suspend fun UpdateWhatsApiAttachments(@Part spic: MultipartBody.Part,
+                                          @Query("tempId")tempId:String,
+                                          @Query("header") header: String,
+                                          @Query("template") template:String,
+                                          @Query("headerType") headerType:String,
+    ) :Response<String>
+
+    @POST("/whatsAppTemp/updateTempWithoutHeader")
+    suspend fun updateTempWithoutImage(@Body temp:WhatsappTemplateMsg)
+
+    @Multipart
+    @POST("/whatsAppTemp/ChangeWhatsApiAttachments")
+    suspend fun ChangeWhatsApiAttachments(@Part spic: MultipartBody.Part, @Query("tempId")tempId:String,@Query("headerType")headerType: String) :Response<String>
+
 
 
 }

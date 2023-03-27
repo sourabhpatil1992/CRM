@@ -138,6 +138,7 @@
                         android:orientation="horizontal">
 
                         <EditText
+                            android:inputType="textCapWords"
                             android:id="@+id/edttxtFirstName"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -148,6 +149,7 @@
                             android:textSize="15sp" />
 
                         <EditText
+                            android:inputType="textCapWords"
                             android:id="@+id/edtMiddleName"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -158,6 +160,7 @@
                             android:textSize="15sp" />
 
                         <EditText
+                            android:inputType="textCapWords"
                             android:id="@+id/edtLastName"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -290,6 +293,7 @@
                         android:textSize="15sp" />
 
                     <EditText
+                        android:inputType="textCapWords"
                         android:id="@+id/edtAdd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -307,6 +311,7 @@
                         android:textSize="15sp" />
 
                     <EditText
+                        android:inputType="textCapWords"
                         android:id="@+id/edtBankName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -343,6 +348,7 @@
                         android:textSize="15sp" />
 
                     <EditText
+                        android:inputType="textCapCharacters"
                         android:id="@+id/edtPanNo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -361,6 +367,7 @@
                         android:textSize="15sp" />
 
                     <EditText
+                        android:inputType="textCapCharacters"
                         android:id="@+id/edtBloodGroup"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -426,6 +433,7 @@
                         android:textSize="15sp" />
 
                     <EditText
+                        android:inputType="textCapWords"
                         android:id="@+id/edtEduDegree"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -469,6 +477,7 @@
                         android:textSize="15sp" />
 
                     <EditText
+                        android:inputType="textCapWords"
                         android:id="@+id/edtCollegeName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -481,15 +490,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="University Name :"
+                        android:text="University / Board Name :"
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 
                     <EditText
+                        android:inputType="textCapWords"
                         android:id="@+id/edtUniName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="University Name"
+                        android:hint="University / Board Name"
                         android:textColor="@color/black"
                         android:textColorHint="#716F6F"
                         android:textSize="15sp" />
@@ -550,6 +560,7 @@
                         android:textSize="15sp" />
 
                     <EditText
+                        android:inputType="textCapWords"
                         android:id="@+id/edtJobTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -620,6 +631,7 @@
                         android:textSize="15sp" />
 
                     <EditText
+                        android:inputType="textCapWords"
                         android:id="@+id/edtEmployeeId"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -685,6 +697,7 @@
                         android:textSize="15sp" />
 
                     <EditText
+                        android:inputType="textCapWords"
                         android:id="@+id/edtCurJobTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -757,13 +770,14 @@
                     android:layout_marginBottom="20dp"
                     android:background="@color/white"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Is Required Transaction :"
+                        android:text="Transaction details :"
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 
@@ -789,6 +803,7 @@
                             android:text="No" />
                     </RadioGroup>
 
+
                     <LinearLayout
                         android:id="@+id/linTransFee"
                         android:layout_width="match_parent"
@@ -800,7 +815,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:text="Transaction Fee :"
+                            android:text="Transaction Amount :"
                             android:textColor="@color/black"
                             android:textSize="15sp" />
 
@@ -808,7 +823,26 @@
                             android:id="@+id/edtTransFee"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Course Fee"
+                            android:hint="Transaction Amount"
+                            android:inputType="numberDecimal"
+                            android:text="0"
+                            android:textColor="@color/black"
+                            android:textColorHint="#716F6F"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Transaction Charges :"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+                        <EditText
+                            android:id="@+id/edtTransComm"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Transaction Charges"
                             android:inputType="numberDecimal"
                             android:text="0"
                             android:textColor="@color/black"
@@ -821,7 +855,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Cource Fee :"
+                        android:text="Course fees :"
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 
