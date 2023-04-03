@@ -50,6 +50,8 @@ class EmpRawDataFragment : Fragment(),chkListner {
         _binding = FragmentEmpRawDataBinding.inflate(layoutInflater)
 
         rawDataList =ArrayList()
+
+
         adapter = RawDataListAdapter(requireContext(),this)
 
          binding.floatingActionButton.setOnClickListener {
@@ -57,7 +59,7 @@ class EmpRawDataFragment : Fragment(),chkListner {
          }
 
 
-        candidateViewModel.getEmpRawData()
+       // candidateViewModel.getEmpRawData()
         candidateViewModel.allrawDataListResLiveData.observe(viewLifecycleOwner)
         {
             binding.progressbar.visibility = View.GONE
@@ -69,6 +71,8 @@ class EmpRawDataFragment : Fragment(),chkListner {
                     Toast.makeText(context, it.message.toString(), Toast.LENGTH_SHORT).show()
                 }
                 is NetworkResult.Success ->{
+                    Log.d(TAG,"Check Resume")
+                    rawDataList =ArrayList()
                     it.data?.forEach{
                         if(it.prospect_type.isNullOrEmpty())
                             rawDataList.add(it)
@@ -117,16 +121,16 @@ class EmpRawDataFragment : Fragment(),chkListner {
     }
 
     private fun showData() {
-        if (rawDataList.isNotEmpty()) {
+       // if (rawDataList.isNotEmpty()) {
 
             adapter.submitList(rawDataList)
             binding.rcCandidate.layoutManager =
                 StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
             binding.rcCandidate.adapter = adapter
-        }
+        /*}
         else{
             Toast.makeText(context,"Data not found!!!",Toast.LENGTH_SHORT).show()
-        }
+        }*/
     }
 
     private fun addData() {
@@ -202,5 +206,10 @@ class EmpRawDataFragment : Fragment(),chkListner {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG,"Check Resume")
+        candidateViewModel.getEmpRawData()
+    }
 
 }

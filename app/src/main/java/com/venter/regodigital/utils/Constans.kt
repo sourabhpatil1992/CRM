@@ -15,7 +15,7 @@ object Constans {
 
 
     const val PREFS_CONST_FILE = "PREFS_CONST_FILE"
-    const val PIN ="PIN"
+
     const val USER_TOKEN = "USER_TOKEN"
     const val FIREBASE_TOKEN = "FIREBASE_TOKEN"
     const val DEVICE_TOKEN = "DEVICE_TOKEN"

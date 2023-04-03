@@ -45,7 +45,7 @@ class EmpDashboard : AppCompatActivity() {
         {
             askPermission()
         }
-
+        //getData()
         if (tokenManger.getUserType() == "Admin") {
         getData()
         }
@@ -58,8 +58,8 @@ class EmpDashboard : AppCompatActivity() {
                 val sdf = SimpleDateFormat(pattern)
                 val calendar1 = Calendar.getInstance()
                 val currentTime = sdf.parse(sdf.format(calendar1.getTime()))
-                val time = "09:00"
-                val endtime = "19:00"
+                val time = "09:50"
+                val endtime = "19:30"
                 val date1: Date = sdf.parse(time)
                 val date2: Date = sdf.parse(endtime)
 
