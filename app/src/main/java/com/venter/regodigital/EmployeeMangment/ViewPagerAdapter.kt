@@ -9,7 +9,7 @@ import com.venter.regodigital.utils.Constans
 
 class ViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getCount(): Int {
-        return 5;
+        return 6;
     }
 
     override fun getItem(position: Int): Fragment {
@@ -28,6 +28,9 @@ class ViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
                     return IncomingLeads()
                 }
                 4 -> {
+                    return EmpNotRespondingData()
+                }
+                5 -> {
                     return EmpReportFragment()
                 }
                 else -> {
@@ -56,6 +59,9 @@ class ViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
                 return "Incoming Leads"
             }
             4 -> {
+                return "Not Responding"
+            }
+            5 -> {
                 return "Report"
             }
         }

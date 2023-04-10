@@ -15,5 +15,5 @@ data class FeeLedger(
 @Parcelize
 data class FeeLedgerDet(
     val feeLedger : List<FeeLedger>,
-    val nextPaymentDate:String
+    val nextPaymentDate:String?
 ): Parcelable

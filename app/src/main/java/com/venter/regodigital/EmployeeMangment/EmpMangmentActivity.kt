@@ -35,6 +35,10 @@ class EmpMangmentActivity : AppCompatActivity() {
             val intent = Intent(this,AsmissionDataActivity::class.java)
             startActivity(intent)
         }
+        binding.officeHrs.setOnClickListener {
+            val intent = Intent(this,WorkingHourseAcivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onDestroy() {

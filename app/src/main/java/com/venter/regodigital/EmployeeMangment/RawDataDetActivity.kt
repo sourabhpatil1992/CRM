@@ -177,7 +177,7 @@ class RawDataDetActivity : AppCompatActivity() {
             prospectText.setTextColor(getColor(R.color.black))
             layout.addView(prospectText)
 
-            val prosType = arrayOf("Warm", "Hot", "Cold", "Admission")
+            val prosType = arrayOf("Warm", "Hot", "Cold","Not Responding", "Admission")
             val prospectSpinner = Spinner(this)
             val adapters = ArrayAdapter<String>(
                 this,
@@ -290,6 +290,8 @@ class RawDataDetActivity : AppCompatActivity() {
                         1
                         else
                             0
+                        if ( prospectSpinner.selectedItem.toString() == "Not Responding")
+                            callTime = "15"
                         submitData(
                             callTime,
                             prospectSpinner.selectedItem.toString(),

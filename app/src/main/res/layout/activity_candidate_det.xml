@@ -293,7 +293,7 @@
                         android:textSize="15sp" />
 
                     <EditText
-                        android:inputType="textCapWords"
+                        android:inputType="textMultiLine|textCapWords"
                         android:id="@+id/edtAdd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

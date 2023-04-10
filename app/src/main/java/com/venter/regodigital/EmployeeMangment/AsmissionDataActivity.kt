@@ -44,7 +44,7 @@ class AsmissionDataActivity : AppCompatActivity(),chkListner {
             when(it)
             {
                 is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
-                is NetworkResult.Error -> Toast.makeText(this,it.message,Toast.LENGTH_SHORT).show()
+                is NetworkResult.Error ->{ Toast.makeText(this,it.message,Toast.LENGTH_SHORT).show()}
                 is NetworkResult.Success ->{
                     adapter.submitList(it.data)
                     binding.rcCandidate.layoutManager =

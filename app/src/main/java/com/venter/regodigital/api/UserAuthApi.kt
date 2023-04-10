@@ -72,7 +72,8 @@ interface UserAuthApi {
         @Query("month") month: String,
         @Query("year") year: String,
         @Query("jobPos") jobPos: String,
-        @Query("package") packages: String
+        @Query("package") packages: String,
+        @Query("lop") lop:String
     ): Response<String>
 
 
@@ -115,7 +116,7 @@ interface UserAuthApi {
     suspend fun getCandidateFeeLedger(@Query("cId") cId: String) : Response<FeeLedgerDet>
 
     @POST("/candidateFeeApi/candidateFeeReceipt")
-    suspend fun candidateFeeReceipt(@Query("cId") cId: String,@Query("rcptDate") rcptDate: String,@Query("rcptAmt") rcptAmt: String,@Query("remark") remark: String,@Query("nextPayDate") nextPayDate: String,@Query("candidateName") candidateName: String,@Query("rcptId")rcptId:Int?) : Response<String>
+    suspend fun candidateFeeReceipt(@Query("cId") cId: String,@Query("rcptDate") rcptDate: String,@Query("rcptAmt") rcptAmt: String,@Query("remark") remark: String,@Query("nextPayDate") nextPayDate: String,@Query("candidateName") candidateName: String,@Query("rcptId")rcptId:Int?,@Query("transType")transType:String) : Response<String>
 
 
     //Expense Mangament Api
@@ -192,6 +193,12 @@ interface UserAuthApi {
 
     @POST("/candidateRawData/getAdmissionData")
     suspend fun getAdmissionData(): Response<List<RawDataList>>
+
+    @POST("/candidateRawData/getTimeTable")
+    suspend fun getWorkingHrs(): Response<List<WorkingHrs>>
+
+    @POST("/candidateRawData/setTimeTable")
+    suspend fun setWorkingHrs(@Body shedule:WorkingHrs): Response<String>
 
 
     //WhatsApp Temp

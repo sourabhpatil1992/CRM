@@ -30,10 +30,8 @@ class UserListAdapate(val cnt: Context, val statusUser: statusUser) :
                 binding.txtUserName.text = user.user_name
                 binding.txtDesignation.text = user.job_title
                 binding.txtUserType.text = user.user_type
-                if (user.status == "1")
-                    binding.viewActive.setBackgroundColor(cnt.getColor(R.color.activeUser))
-                else
-                    binding.viewActive.setBackgroundColor(cnt.getColor(R.color.deActiveUser))
+                binding.viewActive.isChecked = user.status == "1"
+                    //binding.viewActive.setBackgroundColor(cnt.getColor(R.color.deActiveUser))
 
                 Picasso.get()
                     .load(Constans.BASE_URL + "assets/userProfile/" + user.id + ".jpeg")
@@ -41,7 +39,7 @@ class UserListAdapate(val cnt: Context, val statusUser: statusUser) :
                     .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .into(binding.imgProfile)
 
-                binding.linUserStatus.setOnClickListener {
+                /*binding.linUserStatus.setOnClickListener {
                     if (user.status == "1") {
                         user.status = "0"
                         statusUser.changeUserStatus(user.id, 0)
@@ -53,6 +51,23 @@ class UserListAdapate(val cnt: Context, val statusUser: statusUser) :
                         binding.viewActive.setBackgroundColor(cnt.getColor(R.color.activeUser))
 
                     }
+
+                }*/
+                binding.viewActive.setOnCheckedChangeListener { buttonView, isChecked ->
+                    if(isChecked)
+                    {
+                        user.status = "1"
+                        statusUser.changeUserStatus(user.id, 1)
+                       // binding.viewActive.setBackgroundColor(cnt.getColor(R.color.activeUser))
+                    }
+                    else
+                    {
+                        user.status = "0"
+                        statusUser.changeUserStatus(user.id, 0)
+                        //binding.viewActive.setBackgroundColor(cnt.getColor(R.color.deActiveUser))
+
+                    }
+
 
                 }
 

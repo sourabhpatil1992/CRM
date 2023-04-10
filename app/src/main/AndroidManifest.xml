@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
     <uses-permission android:name="android.net.conn.CONNECTIVITY_CHANGE" />
     <uses-permission android:name="android.intent.action.NEW_OUTGOING_CALL" />
-    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
@@ -29,10 +29,14 @@
         android:theme="@style/Theme.RegoDigital"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".EmployeeMangment.WorkingHourseAcivity"
+            android:exported="false" />
+
         <service
             android:name=".whatsTemp.ImageUploadFrgnd"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity
             android:name=".whatsTemp.EditWhatsTemp"

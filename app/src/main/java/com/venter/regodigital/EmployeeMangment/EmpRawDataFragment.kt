@@ -1,9 +1,10 @@
 package com.venter.regodigital.EmployeeMangment
 
 import android.os.Bundle
+import android.text.Editable
 import android.text.InputFilter
+import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +15,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.venter.regodigital.Dashboard.EmpDashboard
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.venter.regodigital.R
 import com.venter.regodigital.databinding.FragmentEmpRawDataBinding
 import com.venter.regodigital.models.RawDataList
@@ -40,6 +42,54 @@ class EmpRawDataFragment : Fragment(),chkListner {
 
     private val candidateViewModel by viewModels<CandidateViewModel>()
 
+    //This is used for the Checking the Current Position of the Recyclerview
+    private var currentPosition = 0
+
+    var textWatcher: TextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            // this function is called before text is edited
+        }
+
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+
+        }
+
+        override fun afterTextChanged(s: Editable) {
+            val text =  s.toString()
+
+            var rawData: ArrayList<RawDataList> = ArrayList()
+            if(text.isNotEmpty()) {
+                if (rawDataList.isNotEmpty()) {
+
+                    rawDataList.forEach { it ->
+                        if (it.candidate_name.contains(text, true) || it.mob_no.contains(text))
+
+                            rawData.add(it)
+                    }
+
+
+                    /*binding.rcCandidate.layoutManager =
+                    StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)*/
+
+
+                }
+                adapter.submitList(rawData)
+            }
+            else
+            {
+                adapter.submitList(rawDataList)
+            }
+
+
+            val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            binding.rcCandidate.setLayoutManager(linearLayoutManager)
+
+            binding.rcCandidate.adapter = adapter
+
+        }
+    }
+
 
 
     override fun onCreateView(
@@ -58,11 +108,29 @@ class EmpRawDataFragment : Fragment(),chkListner {
              addData()
          }
 
+        binding.rcCandidate.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                try {
+                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                      currentPosition = layoutManager!!.findFirstVisibleItemPosition()
+
+
+                }
+                catch (e:Exception)
+                {
+                    Log.d(TAG,"Error in ..."+e.message)
+                }
+            }
+        })
+
+
 
        // candidateViewModel.getEmpRawData()
         candidateViewModel.allrawDataListResLiveData.observe(viewLifecycleOwner)
         {
             binding.progressbar.visibility = View.GONE
+            binding.swiperefresh.isRefreshing = false
             when(it){
                 is NetworkResult.Loading ->{
                     binding.progressbar.visibility = View.VISIBLE
@@ -71,7 +139,7 @@ class EmpRawDataFragment : Fragment(),chkListner {
                     Toast.makeText(context, it.message.toString(), Toast.LENGTH_SHORT).show()
                 }
                 is NetworkResult.Success ->{
-                    Log.d(TAG,"Check Resume")
+
                     rawDataList =ArrayList()
                     it.data?.forEach{
                         if(it.prospect_type.isNullOrEmpty())
@@ -79,9 +147,7 @@ class EmpRawDataFragment : Fragment(),chkListner {
 
                     }
                     showData()
-                    binding.edtSearch.doOnTextChanged { _, _, _, _ ->
-                        searchList()
-                    }
+
 
 
                 }
@@ -90,14 +156,23 @@ class EmpRawDataFragment : Fragment(),chkListner {
 
         }
 
+        binding.edtSearch.addTextChangedListener(textWatcher)
+
+        binding.swiperefresh.setOnRefreshListener{
+            candidateViewModel.getEmpRawData()
+           // binding.swiperefresh.isRefreshing = false
+        }
+
 
         return binding.root
     }
 
     private fun searchList() {
         try {
-            if (rawDataList.isNotEmpty() && !binding.edtSearch.text.isNullOrEmpty()) {
-                val text = binding.edtSearch.text.toString()
+            val text = binding.edtSearch.text.toString()
+            if (rawDataList.isNotEmpty() && text.isNotEmpty())
+            {
+
                 var rawData: ArrayList<RawDataList> = ArrayList()
                 rawDataList.forEach { it ->
                     if (it.candidate_name.contains(
@@ -108,10 +183,16 @@ class EmpRawDataFragment : Fragment(),chkListner {
                         rawData.add(it)
                 }
                 adapter.submitList(rawData)
-                binding.rcCandidate.layoutManager =
-                    StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+
+                /*binding.rcCandidate.layoutManager =
+                    StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)*/
+
+                val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                binding.rcCandidate.setLayoutManager(linearLayoutManager)
+
                 binding.rcCandidate.adapter = adapter
             }
+
         }
         catch (e:Exception)
         {
@@ -121,16 +202,20 @@ class EmpRawDataFragment : Fragment(),chkListner {
     }
 
     private fun showData() {
-       // if (rawDataList.isNotEmpty()) {
 
             adapter.submitList(rawDataList)
-            binding.rcCandidate.layoutManager =
-                StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+           /* binding.rcCandidate.layoutManager =
+                StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)*/
+
+        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.rcCandidate.setLayoutManager(linearLayoutManager)
+
             binding.rcCandidate.adapter = adapter
-        /*}
-        else{
-            Toast.makeText(context,"Data not found!!!",Toast.LENGTH_SHORT).show()
-        }*/
+        binding.rcCandidate.layoutManager?.scrollToPosition(currentPosition)
+
+
+
+
     }
 
     private fun addData() {
@@ -208,8 +293,9 @@ class EmpRawDataFragment : Fragment(),chkListner {
 
     override fun onResume() {
         super.onResume()
-        Log.d(TAG,"Check Resume")
+        
         candidateViewModel.getEmpRawData()
+        binding.rcCandidate.layoutManager?.scrollToPosition(currentPosition)
     }
 
 }

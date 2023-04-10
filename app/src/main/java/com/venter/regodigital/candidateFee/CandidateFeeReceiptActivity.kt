@@ -5,10 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.venter.regodigital.Dashboard.AdminDashboard
+import com.venter.regodigital.R
 import com.venter.regodigital.databinding.ActivityCandidateFeeReceiptBinding
 import com.venter.regodigital.models.FeeLedger
 import com.venter.regodigital.models.FeeLedgerDet
@@ -40,6 +43,14 @@ class CandidateFeeReceiptActivity : AppCompatActivity() {
         cId = intent.getStringExtra("id").toString()
         binding.txtName.text = intent.getStringExtra("name").toString()
         candidateFeeLedger = intent.getParcelableExtra<FeeLedger>("rcpt")
+
+        val transArray = arrayOf("Candidate Fee","Transaction Fee")
+
+        val adapter = ArrayAdapter(
+            this,
+            R.layout.layout_spinneritem, transArray
+        )
+        binding.spinnerType.adapter = adapter
 
         if (candidateFeeLedger != null) {
             binding.edtRemark.setText(candidateFeeLedger!!.remark.toString())
@@ -78,7 +89,8 @@ class CandidateFeeReceiptActivity : AppCompatActivity() {
                             binding.edtRemark.text.toString(),
                             binding.edtNxtPay.text.toString(),
                             binding.txtName.text.toString(),
-                            candidateFeeLedger!!.trans_id
+                            candidateFeeLedger!!.trans_id,
+                            binding.spinnerType.selectedItem.toString()
                         )
 
                     } else
@@ -89,7 +101,8 @@ class CandidateFeeReceiptActivity : AppCompatActivity() {
                             binding.edtRemark.text.toString(),
                             binding.edtNxtPay.text.toString(),
                             binding.txtName.text.toString(),
-                            0
+                            0,
+                            binding.spinnerType.selectedItem.toString()
                         )
 
                     candidateViewModel.stringResData.observe(this)

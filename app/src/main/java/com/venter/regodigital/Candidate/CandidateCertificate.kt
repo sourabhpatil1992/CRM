@@ -16,6 +16,7 @@ import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
 import com.venter.regodigital.R
 import com.venter.regodigital.databinding.ActivityCandidateCertificateBinding
+
 import com.venter.regodigital.models.CanCertDetRes
 import com.venter.regodigital.utils.Constans.BASE_URL
 import com.venter.regodigital.utils.Constans.TAG
@@ -626,7 +627,7 @@ class CandidateCertificate : AppCompatActivity() {
             val month = Spinner(this)
             val adapter = ArrayAdapter(
                 this,
-                android.R.layout.simple_spinner_item, monthArray
+                R.layout.layout_spinneritem, monthArray
             )
             month.adapter = adapter
             val monthText = TextView(this)
@@ -640,6 +641,14 @@ class CandidateCertificate : AppCompatActivity() {
             year.filters = arrayOf(InputFilter.LengthFilter(4))
             yearText.setTextColor(resources.getColor(R.color.black))
             yearText.setText("Year")
+
+            val lop = EditText(this)
+            val lopText = TextView(this)
+            lop.setText("0")
+            lop.inputType = 2
+            lop.filters = arrayOf(InputFilter.LengthFilter(2))
+            lopText.setTextColor(resources.getColor(R.color.black))
+            lopText.setText("LOP")
 
             val jobPosition = EditText(this)
             val jobPositionText = TextView(this)
@@ -676,6 +685,8 @@ class CandidateCertificate : AppCompatActivity() {
             layout.addView(month)
             layout.addView(yearText)
             layout.addView(year)
+            layout.addView(lopText)
+            layout.addView(lop)
             layout.addView(jobPositionText)
             layout.addView(jobPosition)
             layout.addView(newPackageText)
@@ -692,7 +703,7 @@ class CandidateCertificate : AppCompatActivity() {
 
                         candidateViewModel.printSalarySlip(
                             candidateId.toString(),
-                            month.selectedItem.toString(),year.text.toString(),jobPosition.text.toString(),newPackage.text.toString()
+                            month.selectedItem.toString(),year.text.toString(),jobPosition.text.toString(),newPackage.text.toString(),lop.text.toString()
                         )
                         serverRes("SalarySlip",month.selectedItem.toString(),year.text.toString())
                     }

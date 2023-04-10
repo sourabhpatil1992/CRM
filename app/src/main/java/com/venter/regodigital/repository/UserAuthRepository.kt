@@ -274,11 +274,12 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         month: String,
         year: String,
         jobPos: String,
-        packages: String
+        packages: String,
+        lop:String
     ) {
         try {
             _stringResLiveData.postValue(NetworkResult.Loading())
-            val response = userApi.printSalarySlip(cId, month, year, jobPos, packages)
+            val response = userApi.printSalarySlip(cId, month, year, jobPos, packages,lop)
 
             if (response.isSuccessful && response.body() != null) {
 
@@ -491,7 +492,8 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         remark: String,
         nextPayDate: String,
         candidateNaem: String,
-        rcptId: Int?
+        rcptId: Int?,
+        transType:String
     ) {
         try {
             _stringResLiveData.postValue(NetworkResult.Loading())
@@ -502,7 +504,8 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
                 remark,
                 nextPayDate,
                 candidateNaem,
-                rcptId
+                rcptId,
+                transType
             )
 
             if (response.isSuccessful && response.body() != null) {
@@ -1100,6 +1103,62 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
 
         } catch (e: Exception) {
             Log.d(TAG, "Error in UserAuthRepository.kt getAdmissionData() is " + e.message)
+        }
+    }
+
+
+    private val _workHrsResLiveData = MutableLiveData<NetworkResult<List<WorkingHrs>>>()
+    val workHrsResLiveData: LiveData<NetworkResult<List<WorkingHrs>>>
+        get() = _workHrsResLiveData
+    suspend fun getWorkingHrsData()
+    {
+        try {
+            _workHrsResLiveData.postValue(NetworkResult.Loading())
+            val response =
+                userApi.getWorkingHrs()
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _workHrsResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _workHrsResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _workHrsResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.kt getWorkingHrsData() is " + e.message)
+        }
+    }
+
+    suspend fun setWorkingHrsData(shedule:WorkingHrs)
+    {
+        try {
+            _stringResLiveData.postValue(NetworkResult.Loading())
+            val response =
+                userApi.setWorkingHrs(shedule)
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.kt setWorkingHrsData() is " + e.message)
         }
     }
 

@@ -137,11 +137,11 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
             Log.d(TAG, "Error in CandidateViewModel.kt printExperienceLetter() is " + e.message)
         }
     }
-    fun printSalarySlip( cId: String, month: String,year: String,jobPos: String,packages: String)
+    fun printSalarySlip( cId: String, month: String,year: String,jobPos: String,packages: String,lop:String="0")
     {
         try {
             viewModelScope.launch {
-                userRepository.printSalarySlip(cId, month,year,jobPos,packages)
+                userRepository.printSalarySlip(cId, month,year,jobPos,packages,lop)
             }
         }
         catch (e: Exception) {
@@ -234,11 +234,11 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     }
 
-    fun candidateFeeReceipt( cId: String,rcptDate: String,rcptAmt: String, remark: String, nextPayDate: String,candidateName:String,rcptId:Int?)
+    fun candidateFeeReceipt( cId: String,rcptDate: String,rcptAmt: String, remark: String, nextPayDate: String,candidateName:String,rcptId:Int?,transType:String)
     {
         try {
             viewModelScope.launch {
-                userRepository.submitFeeReceipt(cId,rcptDate,rcptAmt, remark, nextPayDate,candidateName,rcptId)
+                userRepository.submitFeeReceipt(cId,rcptDate,rcptAmt, remark, nextPayDate,candidateName,rcptId,transType)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt getCandidateFeeLedger() is " + e.message)
@@ -502,6 +502,28 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt getAddmissionData() is " + e.message)
+        }
+    }
+
+    val workHrsResLiveData : LiveData<NetworkResult<List<WorkingHrs>>>
+        get() = userRepository.workHrsResLiveData
+    fun getWorkingHrsData(){
+        try {
+            viewModelScope.launch {
+                userRepository.getWorkingHrsData()
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getWorkingHrsData() is " + e.message)
+        }
+    }
+
+    fun setWorkingHrsData(shedule:WorkingHrs){
+        try {
+            viewModelScope.launch {
+                userRepository.setWorkingHrsData(shedule)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt setWorkingHrsData() is " + e.message)
         }
     }
 

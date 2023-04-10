@@ -41,7 +41,7 @@ class CandidateDet : AppCompatActivity() {
     private val candidateViewModel by viewModels<CandidateViewModel>()
 
     private var ProfileUri: Uri? = null
-    val salutation = arrayOf("Mr.", "Ms.", "Mrs.")
+    val salutation = arrayOf("Mr", "Ms", "Mrs")
 
     @Inject
     lateinit var tokenManger: TokenManger
@@ -286,6 +286,7 @@ class CandidateDet : AppCompatActivity() {
                 binding.edtJoinPackage.text.isNotEmpty() && binding.edtFee.text.isNotEmpty() &&
                 binding.edtTransFee.text.isNotEmpty() && binding.edtTransComm.text.isNotEmpty()
             ) {
+
                 val dateFormat = SimpleDateFormat("dd-MM-yyyy")
 
                 dateFormat.parse(binding.edtDOB.text.toString())
