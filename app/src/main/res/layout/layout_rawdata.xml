@@ -18,10 +18,31 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"
         android:layout_marginRight="10dp">
+        <TextView
+            android:id="@+id/txtSrNo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:text="1"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+        <View
+            android:id="@+id/view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:layout_weight="0.002"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            />
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginLeft="8dp"
             android:layout_weight="0.7">
             <TextView
                 android:id="@+id/txtName"

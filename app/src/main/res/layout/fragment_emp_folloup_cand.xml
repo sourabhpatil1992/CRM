@@ -7,16 +7,27 @@
     android:layout_height="match_parent"
     tools:context=".EmployeeMangment.EmpFolloupCandFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcCandidate"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        tools:listitem="@layout/layout_rawdata"
-        />
+        android:layout_marginBottom="10dp">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcCandidate"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            tools:listitem="@layout/layout_rawdata"
+            />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
     <com.github.ybq.android.spinkit.SpinKitView

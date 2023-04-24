@@ -39,25 +39,18 @@ class EmpFolloupCandFragment : Fragment(),chkListner {
 
     private val candidateViewModel by viewModels<CandidateViewModel>()
 
-    /*override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        act = activity as EmpDashboard
-        rawDataList = ArrayList()
 
-        act.rawData!!.forEach { it ->
-            rawDataList.add(it)
-        }
-        showData()
-
-    }*/
 
     private fun showData() {
         try {
             if (followList.isNotEmpty() && rawDataList.isNotEmpty()) {
+                var srNo = 1
                 var rawList: ArrayList<RawDataList> = ArrayList()
                 rawDataList.forEach{
-                    if(followList.contains(it.id))
+                    if(followList.contains(it.id)) {
+                        it.srNo = srNo++
                         rawList.add(it)
+                    }
                 }
                 adapter.submitList(rawList)
                 binding.rcCandidate.layoutManager =
@@ -83,21 +76,26 @@ class EmpFolloupCandFragment : Fragment(),chkListner {
         candidateViewModel.intListResData.observe(viewLifecycleOwner)
         {
             binding.progressbar.visibility = View.GONE
+            binding.swiperefresh.isRefreshing = false
             when (it) {
                 is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
                 is NetworkResult.Error -> Toast.makeText(context, it.message, Toast.LENGTH_SHORT)
                     .show()
                 is NetworkResult.Success -> {
+                    followList = ArrayList()
                     followList = it.data!!
                     showData()
                 }
             }
         }
 
+
         candidateViewModel.getEmpRawData()
         candidateViewModel.allrawDataListResLiveData.observe(viewLifecycleOwner)
         {
             binding.progressbar.visibility = View.GONE
+            binding.swiperefresh.isRefreshing = false
+
             when(it){
                 is NetworkResult.Loading ->{
                     binding.progressbar.visibility = View.VISIBLE
@@ -106,6 +104,7 @@ class EmpFolloupCandFragment : Fragment(),chkListner {
                     Toast.makeText(context, it.message.toString(), Toast.LENGTH_SHORT).show()
                 }
                 is NetworkResult.Success ->{
+                    rawDataList = ArrayList()
                     it.data!!.forEach { it ->
                         rawDataList.add(it)
                     }
@@ -116,6 +115,13 @@ class EmpFolloupCandFragment : Fragment(),chkListner {
 
 
         }
+
+        binding.swiperefresh.setOnRefreshListener{
+            candidateViewModel.getFollowUpList()
+            candidateViewModel.getEmpRawData()
+            // binding.swiperefresh.isRefreshing = false
+        }
+
 
 
 

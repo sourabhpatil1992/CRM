@@ -20,14 +20,18 @@ class RawDataListAdapter(val cnt: Context,val chkClick:chkListner,val chkVisible
         RecyclerView.ViewHolder(binding.root) {
         fun bind(candidate: RawDataList) {
             try {
-
+                binding.txtSrNo.text = candidate.srNo.toString()
+                binding.txtSrNo.text = candidate.srNo.toString()
                 binding.txtName.text = candidate.candidate_name
                 binding.txtMobNo.text = candidate.mob_no
 
                 binding.checkBox.isChecked = candidate.selected
 
-                if(chkVisible)
+                if(chkVisible) {
+                    binding.txtSrNo.visibility = View.GONE
+                    binding.view.visibility = View.GONE
                     binding.checkBox.visibility = View.VISIBLE
+                }
 
                 binding.linRawDataLin.setOnClickListener {
                     try {
@@ -83,6 +87,7 @@ class RawDataListAdapter(val cnt: Context,val chkClick:chkListner,val chkVisible
     override fun onBindViewHolder(holder: RawListHolder, position: Int) {
         val temp = getItem(position)
         holder.bind(temp)
+
     }
 
 }

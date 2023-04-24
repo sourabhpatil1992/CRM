@@ -82,7 +82,11 @@ class RawDataActivity : AppCompatActivity(),chkListner {
                     is NetworkResult.Error -> Toast.makeText(this,it.message.toString(),Toast.LENGTH_SHORT).show()
                     is NetworkResult.Success ->{
                         rawList = (it.data as ArrayList<RawDataList>)!!
-                        adapter.submitList(it.data!!)
+                        var srNo = 1
+                        rawList.forEach{
+                            it.srNo = srNo++
+                        }
+                        adapter.submitList(rawList)
                         binding.rcCandidate.layoutManager =
                             StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
                         binding.rcCandidate.adapter = adapter

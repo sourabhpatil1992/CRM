@@ -13,6 +13,7 @@ import android.os.Build
 import android.os.IBinder
 import android.provider.OpenableColumns
 import android.util.Log
+import android.widget.Toast
 import com.venter.regodigital.MainActivity
 import com.venter.regodigital.R
 import com.venter.regodigital.api.AuthInterceptorWorker
@@ -201,12 +202,15 @@ class ImageUploadFrgnd : Service() {
 
                 val response =syncApi.UpdateWhatsApiAttachments(
                     filePart,
-                    temp.id.toString(),header,temp.tempMsg.toString(),
+                    temp.id.toString(),header,template.toString(),
                     temp.hederType.toString()
                 )
 
-                if(response.toString().isNotEmpty())
+
+                if(response.toString().isNotEmpty()) {
                     stopSelf()
+                    Toast.makeText(applicationContext,response.body().toString(),Toast.LENGTH_SHORT).show()
+                }
 
 
 

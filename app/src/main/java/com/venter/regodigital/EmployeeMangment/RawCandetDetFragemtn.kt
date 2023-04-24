@@ -34,6 +34,7 @@ class RawCandetDetFragemtn : Fragment() {
         try {
             binding.txtCandidateName.text = data?.candidate_name
             binding.txtMobNo.text = data?.mob_no
+            binding.txtAlterMobNo.text = data?.altenate_mobno
             binding.txtEmail.text = data?.emailId
             binding.txtLocation.text = data?.curr_location
             binding.txtScrApp.text = data?.SourceOfApplication

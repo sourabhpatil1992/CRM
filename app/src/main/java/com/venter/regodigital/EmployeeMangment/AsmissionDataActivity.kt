@@ -46,6 +46,10 @@ class AsmissionDataActivity : AppCompatActivity(),chkListner {
                 is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
                 is NetworkResult.Error ->{ Toast.makeText(this,it.message,Toast.LENGTH_SHORT).show()}
                 is NetworkResult.Success ->{
+                    var srNo = 1
+                    it.data!!.forEach{
+                        it.srNo = srNo++
+                    }
                     adapter.submitList(it.data)
                     binding.rcCandidate.layoutManager =
                         StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)

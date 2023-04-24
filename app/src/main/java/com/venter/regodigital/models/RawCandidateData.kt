@@ -4,6 +4,7 @@ data class RawCandidateData(
     val candidate_name:String,
     val emailId:String,
     var mob_no:String,
+    var altenate_mobno:String?,
     val curr_location:String,
     val SourceOfApplication:String,
     val appDate:String,

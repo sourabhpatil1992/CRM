@@ -47,32 +47,29 @@ class EmpDashboard : AppCompatActivity() {
         }
         //getData()
         if (tokenManger.getUserType() == "Admin") {
-        getData()
+            binding.viewPager.adapter = ViewPagerAdapter(supportFragmentManager)
+            binding.tabLayout.setupWithViewPager(binding.viewPager)
         }
         else
         {
 
 
             try {
-                val pattern = "HH:mm"
-                val sdf = SimpleDateFormat(pattern)
-                val calendar1 = Calendar.getInstance()
-                val currentTime = sdf.parse(sdf.format(calendar1.getTime()))
-                val time = "09:50"
-                val endtime = "19:30"
-                val date1: Date = sdf.parse(time)
-                val date2: Date = sdf.parse(endtime)
-
-                //Log.d(TAG,"   "+currentTime+"  "+time+"  "+endtime+"   "+currentTime.before(date1)+"   "+currentTime.before(date2))
-
-                if (!currentTime.before(date1) && currentTime.before(date2))
+                candidateViewModel.getTodaysShedule()
+                candidateViewModel.todaySheduleResLiveData.observe(this)
                 {
-                    getData()
+                    binding.progressbar.visibility = View.GONE
+                    when(it)
+                    {
+                        is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
+                        is NetworkResult.Error -> Toast.makeText(this,it.message.toString(),Toast.LENGTH_SHORT).show()
+                        is NetworkResult.Success ->{
+                            getData(it.data!!.startTime,it.data!!.endTime,it.data!!.uStatus)
+                        }
+                    }
+
                 }
-                else
-                {
-                    Toast.makeText(this,"Please login in Office Time",Toast.LENGTH_SHORT).show()
-                }
+
             } catch (e: Error) {
                 Log.d(TAG,"Error in EmpDashboard.kt onCreate() is "+e.message)
             }
@@ -82,10 +79,10 @@ class EmpDashboard : AppCompatActivity() {
 
     }
 
-     fun getData() {
+     fun getData(time: String, endtime: String, uStatus: Int) {
         try{
 
-            candidateViewModel.getEmpRawData()
+            /*candidateViewModel.getEmpRawData()
             candidateViewModel.allrawDataListResLiveData.observe(this)
             {
                 binding.progressbar.visibility = View.GONE
@@ -97,7 +94,7 @@ class EmpDashboard : AppCompatActivity() {
                         Toast.makeText(this, it.message.toString(), Toast.LENGTH_SHORT).show()
                     }
                     is NetworkResult.Success ->{
-                        rawData =it.data
+                        //rawData =it.data
                         binding.viewPager.adapter = ViewPagerAdapter(supportFragmentManager)
                         binding.tabLayout.setupWithViewPager(binding.viewPager)
 
@@ -105,7 +102,27 @@ class EmpDashboard : AppCompatActivity() {
                 }
                 
 
-            }
+            }*/
+             val pattern = "HH:mm"
+               val sdf = SimpleDateFormat(pattern)
+               val calendar1 = Calendar.getInstance()
+               val currentTime = sdf.parse(sdf.format(calendar1.getTime()))
+              // val time = "09:50"
+               //val endtime = "19:30"
+               val date1: Date = sdf.parse(time)
+               val date2: Date = sdf.parse(endtime)
+
+               //Log.d(TAG,"   "+currentTime+"  "+time+"  "+endtime+"   "+currentTime.before(date1)+"   "+currentTime.before(date2))
+
+               if (!currentTime.before(date1) && currentTime.before(date2) && uStatus==1)
+               {
+                   binding.viewPager.adapter = ViewPagerAdapter(supportFragmentManager)
+                   binding.tabLayout.setupWithViewPager(binding.viewPager)
+               }
+               else
+               {
+                   Toast.makeText(this,"Please login in Office Time",Toast.LENGTH_LONG).show()
+               }
         }
         catch (e:Exception)
         {

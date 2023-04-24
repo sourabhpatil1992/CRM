@@ -61,23 +61,23 @@ class EmpRawDataFragment : Fragment(),chkListner {
             var rawData: ArrayList<RawDataList> = ArrayList()
             if(text.isNotEmpty()) {
                 if (rawDataList.isNotEmpty()) {
-
+                    var sr_no = 1
                     rawDataList.forEach { it ->
-                        if (it.candidate_name.contains(text, true) || it.mob_no.contains(text))
+                        if (it.candidate_name.contains(text, true) || it.mob_no.contains(text)) {
+                            it.srNo = sr_no++
 
                             rawData.add(it)
+                        }
                     }
-
-
-                    /*binding.rcCandidate.layoutManager =
-                    StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)*/
-
-
                 }
                 adapter.submitList(rawData)
             }
             else
             {
+                var sr_no = 1
+                rawDataList.forEach{
+                   it.srNo = sr_no++
+                }
                 adapter.submitList(rawDataList)
             }
 
@@ -105,7 +105,7 @@ class EmpRawDataFragment : Fragment(),chkListner {
         adapter = RawDataListAdapter(requireContext(),this)
 
          binding.floatingActionButton.setOnClickListener {
-             addData()
+             candidateViewModel.getEmpRawData()
          }
 
         binding.rcCandidate.addOnScrollListener(object : RecyclerView.OnScrollListener(){
@@ -174,13 +174,16 @@ class EmpRawDataFragment : Fragment(),chkListner {
             {
 
                 var rawData: ArrayList<RawDataList> = ArrayList()
+                var srNo = 1
                 rawDataList.forEach { it ->
                     if (it.candidate_name.contains(
                             text,
                             true
                         ) || it.mob_no.contains(text) || it.prospect_type!!.contains(text, true)
-                    )
+                    ){
+                        it.srNo = srNo++
                         rawData.add(it)
+                    }
                 }
                 adapter.submitList(rawData)
 
@@ -202,6 +205,10 @@ class EmpRawDataFragment : Fragment(),chkListner {
     }
 
     private fun showData() {
+        var srNo = 1
+        rawDataList.forEach{
+            it.srNo = srNo++
+        }
 
             adapter.submitList(rawDataList)
            /* binding.rcCandidate.layoutManager =
@@ -218,7 +225,7 @@ class EmpRawDataFragment : Fragment(),chkListner {
 
     }
 
-    private fun addData() {
+    /*private fun addData() {
         try{
 
             val builders = AlertDialog.Builder(requireContext())
@@ -281,7 +288,7 @@ class EmpRawDataFragment : Fragment(),chkListner {
         }
 
     }
-
+*/
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

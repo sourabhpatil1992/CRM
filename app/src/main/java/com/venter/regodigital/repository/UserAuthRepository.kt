@@ -3,6 +3,7 @@ package com.venter.regodigital.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.venter.regodigital.EmployeeMangment.workingSheduleChange
 import com.venter.regodigital.api.UserAuthApi
 import com.venter.regodigital.models.*
 import com.venter.regodigital.utils.Constans
@@ -753,6 +754,32 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
     }
 
+    suspend fun updateCandidateRawData(candidateId: Int,mobNo: String,alterMobNo:String) {
+        try {
+            _stringResLiveData.postValue(NetworkResult.Loading())
+
+            val response =
+                userApi.updateRawCandidateDet(candidateId,mobNo,alterMobNo)
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.kt updateCandidateRawData() is " + e.message)
+        }
+    }
+
     private val _allrawDataListResLiveData = MutableLiveData<NetworkResult<List<RawDataList>>>()
     val allrawDataListResLiveData: LiveData<NetworkResult<List<RawDataList>>>
         get() = _allrawDataListResLiveData
@@ -1159,6 +1186,36 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
 
         } catch (e: Exception) {
             Log.d(TAG, "Error in UserAuthRepository.kt setWorkingHrsData() is " + e.message)
+        }
+    }
+
+
+    private val _todaySheduleResLiveData = MutableLiveData<NetworkResult<userStatus>>()
+    val todaySheduleResLiveData : LiveData<NetworkResult<userStatus>>
+        get() = _todaySheduleResLiveData
+    suspend fun getTodaysShedule()
+    {
+        try {
+            _todaySheduleResLiveData.postValue(NetworkResult.Loading())
+            val response =
+                userApi.getTodayShedule()
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _todaySheduleResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _todaySheduleResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _todaySheduleResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.kt getTodaysShedule() is " + e.message)
         }
     }
 

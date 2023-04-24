@@ -26,11 +26,11 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class EmpNotRespondingData : Fragment(),chkListner {
+class EmpNotRespondingData : Fragment(), chkListner {
 
-private var _binding:FragmentEmpNotRespondingDataBinding? = null
-    private val binding :FragmentEmpNotRespondingDataBinding
-    get() = _binding!!
+    private var _binding: FragmentEmpNotRespondingDataBinding? = null
+    private val binding: FragmentEmpNotRespondingDataBinding
+        get() = _binding!!
 
 
     private lateinit var adapter: RawDataListAdapter
@@ -47,7 +47,6 @@ private var _binding:FragmentEmpNotRespondingDataBinding? = null
     lateinit var tokenManger: TokenManger
 
 
-
     private fun filterResult() {
         try {
             //Create Filtered Empty List
@@ -55,6 +54,7 @@ private var _binding:FragmentEmpNotRespondingDataBinding? = null
 
             //Insert Filtered Data
             if (!showDataList.isNullOrEmpty()) {
+                var srNo = 1
                 showDataList.forEach {
                     if (binding.edtSearch.text.isNotEmpty()) {
                         val text = binding.edtSearch.text.toString()
@@ -65,15 +65,19 @@ private var _binding:FragmentEmpNotRespondingDataBinding? = null
                         ) {
                             /*  if (binding.chkCold.isChecked && it.prospect_type == "Cold")
                                   rawList.add(it)*/
-                            if (it.prospect_type == "Not Responding")
+                            if (it.prospect_type == "Not Responding") {
+                                it.srNo = srNo++
                                 rawList.add(it)
+                            }
 
                         }
                     } else {
                         /*if (binding.chkCold.isChecked && it.prospect_type == "Cold")
                             rawList.add(it)*/
-                        if (it?.prospect_type == "Not Responding")
+                        if (it?.prospect_type == "Not Responding") {
+                            it.srNo = srNo++
                             rawList.add(it)
+                        }
 
                     }
                 }
@@ -94,10 +98,9 @@ private var _binding:FragmentEmpNotRespondingDataBinding? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View?
-    {
-       
-       
+    ): View? {
+
+
         try {
             _binding = FragmentEmpNotRespondingDataBinding.inflate(layoutInflater)
             adapter = RawDataListAdapter(requireContext(), this)
@@ -142,12 +145,16 @@ private var _binding:FragmentEmpNotRespondingDataBinding? = null
     }
 
     override fun chkSelect(candidate: RawDataList, checked: Boolean) {
-        
+
     }
+
     private fun showData() {
         try {
             if (showDataList.isNotEmpty()) {
-
+                var srNo = 1
+                rawDataList.forEach {
+                    it.srNo = srNo++
+                }
                 adapter.submitList(rawDataList)
                 binding.rcCandidate.layoutManager =
                     StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
@@ -228,7 +235,10 @@ private var _binding:FragmentEmpNotRespondingDataBinding? = null
 
 
                         } catch (e: Exception) {
-                            Log.d(Constans.TAG, "Error in EmpNotResponding.kt getData() is  " + e.message)
+                            Log.d(
+                                Constans.TAG,
+                                "Error in EmpNotResponding.kt getData() is  " + e.message
+                            )
                         }
                     }
                     is NetworkResult.Error -> {
@@ -285,7 +295,10 @@ private var _binding:FragmentEmpNotRespondingDataBinding? = null
 
             }
         } catch (e: Exception) {
-            Log.d(Constans.TAG, "Error in  EmpNotRespondingData.kt getOthersProsData() is " + e.message)
+            Log.d(
+                Constans.TAG,
+                "Error in  EmpNotRespondingData.kt getOthersProsData() is " + e.message
+            )
         }
 
 
@@ -320,8 +333,6 @@ private var _binding:FragmentEmpNotRespondingDataBinding? = null
                         }
                         showDataList = rawDataList
                         showData()
-
-
 
 
                     }

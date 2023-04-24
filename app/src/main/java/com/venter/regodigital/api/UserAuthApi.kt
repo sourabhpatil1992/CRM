@@ -160,6 +160,8 @@ interface UserAuthApi {
     suspend fun getEmpListRawData(): Response<List<UserList>>
     @POST("/candidateRawData/getRawCandidateDet")
     suspend fun getRawCandidateDet(@Query("candidateId") candidateId: Int): Response<RawCandidateData>
+    @POST("/candidateRawData/updateRawCandidateDet")
+    suspend fun updateRawCandidateDet(@Query("candidateId") candidateId: Int,@Query("mobNo") mobNo: String,@Query("altermobNo") altermobNo: String): Response<String>
 
 
     @POST("/candidateRawData/setEmpRawDataComment")
@@ -199,6 +201,9 @@ interface UserAuthApi {
 
     @POST("/candidateRawData/setTimeTable")
     suspend fun setWorkingHrs(@Body shedule:WorkingHrs): Response<String>
+
+    @POST("/candidateRawData/getTodayShedule")
+    suspend fun getTodayShedule(): Response<userStatus>
 
 
     //WhatsApp Temp

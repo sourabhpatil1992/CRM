@@ -108,10 +108,10 @@ class RawDataDetActivity : AppCompatActivity() {
                         }
                     }
 
-                   // Thread.sleep(2000)
+                    // Thread.sleep(2000)
                 }
             } catch (e: Exception) {
-                Toast.makeText(this,e.message,Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
                 Log.d(TAG, "Error in RawDataDetActivity.kt binding.btnCall is  " + e.message)
             }
 
@@ -121,7 +121,102 @@ class RawDataDetActivity : AppCompatActivity() {
         binding.btnCommnet.setOnClickListener {
             setComment()
         }
+        binding.whatsButton.setOnClickListener {
+            var mob = data!!.mob_no.replace("+", "")
+            if (mob.length > 10) {
+                mob = mob.drop(2)
+            } else if (mob.length <= 10)
+                mob = "91$mob"
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data =
+                Uri.parse("http://api.whatsapp.com/send?phone=$mob&text=hi")
+            startActivity(intent)
+        }
 
+        binding.editButton.setOnClickListener {
+            editAction()
+        }
+
+    }
+
+    private fun editAction() {
+        try {
+            val builders = AlertDialog.Builder(this)
+            builders.setTitle("Candidate Comment")
+            val layout = LinearLayout(this)
+            layout.orientation = LinearLayout.VERTICAL
+            layout.setPadding(20, 20, 20, 20)
+
+            val txtMobNo = TextView(this)
+            val edtMobNo = EditText(this)
+            edtMobNo.setTextColor(resources.getColor(com.venter.regodigital.R.color.black))
+            txtMobNo.setTextColor(resources.getColor(com.venter.regodigital.R.color.black))
+            edtMobNo.filters = arrayOf(InputFilter.LengthFilter(10))
+            edtMobNo.inputType = 2
+            txtMobNo.text = "Mobile No"
+            edtMobNo.setText(data!!.mob_no)
+            layout.addView(txtMobNo)
+            layout.addView(edtMobNo)
+
+            val alterTxtMobNo = TextView(this)
+            val alterEdtMobNo = EditText(this)
+            alterEdtMobNo.setTextColor(resources.getColor(com.venter.regodigital.R.color.black))
+            alterTxtMobNo.setTextColor(resources.getColor(com.venter.regodigital.R.color.black))
+            alterEdtMobNo.filters = arrayOf(InputFilter.LengthFilter(10))
+            alterEdtMobNo.inputType = 2
+            alterTxtMobNo.text = "Alternate Mobile No"
+            alterEdtMobNo.hint = "Alternate Mobile No"
+            if (data!!.altenate_mobno != null)
+                alterEdtMobNo.setText(data!!.altenate_mobno)
+            layout.addView(alterTxtMobNo)
+            layout.addView(alterEdtMobNo)
+
+
+
+            builders.setPositiveButton("Submit") { dialogInterface, which ->
+
+                if (edtMobNo.text.length == 10) {
+                    candidateViewModel.updateRawCandidateData(
+                        dataId,
+                        edtMobNo.text.toString(),
+                        alterEdtMobNo.text.toString()
+                    )
+
+                    candidateViewModel.stringResData.observe(this){
+                        binding.progressbar.visibility = View.GONE
+                        when(it)
+                        {
+                            is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
+                            is NetworkResult.Error -> Toast.makeText(this,it.message.toString(),Toast.LENGTH_SHORT).show()
+                            is NetworkResult.Success ->{
+                                Toast.makeText(this,"Data Update Successfully.",Toast.LENGTH_SHORT).show()
+                                this.finish()
+                            }
+                        }
+                    }
+                } else
+                    Toast.makeText(this, "Please insert mobile no correctly.", Toast.LENGTH_SHORT)
+                        .show()
+
+            }
+            builders.setNeutralButton("Cancel") { dialogInterface, which ->
+
+            }
+
+            builders.setView(layout)
+            builders.setIcon(
+                ContextCompat.getDrawable(
+                    this,
+                    com.venter.regodigital.R.drawable.regologo
+                )
+            )
+            val alertDialog: AlertDialog = builders.create()
+            alertDialog.setCancelable(true)
+            alertDialog.show()
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in RawDataDetActivity.kt editAction() is " + e.message)
+        }
     }
 
     private fun setComment() {
@@ -177,7 +272,7 @@ class RawDataDetActivity : AppCompatActivity() {
             prospectText.setTextColor(getColor(R.color.black))
             layout.addView(prospectText)
 
-            val prosType = arrayOf("Warm", "Hot", "Cold","Not Responding", "Admission")
+            val prosType = arrayOf("Warm", "Hot", "Cold", "Not Responding", "Admission")
             val prospectSpinner = Spinner(this)
             val adapters = ArrayAdapter<String>(
                 this,
@@ -189,7 +284,13 @@ class RawDataDetActivity : AppCompatActivity() {
 
 
             val commentList = arrayOf(
-                "Not Responding","Call Busy","Out of Coverage area","Switch off","Invalid Number","Not Interested","Not ready to pay expecting salary",
+                "Not Responding",
+                "Call Busy",
+                "Out of Coverage area",
+                "Switch off",
+                "Invalid Number",
+                "Not Interested",
+                "Not ready to pay expecting salary",
                 "Interested for demo.\nNeed a Reminder call for Demo.",
                 "He/She will discuss with family and let you knows.",
                 "Interested Ready to visit the office location",
@@ -206,7 +307,7 @@ class RawDataDetActivity : AppCompatActivity() {
             RemarkText.textSize = 20F
             RemarkText.setTextColor(getColor(R.color.black))
             layout.addView(RemarkText)
-            val RemarkEditText= AutoCompleteTextView (this)
+            val RemarkEditText = AutoCompleteTextView(this)
             RemarkEditText.setHint("Remark")
             RemarkEditText.textSize = 20F
             RemarkEditText.setTextColor(getColor(R.color.black))
@@ -286,18 +387,18 @@ class RawDataDetActivity : AppCompatActivity() {
                         dateFormat.parse(letterDate.text.toString())
 
                         val update =
-                           if (data!!.prospect_type != prospectSpinner.selectedItem.toString())
-                        1
-                        else
-                            0
-                        if ( prospectSpinner.selectedItem.toString() == "Not Responding")
+                            if (data!!.prospect_type != prospectSpinner.selectedItem.toString())
+                                1
+                            else
+                                0
+                        if (prospectSpinner.selectedItem.toString() == "Not Responding")
                             callTime = "15"
                         submitData(
                             callTime,
                             prospectSpinner.selectedItem.toString(),
                             RemarkEditText.text.toString(),
                             letterDate.text.toString(),
-                            tempSpinner.selectedItem.toString(),update
+                            tempSpinner.selectedItem.toString(), update
                         )
                     }
                 } catch (e: Exception) {
@@ -346,7 +447,7 @@ class RawDataDetActivity : AppCompatActivity() {
                 remark,
                 folloupDate,
                 selectedItem,
-                dataId.toString(),update
+                dataId.toString(), update
             )
             candidateViewModel.stringResData.observe(this)
             {
@@ -383,6 +484,7 @@ class RawDataDetActivity : AppCompatActivity() {
 
     private fun setView(cdata: RawCandidateData?) {
         data = cdata
+        binding.whatsButton.visibility = View.VISIBLE
         binding.viewPager.adapter = CandDetViewPagerAdapter(supportFragmentManager)
         binding.tabLayout.setupWithViewPager(binding.viewPager)
     }

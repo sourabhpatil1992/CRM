@@ -418,6 +418,18 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     }
 
+    fun updateRawCandidateData(Id: Int,mobNo: String,alterMobNo:String)
+    {
+        try {
+            viewModelScope.launch {
+                userRepository.updateCandidateRawData(Id,mobNo,alterMobNo)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt updateRawCandidateData() is " + e.message)
+        }
+
+    }
+
     fun setEmpRawDataComment(
         callTime: String,
         prosType: String,
@@ -524,6 +536,19 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt setWorkingHrsData() is " + e.message)
+        }
+    }
+
+
+    val todaySheduleResLiveData : LiveData<NetworkResult<userStatus>>
+        get() = userRepository.todaySheduleResLiveData
+    fun getTodaysShedule(){
+        try {
+            viewModelScope.launch {
+                userRepository.getTodaysShedule()
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getTodaysShedule() is " + e.message)
         }
     }
 

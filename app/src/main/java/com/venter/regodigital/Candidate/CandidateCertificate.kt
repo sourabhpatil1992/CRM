@@ -1006,6 +1006,8 @@ class CandidateCertificate : AppCompatActivity() {
                 else -> ""
             }
 
+
+
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlString))
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             intent.setPackage("com.google.android.apps.docs")

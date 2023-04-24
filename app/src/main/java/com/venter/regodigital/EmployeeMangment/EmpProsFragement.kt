@@ -43,52 +43,12 @@ class EmpProsFragement : Fragment(), chkListner {
     @Inject
     lateinit var tokenManger: TokenManger
 
-    /* override fun onActivityCreated(savedInstanceState: Bundle?) {
-         super.onActivityCreated(savedInstanceState)
-         try {
-
-             Log.d(TAG,"---")
-             act = activity as EmpDashboard
-
-             // rawData = act.rawData
-             rawDataList = ArrayList()
-             userDataList= ArrayList()
-             othersProsDataList = ArrayList()
-             showDataList = ArrayList()
-
-             act.rawData?.forEach { it ->
-
-                 if (!it.prospect_type.isNullOrEmpty() && it.prospect_type!="Cold")
-                     rawDataList.add(it)
-
-             }
-             showDataList = rawDataList
-             showData()
-
-             binding.btnFilter.setOnClickListener {
-                 binding.linviewFilter.visibility = View.VISIBLE
-             }
-             binding.txtApply.setOnClickListener {
-                 filterResult()
-             }
-
-             binding.edtSearch.doOnTextChanged { text, start, before, count ->
-                 filterResult()
-             }
-         }
-         catch (e:Exception)
-         {
-             Log.d(TAG,"Error in EmpProsFrgmanrt.kt onActivityCreated() is "+e.message)
-         }
-
-
-     }*/
 
     private fun filterResult() {
         try {
             //Create Filtered Empty List
             var rawList: ArrayList<RawDataList> = ArrayList()
-
+            var srNo = 1
             //Insert Filtered Data
             if (!showDataList.isNullOrEmpty()) {
                 showDataList.forEach {
@@ -117,6 +77,9 @@ class EmpProsFragement : Fragment(), chkListner {
                 }
 
                 //Set Rc View
+                rawList.forEach {
+                    it.srNo = srNo++
+                }
                 adapter.submitList(rawList)
                 binding.rcCandidate.layoutManager =
                     StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
@@ -181,8 +144,11 @@ class EmpProsFragement : Fragment(), chkListner {
 
     private fun showData() {
         try {
+            var srNo = 1
             if (showDataList.isNotEmpty()) {
-
+                rawDataList.forEach {
+                    it.srNo = srNo++
+                }
                 adapter.submitList(rawDataList)
                 binding.rcCandidate.layoutManager =
                     StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
