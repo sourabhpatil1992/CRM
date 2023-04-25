@@ -930,7 +930,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         folloupDate: String,
         selectedItem: String,
         candiateId: String,
-        update: Int
+        update: Int,mobNo:String,alternateMob:String
     ) {
         try {
             _stringResLiveData.postValue(NetworkResult.Loading())
@@ -942,7 +942,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
                     folloupDate,
                     selectedItem,
                     candiateId,
-                    update
+                    update,mobNo,alternateMob
                 )
 
             if (response.isSuccessful && response.body() != null) {

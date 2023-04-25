@@ -437,11 +437,11 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         folloupDate: String,
         selectedItem: String,
         candidateId: String,
-        update: Int
+        update: Int,mobNo:String,alternateMob:String
     ) {
         try {
             viewModelScope.launch {
-                userRepository.setEmpRawDataComment(callTime,prosType, remark, folloupDate, selectedItem,candidateId,update)
+                userRepository.setEmpRawDataComment(callTime,prosType, remark, folloupDate, selectedItem,candidateId,update,mobNo,alternateMob)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt getRawCandidateData() is " + e.message)

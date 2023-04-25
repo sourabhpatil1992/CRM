@@ -216,7 +216,7 @@ class ImageUploadFrgnd : Service() {
 
 
             } catch (e: Exception) {
-                Log.d(TAG, "Error in clientDocservice Store_doc()  is " + e.message)
+                Log.d(TAG, "Error in ImagrUploadFrgnd.kt Store_doc()  is " + e.message)
             }
 
 
@@ -282,7 +282,7 @@ class ImageUploadFrgnd : Service() {
 
 
             } catch (e: Exception) {
-                Log.d(TAG, "Error in clientDocservice Store_doc()  is " + e.message)
+                Log.d(TAG, "Error in ImageUploadFrgnd.kt upload_image()  is " + e.message)
             }
 
 

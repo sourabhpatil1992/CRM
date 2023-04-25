@@ -36,7 +36,7 @@ class WhatsappTemplates : AppCompatActivity() {
             when(it)
             {
                 is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
-                is NetworkResult.Error -> Toast.makeText(this,it.message.toString(),Toast.LENGTH_SHORT)
+                is NetworkResult.Error -> {Toast.makeText(this,it.message.toString(),Toast.LENGTH_SHORT)}
                 is NetworkResult.Success -> {
                     adapter.submitList(it.data!!)
                     binding.rview.layoutManager =

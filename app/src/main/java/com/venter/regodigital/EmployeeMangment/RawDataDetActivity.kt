@@ -367,7 +367,7 @@ class RawDataDetActivity : AppCompatActivity() {
             marketingText.setTextColor(getColor(R.color.black))
             layout.addView(marketingText)
 
-            val tempType = arrayOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "0")
+            val tempType = arrayOf("0","1", "2", "3", "4", "5", "6", "7", "8", "9", "10" )
             val tempSpinner = Spinner(this)
             val adapterss = ArrayAdapter<String>(
                 this,
@@ -398,7 +398,7 @@ class RawDataDetActivity : AppCompatActivity() {
                             prospectSpinner.selectedItem.toString(),
                             RemarkEditText.text.toString(),
                             letterDate.text.toString(),
-                            tempSpinner.selectedItem.toString(), update
+                            tempSpinner.selectedItem.toString(), update,data!!.mob_no.toString(),data!!.altenate_mobno.toString()
                         )
                     }
                 } catch (e: Exception) {
@@ -438,7 +438,7 @@ class RawDataDetActivity : AppCompatActivity() {
         remark: String,
         folloupDate: String,
         selectedItem: String,
-        update: Int
+        update: Int,mobNo:String,alternateMob:String
     ) {
         try {
             candidateViewModel.setEmpRawDataComment(
@@ -447,7 +447,7 @@ class RawDataDetActivity : AppCompatActivity() {
                 remark,
                 folloupDate,
                 selectedItem,
-                dataId.toString(), update
+                dataId.toString(), update,mobNo,alternateMob
             )
             candidateViewModel.stringResData.observe(this)
             {

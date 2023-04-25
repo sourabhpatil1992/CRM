@@ -172,7 +172,9 @@ interface UserAuthApi {
         @Query("folloupDate") folloupDate: String,
         @Query("selectedItem") selectedItem: String,
         @Query("candidateId") candidateId: String,
-        @Query("prosUpdate")update: Int
+        @Query("prosUpdate")update: Int,
+        @Query("mobNo")mobNo:String,
+        @Query("alterMobNo")alternateMob:String
     ): Response<String>
 
     //Get Candidate Id list for today's Follow up
