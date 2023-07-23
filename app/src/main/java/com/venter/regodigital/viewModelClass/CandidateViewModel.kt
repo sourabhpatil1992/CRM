@@ -137,11 +137,19 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
             Log.d(TAG, "Error in CandidateViewModel.kt printExperienceLetter() is " + e.message)
         }
     }
-    fun printSalarySlip( cId: String, month: String,year: String,jobPos: String,packages: String,lop:String="0")
+    fun printSalarySlip(
+        cId: String,
+        month: String,
+        year: String,
+        jobPos: String,
+        packages: String,
+        lop: String = "0",
+        checked: Boolean
+    )
     {
         try {
             viewModelScope.launch {
-                userRepository.printSalarySlip(cId, month,year,jobPos,packages,lop)
+                userRepository.printSalarySlip(cId, month,year,jobPos,packages,lop,checked)
             }
         }
         catch (e: Exception) {
@@ -437,11 +445,12 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         folloupDate: String,
         selectedItem: String,
         candidateId: String,
-        update: Int,mobNo:String,alternateMob:String
+        update: Int, mobNo: String, alternateMob: String, prosLevel: String
     ) {
         try {
             viewModelScope.launch {
-                userRepository.setEmpRawDataComment(callTime,prosType, remark, folloupDate, selectedItem,candidateId,update,mobNo,alternateMob)
+                userRepository.setEmpRawDataComment(callTime,prosType, remark, folloupDate, selectedItem,
+                    candidateId,update,mobNo,alternateMob,prosLevel)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt getRawCandidateData() is " + e.message)
@@ -449,15 +458,15 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
     }
 
 
-    val intListResData: LiveData<NetworkResult<List<Int>>>
-        get() = userRepository.intListResLiveData
-    fun getFollowUpList(){
+//    val intListResData: LiveData<NetworkResult<List<RawDataList>>>
+//        get() = userRepository.allrawDataListResLiveData
+    fun getFollowUpList(userId:Int){
         try {
             viewModelScope.launch {
-                userRepository.getFollowUpList()
+                userRepository.getFollowUpList(userId)
             }
         } catch (e: Exception) {
-            Log.d(TAG, "Error in CandidateViewModel.kt getFollowUpList()() is " + e.message)
+            Log.d(TAG, "Error in CandidateViewModel.kt getFollowUpList() is " + e.message)
         }
     }
 
@@ -588,6 +597,26 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         catch (e:Exception)
         {
             Log.d(TAG,"Error in MsgViewModel.kt whatApiTemplateUpdate() is "+e.message)
+        }
+    }
+
+    fun getColdData(offset:Int) {
+        try {
+            viewModelScope.launch {
+                userRepository.getColdRawData(offset)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getColdData() is " + e.message)
+        }
+    }
+
+    fun updateComment(commentId: Int, comment: String) {
+        try {
+            viewModelScope.launch {
+                userRepository.updateComment(commentId, comment)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt updateComment() is " + e.message)
         }
     }
 }

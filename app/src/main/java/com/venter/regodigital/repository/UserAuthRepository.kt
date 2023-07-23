@@ -3,7 +3,6 @@ package com.venter.regodigital.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.venter.regodigital.EmployeeMangment.workingSheduleChange
 import com.venter.regodigital.api.UserAuthApi
 import com.venter.regodigital.models.*
 import com.venter.regodigital.utils.Constans
@@ -276,11 +275,12 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         year: String,
         jobPos: String,
         packages: String,
-        lop:String
+        lop: String,
+        checked: Boolean
     ) {
         try {
             _stringResLiveData.postValue(NetworkResult.Loading())
-            val response = userApi.printSalarySlip(cId, month, year, jobPos, packages,lop)
+            val response = userApi.printSalarySlip(cId, month, year, jobPos, packages,lop,checked)
 
             if (response.isSuccessful && response.body() != null) {
 
@@ -930,7 +930,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         folloupDate: String,
         selectedItem: String,
         candiateId: String,
-        update: Int,mobNo:String,alternateMob:String
+        update: Int, mobNo: String, alternateMob: String, prosLevel: String
     ) {
         try {
             _stringResLiveData.postValue(NetworkResult.Loading())
@@ -942,7 +942,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
                     folloupDate,
                     selectedItem,
                     candiateId,
-                    update,mobNo,alternateMob
+                    update,mobNo,alternateMob,prosLevel
                 )
 
             if (response.isSuccessful && response.body() != null) {
@@ -964,28 +964,28 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
     }
 
-    private val _intListResLiveData = MutableLiveData<NetworkResult<List<Int>>>()
+    /*private val _intListResLiveData = MutableLiveData<NetworkResult<List<Int>>>()
     val intListResLiveData: LiveData<NetworkResult<List<Int>>>
-        get() = _intListResLiveData
+        get() = _intListResLiveData*/
 
-    suspend fun getFollowUpList() {
+    suspend fun getFollowUpList(userId: Int) {
         try {
-            _intListResLiveData.postValue(NetworkResult.Loading())
+            _allrawDataListResLiveData.postValue(NetworkResult.Loading())
             val response =
-                userApi.getFollowUpList()
+                userApi.getFollowUpList(userId)
 
             if (response.isSuccessful && response.body() != null) {
 
-                _intListResLiveData.postValue(NetworkResult.Success(response.body()!!))
+                _allrawDataListResLiveData.postValue(NetworkResult.Success(response.body()!!))
             } else if (response.errorBody() != null) {
 
 
                 val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
 
-                _intListResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+                _allrawDataListResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
             } else {
 
-                _intListResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+                _allrawDataListResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
             }
 
         } catch (e: Exception) {
@@ -1277,6 +1277,60 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         } catch (e: Exception) {
             Log.d(TAG, "Error in UserApiRepostitory.kt updateTempWithoutImage is " + e.message)
         }
+    }
+
+
+
+    suspend fun getColdRawData(offset:Int) {
+        try {
+            _allrawDataListResLiveData.postValue(NetworkResult.Loading())
+            val response =
+                userApi.getEmpColdRawData(offset)
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _allrawDataListResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _allrawDataListResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _allrawDataListResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.kt getEmpRaw() is " + e.message)
+        }
+    }
+
+    suspend fun updateComment(commentId: Int, comment: String) {
+        try{
+            _stringResLiveData.postValue(NetworkResult.Loading())
+            val response =
+                userApi.updateComment(commentId, comment)
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+        }
+        catch (e:Exception)
+        {Log.d(TAG, "Error in UserAuthRepository.kt updateComment() is " + e.message)
+
+        }
+
     }
 
 

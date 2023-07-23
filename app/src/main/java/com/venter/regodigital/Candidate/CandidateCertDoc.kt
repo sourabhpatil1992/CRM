@@ -20,7 +20,7 @@ import com.venter.regodigital.utils.Constans.TAG
 import com.venter.regodigital.utils.NetworkResult
 import com.venter.regodigital.viewModelClass.CandidateViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
+
 
 @AndroidEntryPoint
 class CandidateCertDoc : Fragment(), onClick {
@@ -191,7 +191,7 @@ class CandidateCertDoc : Fragment(), onClick {
                     if (it.salaryYear == salary[1] && it.salaryMonth == salary[0]) {
                         candidateViewModel.printSalarySlip(
                             candidateId.toString(),
-                            it.salaryMonth, it.salaryYear, it.jobPosition, it.packages
+                            it.salaryMonth, it.salaryYear, it.jobPosition, it.packages, checked = false
                         )
                         serverRes("SalarySlip", it.salaryMonth, it.salaryYear)
                     }

@@ -72,7 +72,7 @@ class UserListAdapate(val cnt: Context, val statusUser: statusUser) :
                 }
 
                 binding.linviewUser.setOnClickListener{
-                    val intent =Intent(cnt,UserAddActivity::class.java)
+                    val intent =Intent(cnt,UserDetActivity::class.java)
                     intent.putExtra("user", user)
                     cnt.startActivity(intent)
                 }

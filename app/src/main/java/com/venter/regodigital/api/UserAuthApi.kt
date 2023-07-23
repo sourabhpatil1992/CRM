@@ -73,7 +73,8 @@ interface UserAuthApi {
         @Query("year") year: String,
         @Query("jobPos") jobPos: String,
         @Query("package") packages: String,
-        @Query("lop") lop:String
+        @Query("lop") lop: String,
+        @Query("byChq")checked: Boolean
     ): Response<String>
 
 
@@ -172,14 +173,15 @@ interface UserAuthApi {
         @Query("folloupDate") folloupDate: String,
         @Query("selectedItem") selectedItem: String,
         @Query("candidateId") candidateId: String,
-        @Query("prosUpdate")update: Int,
-        @Query("mobNo")mobNo:String,
-        @Query("alterMobNo")alternateMob:String
+        @Query("prosUpdate") update: Int,
+        @Query("mobNo") mobNo: String,
+        @Query("alterMobNo") alternateMob: String,
+        @Query("prosLevel") prosLevel: String
     ): Response<String>
 
     //Get Candidate Id list for today's Follow up
     @POST("/candidateRawData/getFollowUpList")
-    suspend fun getFollowUpList(): Response<List<Int>>
+    suspend fun getFollowUpList(@Query("userId")userId: Int): Response<List<RawDataList>>
 
 
     //Get the Employee report for the employee dashboard from today's of manual date
@@ -231,7 +233,10 @@ interface UserAuthApi {
     @Multipart
     @POST("/whatsAppTemp/ChangeWhatsApiAttachments")
     suspend fun ChangeWhatsApiAttachments(@Part spic: MultipartBody.Part, @Query("tempId")tempId:String,@Query("headerType")headerType: String) :Response<String>
-
+    @POST("/candidateRawData/getEmpColdRawData")
+    suspend fun getEmpColdRawData(@Query("offset")offset:Int): Response<List<RawDataList>>
+    @POST("/candidateRawData/updateComment")
+    suspend fun updateComment(@Query("commentId")commentId: Int,@Query("comment") comment: String): Response<String>
 
 
 }

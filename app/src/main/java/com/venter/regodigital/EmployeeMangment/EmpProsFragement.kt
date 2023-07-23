@@ -81,9 +81,10 @@ class EmpProsFragement : Fragment(), chkListner {
                     it.srNo = srNo++
                 }
                 adapter.submitList(rawList)
-                binding.rcCandidate.layoutManager =
-                    StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-                binding.rcCandidate.adapter = adapter
+                adapter.notifyDataSetChanged();
+                //binding.rcCandidate.layoutManager =
+                //    StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+               // binding.rcCandidate.adapter = adapter
 
                 binding.linviewFilter.visibility = View.GONE
             }
@@ -101,7 +102,7 @@ class EmpProsFragement : Fragment(), chkListner {
 
         try {
             _binding = FragmentEmpProsFragementBinding.inflate(layoutInflater)
-            adapter = RawDataListAdapter(requireContext(), this)
+            adapter = RawDataListAdapter(requireContext(), this, empType = tokenManger.getUserType().toString())
             rawDataList = ArrayList()
             userDataList = ArrayList()
             othersProsDataList = ArrayList()
@@ -266,7 +267,9 @@ class EmpProsFragement : Fragment(), chkListner {
                 candidateViewModel.getOthersProsData(othersUserId)
                 candidateViewModel.othersrawDataListResLiveData.observe(viewLifecycleOwner) {
                     binding.progressbar.visibility = View.GONE
+                    showDataList = ArrayList()
                     when (it) {
+
                         is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
                         is NetworkResult.Error -> {
                             Toast.makeText(context, it.message.toString(), Toast.LENGTH_SHORT)

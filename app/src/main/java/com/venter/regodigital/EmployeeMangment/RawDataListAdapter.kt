@@ -6,26 +6,73 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.venter.regodigital.R
 import com.venter.regodigital.databinding.LayoutRawdataBinding
 import com.venter.regodigital.models.RawDataList
 import com.venter.regodigital.utils.Constans
 import com.venter.regodigital.utils.Constans.TAG
 
-class RawDataListAdapter(val cnt: Context,val chkClick:chkListner,val chkVisible:Boolean=false) :ListAdapter<RawDataList,RawDataListAdapter.RawListHolder>(ComparatorDiffUtil()) {
+class RawDataListAdapter(val cnt: Context,val chkClick:chkListner,val chkVisible:Boolean=false,val empType:String) :ListAdapter<RawDataList,RawDataListAdapter.RawListHolder>(ComparatorDiffUtil()) {
 
     inner class RawListHolder(private val binding: LayoutRawdataBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(candidate: RawDataList) {
             try {
+
                 binding.txtSrNo.text = candidate.srNo.toString()
                 binding.txtSrNo.text = candidate.srNo.toString()
                 binding.txtName.text = candidate.candidate_name
                 binding.txtMobNo.text = candidate.mob_no
 
                 binding.checkBox.isChecked = candidate.selected
+
+                binding.txtUpdate.text = candidate.update_on
+
+                if(empType =="Employee")
+                {
+                    binding.level.visibility = View.GONE
+                }
+                else
+                {
+
+                   if(candidate.prosLevel != null) {
+
+                       when (candidate.prosLevel) {
+                           "Coming for visit" -> {
+                               binding.level.setBackgroundColor(ContextCompat.getColor(cnt, R.color.temp1))
+                           }
+                           "Visited" -> {
+                               binding.level.setBackgroundColor(ContextCompat.getColor(cnt, R.color.temp2))
+                           }
+                           "Demo" -> {
+                               binding.level.setBackgroundColor(ContextCompat.getColor(cnt, R.color.temp3))
+                           }
+                           "Not Interested" -> {
+                               binding.level.setBackgroundColor(ContextCompat.getColor(cnt, R.color.temp4))
+                           }
+                           "Information on call" -> {
+                               binding.level.setBackgroundColor(ContextCompat.getColor(cnt, R.color.temp5))
+                           }
+                           "Admission" -> {
+                               binding.level.setBackgroundColor(ContextCompat.getColor(cnt, R.color.temp6))
+                           }
+                           "Will Join/Inform" ->{
+                               binding.level.setBackgroundColor(ContextCompat.getColor(cnt, R.color.temp7))
+                           }
+                           else -> {
+                               binding.level.setBackgroundColor(ContextCompat.getColor(cnt, R.color.white))
+                           }
+                       }
+                   }
+                    else  {
+                       binding.level.setBackgroundColor(ContextCompat.getColor(cnt, R.color.white))
+                }
+                    //binding.le
+                }
 
                 if(chkVisible) {
                     binding.txtSrNo.visibility = View.GONE

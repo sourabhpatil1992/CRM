@@ -22,10 +22,13 @@ import com.venter.regodigital.databinding.ActivityRawDataDetBinding
 import com.venter.regodigital.models.RawCandidateData
 import com.venter.regodigital.utils.Constans.TAG
 import com.venter.regodigital.utils.NetworkResult
+import com.venter.regodigital.utils.TokenManger
 import com.venter.regodigital.viewModelClass.CandidateViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -38,9 +41,11 @@ class RawDataDetActivity : AppCompatActivity() {
 
     private var dataId = 0
 
-    var checkCall = false
+
 
     var data: RawCandidateData? = null
+    @Inject
+    lateinit var tokenManger: TokenManger
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +54,8 @@ class RawDataDetActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         dataId = intent.getIntExtra("rawDataId", 0)
+
+
 
         try {
 
@@ -81,7 +88,6 @@ class RawDataDetActivity : AppCompatActivity() {
         binding.btnCall.setOnClickListener {
             try {
                 if (data != null) {
-                    // Log.d(TAG, data!!.mob_no)
 
                     val callIntent = Intent(Intent.ACTION_CALL)
                     callIntent.data = Uri.parse("tel:" + data!!.mob_no)
@@ -223,27 +229,36 @@ class RawDataDetActivity : AppCompatActivity() {
         try {
             //Get Call Time
             var callTime = "0"
-            val managedCursor: Cursor? =
-                this.contentResolver.query(CallLog.Calls.CONTENT_URI, null, null, null, null)
+            val managedCursor: Cursor? =this.contentResolver.query(CallLog.Calls.CONTENT_URI, null, null, null, CallLog.Calls.DATE + " DESC")
+
+
             val number = managedCursor!!.getColumnIndex(CallLog.Calls.NUMBER)
             val type = managedCursor.getColumnIndex(CallLog.Calls.TYPE)
-            val sim_id = managedCursor.getColumnIndex(CallLog.Calls.PHONE_ACCOUNT_ID)
+
             val duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION)
 
 
-            if (android.os.Build.BRAND == "samsung")
-                managedCursor.moveToFirst()
-            else
-                managedCursor.moveToLast()
+            managedCursor.moveToNext()
+
+            while (managedCursor.getString(type) == CallLog.Calls.MISSED_TYPE.toString()) {
+
+                managedCursor.moveToNext()
+            }
+
+
+
 
             var candNo = ""
             if (managedCursor.getString(number).isNotEmpty()) {
 
                 candNo = managedCursor.getString(number).replace("+91", "")
-                if (data!!.mob_no.contains(candNo)) {
+
+                if (data!!.mob_no.contains(candNo) ) {
                     callTime = managedCursor.getInt(duration).toString()
                 }
+
             }
+
 
 
             //Message Box After Click on Comment Button
@@ -271,8 +286,11 @@ class RawDataDetActivity : AppCompatActivity() {
             prospectText.textSize = 20F
             prospectText.setTextColor(getColor(R.color.black))
             layout.addView(prospectText)
-
-            val prosType = arrayOf("Warm", "Hot", "Cold", "Not Responding", "Admission")
+            var prosType :Array<String>
+            if(data!!.prospect_type =="Hot" || data!!.prospect_type =="Warm" || data!!.prospect_type =="Admission")
+             prosType = arrayOf("Warm", "Hot", "Cold",  "Admission")
+            else
+             prosType = arrayOf("Warm", "Hot", "Cold", "Not Responding", "Admission")
             val prospectSpinner = Spinner(this)
             val adapters = ArrayAdapter<String>(
                 this,
@@ -281,6 +299,25 @@ class RawDataDetActivity : AppCompatActivity() {
             )
             prospectSpinner.adapter = adapters
             layout.addView(prospectSpinner)
+
+            val prospectLevelText = TextView(this)
+            prospectLevelText.text = "Prospect Level"
+            prospectLevelText.textSize = 20F
+            prospectLevelText.setTextColor(getColor(R.color.black))
+            layout.addView(prospectLevelText)
+            var prospectLevel :Array<String>
+            if (tokenManger.getUserType().toString() != "Employee")
+                prospectLevel = arrayOf("Coming for visit","Visited","Demo","Not Interested","Information on call","Will Join/Inform","Admission")
+            else
+                prospectLevel = arrayOf("Coming for visit","Demo","Not Interested","Information on call","Will Join/Inform")
+            val prospectLevelSpinner = Spinner(this)
+             val prosAdapters = ArrayAdapter<String>(
+                this,
+                R.layout.select_dialog_item,
+                 prospectLevel
+            )
+            prospectLevelSpinner.adapter = prosAdapters
+            layout.addView(prospectLevelSpinner)
 
 
             val commentList = arrayOf(
@@ -367,6 +404,8 @@ class RawDataDetActivity : AppCompatActivity() {
             marketingText.setTextColor(getColor(R.color.black))
             layout.addView(marketingText)
 
+
+
             val tempType = arrayOf("0","1", "2", "3", "4", "5", "6", "7", "8", "9", "10" )
             val tempSpinner = Spinner(this)
             val adapterss = ArrayAdapter<String>(
@@ -391,14 +430,14 @@ class RawDataDetActivity : AppCompatActivity() {
                                 1
                             else
                                 0
-                        if (prospectSpinner.selectedItem.toString() == "Not Responding")
-                            callTime = "15"
+                        if (prospectSpinner.selectedItem.toString() == "Not Responding" || RemarkEditText.text.contains("Not Responding"))
+                            callTime = "30"
                         submitData(
                             callTime,
                             prospectSpinner.selectedItem.toString(),
                             RemarkEditText.text.toString(),
                             letterDate.text.toString(),
-                            tempSpinner.selectedItem.toString(), update,data!!.mob_no.toString(),data!!.altenate_mobno.toString()
+                            tempSpinner.selectedItem.toString(), update,data!!.mob_no.toString(),data!!.altenate_mobno.toString(),prospectLevelSpinner.selectedItem.toString()
                         )
                     }
                 } catch (e: Exception) {
@@ -422,6 +461,17 @@ class RawDataDetActivity : AppCompatActivity() {
             )
             val alertDialog: AlertDialog = builders.create()
             alertDialog.setCancelable(true)
+
+            val lastData = tokenManger.getLastCommentDet()
+
+           if(callTime == lastData["call_time"]  && data!!.mob_no == lastData["mob_no"])
+           {
+               if(callTime=="0")
+                   alertDialog.show()
+               else
+                   Toast.makeText(applicationContext,"Comment already submitted on this call.",Toast.LENGTH_SHORT).show()
+           }
+           else
             alertDialog.show()
 
 
@@ -438,7 +488,7 @@ class RawDataDetActivity : AppCompatActivity() {
         remark: String,
         folloupDate: String,
         selectedItem: String,
-        update: Int,mobNo:String,alternateMob:String
+        update: Int, mobNo: String, alternateMob: String, prosLevel: String
     ) {
         try {
             candidateViewModel.setEmpRawDataComment(
@@ -447,7 +497,7 @@ class RawDataDetActivity : AppCompatActivity() {
                 remark,
                 folloupDate,
                 selectedItem,
-                dataId.toString(), update,mobNo,alternateMob
+                dataId.toString(), update,mobNo,alternateMob,prosLevel
             )
             candidateViewModel.stringResData.observe(this)
             {
@@ -468,6 +518,8 @@ class RawDataDetActivity : AppCompatActivity() {
                             "Comment Submitted successfully.",
                             Toast.LENGTH_SHORT
                         ).show()
+
+                        tokenManger.saveLastCommentDet(mobNo,callTime)
 //                        val intent = Intent(this, RawDataDetActivity::class.java)
 //                        startActivity(intent)
 //                        this.finishAffinity()

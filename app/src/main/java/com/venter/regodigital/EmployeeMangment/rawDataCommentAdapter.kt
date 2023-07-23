@@ -1,6 +1,5 @@
 package com.venter.regodigital.EmployeeMangment
 
-import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,20 +7,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.venter.regodigital.databinding.LayoutRawdataBinding
+import com.google.android.material.snackbar.Snackbar
 import com.venter.regodigital.databinding.LayoutRawdatacommentBinding
 import com.venter.regodigital.models.RawDataComment
-import com.venter.regodigital.models.RawDataList
 import com.venter.regodigital.utils.Constans
-import com.venter.regodigital.utils.Constans.TAG
 
 
-class rawDataCommentAdapter(val empId:String):ListAdapter<RawDataComment,rawDataCommentAdapter.RawCommentHolder>(ComparatorDiffUtil()) {
+class rawDataCommentAdapter(val empId:String,val update: CommentUpdate):ListAdapter<RawDataComment,rawDataCommentAdapter.RawCommentHolder>(ComparatorDiffUtil()) {
     inner class RawCommentHolder(private val binding: LayoutRawdatacommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(candidate: RawDataComment) {
             try {
-                Log.d(TAG,"--"+empId)
+
 
                 binding.txtcommentedBY.text = candidate.empName
                 binding.txtcomment.text = candidate.remark
@@ -30,6 +27,24 @@ class rawDataCommentAdapter(val empId:String):ListAdapter<RawDataComment,rawData
                     binding.linComment.visibility = View.VISIBLE
                 else
                     binding.linComment.visibility = View.GONE
+
+                binding.linRawDataLin.setOnLongClickListener{
+                    if(empId != candidate.created_by.toString())
+                    {
+                        Snackbar.make(it, "You can't update this comment.", Snackbar.LENGTH_SHORT).show()
+                        //Toast.makeText(,"You can't update this comment.",Toast.LENGTH_SHORT).show()
+                    }
+
+                    else
+                    {
+
+                        update.updateComment(candidate)
+                       // Log.d(TAG,candidate.toString())
+
+                    }
+
+                    true
+                }
 
 //                binding.linRawDataLin.setOnClickListener {
 //                    try {
@@ -72,4 +87,8 @@ class rawDataCommentAdapter(val empId:String):ListAdapter<RawDataComment,rawData
         val temp = getItem(position)
         holder.bind(temp)
     }
+}
+
+interface CommentUpdate{
+    fun updateComment(commentId: RawDataComment)
 }

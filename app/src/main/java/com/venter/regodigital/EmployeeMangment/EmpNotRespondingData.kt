@@ -33,6 +33,7 @@ class EmpNotRespondingData : Fragment(), chkListner {
         get() = _binding!!
 
 
+
     private lateinit var adapter: RawDataListAdapter
 
     // private lateinit var act: EmpDashboard
@@ -103,7 +104,7 @@ class EmpNotRespondingData : Fragment(), chkListner {
 
         try {
             _binding = FragmentEmpNotRespondingDataBinding.inflate(layoutInflater)
-            adapter = RawDataListAdapter(requireContext(), this)
+            adapter = RawDataListAdapter(requireContext(), this, empType = tokenManger.getUserType().toString())
             rawDataList = ArrayList()
             userDataList = ArrayList()
             othersProsDataList = ArrayList()

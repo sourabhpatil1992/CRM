@@ -81,7 +81,7 @@ class IncomingLeads : Fragment(), chkListner {
             othersProsDataList = ArrayList()
             showDataList = ArrayList()
 
-            adapter = RawDataListAdapter(requireContext(), this)
+            adapter = RawDataListAdapter(requireContext(), this, empType = tokenManger.getUserType().toString())
 
             binding.floatingRefreshButton.setOnClickListener {
                 refreshData()
@@ -259,8 +259,9 @@ class IncomingLeads : Fragment(), chkListner {
                     is NetworkResult.Success -> {
                         rawDataList = ArrayList()
 
+                        
                         it.data?.forEach {
-                            if (it.SourceOfApplication == "Incoming Lead")
+                            if (it.SourceOfApplication == "Incoming Lead" && it.prospect_type !="Cold")
                                 rawDataList.add(it)
 
                         }

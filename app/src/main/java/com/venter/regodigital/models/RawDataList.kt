@@ -7,6 +7,8 @@ data class RawDataList(
     val mob_no:String,
     val prospect_type:String?,
     val SourceOfApplication:String,
-    var selected:Boolean = false
+    var selected:Boolean = false,
+    var update_on:String,
+    val prosLevel:String
 
 )

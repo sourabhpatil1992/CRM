@@ -11,8 +11,10 @@ import com.venter.regodigital.databinding.ActivityAsmissionDataBinding
 import com.venter.regodigital.models.RawDataList
 import com.venter.regodigital.utils.Constans.TAG
 import com.venter.regodigital.utils.NetworkResult
+import com.venter.regodigital.utils.TokenManger
 import com.venter.regodigital.viewModelClass.CandidateViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AsmissionDataActivity : AppCompatActivity(),chkListner {
@@ -25,6 +27,9 @@ class AsmissionDataActivity : AppCompatActivity(),chkListner {
 
     var rawDataList: ArrayList<RawDataList> = ArrayList()
 
+    @Inject
+    lateinit var tokenManger: TokenManger
+
     private val candidateViewModel by viewModels<CandidateViewModel>()
 
 
@@ -33,7 +38,7 @@ class AsmissionDataActivity : AppCompatActivity(),chkListner {
         _binding = ActivityAsmissionDataBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter = RawDataListAdapter(this,this)
+        adapter = RawDataListAdapter(this,this, empType =  tokenManger.getUserType().toString())
 
         try {
             candidateViewModel.getAddmissionData()

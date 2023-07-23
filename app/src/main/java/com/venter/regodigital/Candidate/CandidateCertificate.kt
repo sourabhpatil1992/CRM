@@ -673,7 +673,11 @@ class CandidateCertificate : AppCompatActivity() {
             else
             {
             newPackage.setText(data.newPackage.toString())
-            jobPosition.setText(data.current_job.toString())}
+            jobPosition.setText(data.current_job.toString())
+            }
+
+            val salaryByChq = CheckBox(this)
+            salaryByChq.setText("Salary by cheque.")
 
 
 
@@ -691,6 +695,7 @@ class CandidateCertificate : AppCompatActivity() {
             layout.addView(jobPosition)
             layout.addView(newPackageText)
             layout.addView(newPackage)
+            layout.addView(salaryByChq)
 
 
 
@@ -703,7 +708,8 @@ class CandidateCertificate : AppCompatActivity() {
 
                         candidateViewModel.printSalarySlip(
                             candidateId.toString(),
-                            month.selectedItem.toString(),year.text.toString(),jobPosition.text.toString(),newPackage.text.toString(),lop.text.toString()
+                            month.selectedItem.toString(),year.text.toString(),jobPosition.text.toString(),
+                            newPackage.text.toString(),lop.text.toString(),salaryByChq.isChecked
                         )
                         serverRes("SalarySlip",month.selectedItem.toString(),year.text.toString())
                     }
@@ -1005,6 +1011,7 @@ class CandidateCertificate : AppCompatActivity() {
 
                 else -> ""
             }
+            Log.d(TAG,"-------------"+urlString)
 
 
 

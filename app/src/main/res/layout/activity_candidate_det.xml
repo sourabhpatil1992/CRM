@@ -99,7 +99,8 @@
                     android:layout_marginRight="10dp"
                     android:background="@color/white"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    >
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -170,6 +171,11 @@
                             android:textColorHint="#716F6F"
                             android:textSize="15sp" />
                     </LinearLayout>
+                    <CheckBox
+                        android:id="@+id/middName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Middle Name Visibility"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"

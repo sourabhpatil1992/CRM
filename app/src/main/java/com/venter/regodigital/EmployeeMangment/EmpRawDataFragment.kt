@@ -24,8 +24,10 @@ import com.venter.regodigital.databinding.FragmentEmpRawDataBinding
 import com.venter.regodigital.models.RawDataList
 import com.venter.regodigital.utils.Constans.TAG
 import com.venter.regodigital.utils.NetworkResult
+import com.venter.regodigital.utils.TokenManger
 import com.venter.regodigital.viewModelClass.CandidateViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -36,6 +38,9 @@ class EmpRawDataFragment : Fragment(),chkListner {
         get() = _binding!!
 
     private lateinit var adapter: RawDataListAdapter
+
+    @Inject
+    lateinit var tokenManger: TokenManger
 
 
     var rawDataList: ArrayList<RawDataList> =ArrayList()
@@ -102,7 +107,7 @@ class EmpRawDataFragment : Fragment(),chkListner {
         rawDataList =ArrayList()
 
 
-        adapter = RawDataListAdapter(requireContext(),this)
+        adapter = RawDataListAdapter(requireContext(),this, empType = tokenManger.getUserType().toString())
 
          binding.floatingActionButton.setOnClickListener {
              candidateViewModel.getEmpRawData()

@@ -15,6 +15,7 @@ data class RawCandidateData(
 )
 
 data class RawDataComment(
+    val commentId:Int,
     val commentDate:String,
     val remark: String,
     val follloupDate: String,

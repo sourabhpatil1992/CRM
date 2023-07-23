@@ -173,6 +173,10 @@ class CandidateDet : AppCompatActivity() {
         binding.edttxtFirstName.setText(data.firstName)
         binding.edtMiddleName.setText(data.middleName)
         binding.edtLastName.setText(data.lastName)
+        if(data.midName!=null)
+        binding.middName.isChecked = data.midName==1
+        else
+            binding.middName.isChecked = false
         binding.edtMobile.setText(data.mobNo)
         binding.edtEmailId.setText(data.emailId)
         if (data.gender == "Male")
@@ -306,6 +310,8 @@ class CandidateDet : AppCompatActivity() {
                 else
                     "Female"
 
+                val midName = if(binding.middName.isChecked)  1  else 0
+
                 candidateViewModel.createCandidate(
                     CandidetDetails(
                         candidateId,
@@ -335,7 +341,8 @@ class CandidateDet : AppCompatActivity() {
                         binding.rdobtnYes.isChecked.toString(),
                         binding.edtFee.text.toString(),
                         binding.edtTransFee.text.toString(),
-                        binding.edtTransComm.text.toString()
+                        binding.edtTransComm.text.toString(),
+                        midName
                     
                     )
                 )

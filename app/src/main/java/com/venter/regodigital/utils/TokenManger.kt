@@ -2,15 +2,18 @@ package com.venter.regodigital.utils
 
 import android.content.Context
 import android.util.Log
+import com.venter.regodigital.utils.Constans.CALL_TIME
 
 import com.venter.regodigital.utils.Constans.DEVICE_TOKEN
 import com.venter.regodigital.utils.Constans.FIREBASE_TOKEN
+import com.venter.regodigital.utils.Constans.LAST_MOB
 import com.venter.regodigital.utils.Constans.PREFS_CONST_FILE
 import com.venter.regodigital.utils.Constans.USER_ID
 import com.venter.regodigital.utils.Constans.USER_TOKEN
 import com.venter.regodigital.utils.Constans.USER_TYPE
 
 import dagger.hilt.android.qualifiers.ApplicationContext
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -67,6 +70,21 @@ class TokenManger @Inject constructor(@ApplicationContext context: Context) {
 
     fun getUserId(): String? {
         return prefs.getString(USER_ID, null)
+    }
+
+    fun saveLastCommentDet(mob_no:String,time:String){
+        val editor = prefs.edit()
+        editor.putString(LAST_MOB, mob_no)
+        editor.putString(CALL_TIME , time)
+        editor.apply()
+    }
+
+    fun getLastCommentDet(): JSONObject {
+        val jsonObject = JSONObject()
+        jsonObject.put("mob_no" ,prefs.getString(LAST_MOB, ""))
+        jsonObject.put("call_time" ,prefs.getString(CALL_TIME, "0"))
+        return  jsonObject
+
     }
 
 

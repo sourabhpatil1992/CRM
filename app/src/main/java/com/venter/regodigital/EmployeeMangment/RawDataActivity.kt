@@ -11,8 +11,10 @@ import com.venter.regodigital.databinding.ActivityRawDataBinding
 import com.venter.regodigital.models.RawDataList
 import com.venter.regodigital.utils.Constans.TAG
 import com.venter.regodigital.utils.NetworkResult
+import com.venter.regodigital.utils.TokenManger
 import com.venter.regodigital.viewModelClass.CandidateViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class RawDataActivity : AppCompatActivity(),chkListner {
@@ -23,6 +25,9 @@ class RawDataActivity : AppCompatActivity(),chkListner {
 
     lateinit var rawList:ArrayList<RawDataList>
 
+    @Inject
+    lateinit var tokenManger: TokenManger
+
     private val candidateViewModel by viewModels<CandidateViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +36,7 @@ class RawDataActivity : AppCompatActivity(),chkListner {
         setContentView(binding.root)
 
         rawList = ArrayList()
-        adapter = RawDataListAdapter(this,this,true)
+        adapter = RawDataListAdapter(this,this,true, empType = tokenManger.getUserType().toString())
 
         binding.floatingActionButton.setOnClickListener {
            addData()

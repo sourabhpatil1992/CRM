@@ -5,7 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 object Constans {
-    const val BASE_URL = "http://vijenter.in:4000/"
+    //const val BASE_URL = "http://vijenter.in:7000/"
+    const val BASE_URL = "http://vijenter.in:3000/"
     const val WHATSAPI_URL = "https://graph.facebook.com/v15.0/"
    // const val BASE_URL ="http://192.168.42.186:9000/"
     const val TAG ="MY_TAG"
@@ -22,6 +23,9 @@ object Constans {
 
     const val USER_ID = "USER_ID"
     const val USER_TYPE = "USER_TYPE"
+
+    const val LAST_MOB = "LAST_MOB"
+    const val CALL_TIME = "CALL_TIME"
 
 
 
