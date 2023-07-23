@@ -75,9 +75,9 @@ class RawDataListAdapter(val cnt: Context,val chkClick:chkListner,val chkVisible
                 }
 
                 if(chkVisible) {
-                    binding.txtSrNo.visibility = View.GONE
-                    binding.view.visibility = View.GONE
-                    binding.checkBox.visibility = View.VISIBLE
+                  //  binding.txtSrNo.visibility = View.GONE
+                  //  binding.view.visibility = View.GONE
+                  //  binding.checkBox.visibility = View.VISIBLE
                 }
 
                 binding.linRawDataLin.setOnClickListener {

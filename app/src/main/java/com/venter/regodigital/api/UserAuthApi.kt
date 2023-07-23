@@ -222,18 +222,16 @@ interface UserAuthApi {
     @POST("/whatsAppTemp/UpdateWhatsApiAttachments")
     suspend fun UpdateWhatsApiAttachments(@Part spic: MultipartBody.Part,
                                           @Query("tempId")tempId:String,
-                                          @Query("header") header: String,
-                                          @Query("template") template:String,
-                                          @Query("headerType") headerType:String,
+                                          @Query("template") template:String
     ) :Response<String>
 
-    @POST("/whatsAppTemp/updateTempWithoutHeader")
-    suspend fun updateTempWithoutImage(@Body temp:WhatsappTemplateMsg)
+    @POST("/whatsAppTemp/updateTemp")
+    suspend fun updateTemp( @Query("tempId")tempId:String,
+                                        @Query("template") template:String,
+                                        @Query("header") header:String
+    ):Response<String>
 
-    @Multipart
-    @POST("/whatsAppTemp/ChangeWhatsApiAttachments")
-    suspend fun ChangeWhatsApiAttachments(@Part spic: MultipartBody.Part, @Query("tempId")tempId:String,@Query("headerType")headerType: String) :Response<String>
-    @POST("/candidateRawData/getEmpColdRawData")
+     @POST("/candidateRawData/getEmpColdRawData")
     suspend fun getEmpColdRawData(@Query("offset")offset:Int): Response<List<RawDataList>>
     @POST("/candidateRawData/updateComment")
     suspend fun updateComment(@Query("commentId")commentId: Int,@Query("comment") comment: String): Response<String>

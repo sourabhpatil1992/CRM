@@ -9,6 +9,7 @@ import com.venter.regodigital.utils.Constans
 import com.venter.regodigital.utils.Constans.TAG
 import com.venter.regodigital.utils.NetworkResult
 import org.json.JSONObject
+import retrofit2.http.Query
 import javax.inject.Inject
 
 class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
@@ -1266,16 +1267,30 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
     }
 
-    suspend fun updateTempWithoutImage(temp:WhatsappTemplateMsg)
+    suspend fun updateTemp(tempId:String, template:String, header:String)
     {
         try {
+            _allrawDataListResLiveData.postValue(NetworkResult.Loading())
+
+            val response = userApi.updateTemp(tempId, template, header)
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
 
 
-            userApi.updateTempWithoutImage(temp)
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
 
 
         } catch (e: Exception) {
-            Log.d(TAG, "Error in UserApiRepostitory.kt updateTempWithoutImage is " + e.message)
+            Log.d(TAG, "Error in UserApiRepostitory.kt updateTemp is " + e.message)
         }
     }
 

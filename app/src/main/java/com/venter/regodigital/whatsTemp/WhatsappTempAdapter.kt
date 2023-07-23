@@ -3,6 +3,7 @@ package com.venter.regodigital.whatsTemp
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,8 @@ import com.squareup.picasso.Picasso
 import com.venter.regodigital.R
 import com.venter.regodigital.databinding.LayoutWhatsapptempBinding
 import com.venter.regodigital.models.WhatsappTemplateMsg
+import com.venter.regodigital.utils.Constans.BASE_URL
+import com.venter.regodigital.utils.Constans.TAG
 
 class WhatsappTempAdapter(val cnt:Context):ListAdapter<WhatsappTemplateMsg,WhatsappTempAdapter.TempHolder>(ComparatorDiffUtil()) {
     inner class TempHolder(private val binding: LayoutWhatsapptempBinding) :
@@ -28,70 +31,31 @@ class WhatsappTempAdapter(val cnt:Context):ListAdapter<WhatsappTemplateMsg,Whats
             binding.txtSrNo.text = temp.id.toString()
             binding.txtMsg.setText(temp.tempMsg)
 
-            when (temp.hederType) {
-                "IMAGE" -> if (temp.headerPath != null && temp.headerPath != "") {
 
-                    binding.imgWhats.setImageURI(null)
-                    Picasso.get()
-                        .load(temp.headerPath)
-                        .fit()
-                        .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                        .into(binding.imgWhats)
-                    binding.imgWhats.visibility = View.VISIBLE
-                }
-
-                "VIDEO" -> {
-                    binding.imgWhats.setImageURI(null)
-                    binding.imgWhats.setImageResource(R.drawable.video_icon)
-                    binding.imgWhats.visibility = View.VISIBLE
-                    binding.imgWhats.setOnClickListener {
-                        if (temp.headerPath != null && temp.headerPath != "") {
-                            val builders = AlertDialog.Builder(cnt)
-                            //set title for alert dialog
-                            val vView = VideoView(cnt)
-                            val uri = Uri.parse(temp.headerPath)
-                            vView.setVideoURI(uri)
-                            val mediaController = MediaController(cnt)
-                            mediaController.setAnchorView(vView)
-
-                            mediaController.setMediaPlayer(vView)
-                            vView.setMediaController(mediaController)
-
-                            builders.setView(vView)
-                            val alertDialog: AlertDialog = builders.create()
-                            alertDialog.setCancelable(true)
-                            alertDialog.show()
-                            vView.start()
-
-                        } else {
-                            Toast.makeText(cnt, "Video not found.", Toast.LENGTH_SHORT).show()
-                        }
+            if(temp.header_name != null && temp.header_name !="")
+            {
+                binding.imgWhats.setImageURI(null)
+                val filetype = temp.header_name.toString().split("\\.".toRegex())
+                when(filetype[1])
+                {
+                    "pdf" ->{
+                        binding.imgWhats.setImageResource(R.drawable.doc_icon)
+                    }
+                    "mp4" ->{
+                        binding.imgWhats.setImageResource(R.drawable.video_icon)
+                    }
+                    else ->{
+                        Picasso.get()
+                            .load(BASE_URL+"assets/whatstemp/"+temp.header_name)
+                            .fit()
+                            .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                            .into(binding.imgWhats)
                     }
 
                 }
-                "DOCUMENT" -> {
-                    binding.imgWhats.setImageURI(null)
-                    binding.imgWhats.setImageResource(R.drawable.doc_icon)
-                    binding.imgWhats.visibility = View.VISIBLE
-                    binding.imgWhats.setOnClickListener {
-                        if (temp.headerPath != "" && temp.headerPath != null) {
-                            val urlString = temp.headerPath
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlString))
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            intent.setPackage("com.android.chrome")
-                            cnt.startActivity(intent)
-                        } else {
-                            Toast.makeText(cnt, "File not found.", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
 
-                else -> {
-
-                }
-
+                binding.imgWhats.visibility = View.VISIBLE
             }
-
             binding.linWhatsTemp.setOnClickListener {
                 val intent = Intent(cnt, EditWhatsTemp::class.java)
                 intent.putExtra("temp",temp)

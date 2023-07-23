@@ -587,11 +587,11 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         }
     }
 
-    fun whatApiTemplateUpdate(temp:WhatsappTemplateMsg)
+    fun updateTemp(tempId:String, template:String, header:String)
     {
         try {
             viewModelScope.launch {
-                userRepository.updateTempWithoutImage(temp)
+                userRepository.updateTemp(tempId, template, header)
             }
         }
         catch (e:Exception)

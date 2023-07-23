@@ -68,11 +68,12 @@ class ImageUploadFrgnd : Service() {
             notify_noti()
 
 
-            val intentType = intent!!.getStringExtra("intentType").toString()
+            store_doc(intent)
+           /* val intentType = intent!!.getStringExtra("intentType").toString()
             if(intentType == "UploadImageWithNewTemp")
                 store_doc(intent)
             else if(intentType == "UploadImage")
-                upload_image(intent)
+                upload_image(intent)*/
 
 
         } catch (e: Exception) {
@@ -123,7 +124,7 @@ class ImageUploadFrgnd : Service() {
 
                 builder = Notification.Builder(this)
                     .setContentText("Uploading Data on server.....")
-                    .setContentTitle("Gold Ledger")
+                    .setContentTitle("Rego Digital")
                     .setSmallIcon(R.drawable.regologo)
                     .setLargeIcon(
                         BitmapFactory.decodeResource(
@@ -159,7 +160,6 @@ class ImageUploadFrgnd : Service() {
         scope.launch {
             try {
                 val fileUri = Uri.parse(intent!!.getStringExtra("FileUri").toString())
-                val header = intent!!.getStringExtra("header").toString()
                 val template = intent!!.getStringExtra("template").toString()
                 val temp: WhatsappTemplateMsg? = intent!!.getParcelableExtra<WhatsappTemplateMsg>("temp")
 
@@ -180,7 +180,7 @@ class ImageUploadFrgnd : Service() {
                 val outputStream = FileOutputStream(file)
                 inputStream.copyTo(outputStream)
 
-                if (temp!!.hederType == "IMAGE")
+                /*if (temp!!.hederType == "IMAGE")
 
                     Compressor.compress(applicationContext, file) {
                         resolution(320, 320)
@@ -190,7 +190,7 @@ class ImageUploadFrgnd : Service() {
                         destination(file)
 
                     }
-
+*/
                 val requestBody: RequestBody =
                     RequestBody.create(mimeType.toString().toMediaTypeOrNull(), file)
 
@@ -202,14 +202,13 @@ class ImageUploadFrgnd : Service() {
 
                 val response =syncApi.UpdateWhatsApiAttachments(
                     filePart,
-                    temp.id.toString(),header,template.toString(),
-                    temp.hederType.toString()
+                    temp!!.id.toString(),template.toString()
                 )
 
 
                 if(response.toString().isNotEmpty()) {
                     stopSelf()
-                    Toast.makeText(applicationContext,response.body().toString(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext,"Template updated successfully.",Toast.LENGTH_SHORT).show()
                 }
 
 
@@ -225,7 +224,7 @@ class ImageUploadFrgnd : Service() {
 
     }
 
-    private fun upload_image(intent: Intent)
+    /*private fun upload_image(intent: Intent)
     {
 
         scope.launch {
@@ -288,7 +287,7 @@ class ImageUploadFrgnd : Service() {
 
         }
 
-    }
+    }*/
 
 
 }

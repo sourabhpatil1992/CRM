@@ -20,25 +20,26 @@ import com.venter.regodigital.Dashboard.AdminDashboard
 import com.venter.regodigital.R
 import com.venter.regodigital.databinding.ActivityEditWhatsTempBinding
 import com.venter.regodigital.models.WhatsappTemplateMsg
+import com.venter.regodigital.utils.Constans
 import com.venter.regodigital.utils.Constans.TAG
+import com.venter.regodigital.utils.NetworkResult
 import com.venter.regodigital.viewModelClass.CandidateViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class EditWhatsTemp : AppCompatActivity() {
-    private var _binding:ActivityEditWhatsTempBinding?=  null
-    private val binding:ActivityEditWhatsTempBinding
-    get() = _binding!!
+    private var _binding: ActivityEditWhatsTempBinding? = null
+    private val binding: ActivityEditWhatsTempBinding
+        get() = _binding!!
 
     private val candidateViewModel by viewModels<CandidateViewModel>()
 
-    var template:WhatsappTemplateMsg? =null
+    var template: WhatsappTemplateMsg? = null
 
     private var ProfileUri: Uri? = null
 
     private var deleteFile: Boolean = false
 
-    private lateinit var originalTemp:WhatsappTemplateMsg
 
     private var headerFile: String = ""
 
@@ -63,14 +64,14 @@ class EditWhatsTemp : AppCompatActivity() {
                 deleteFile = false
                 val fileDescriptor =
                     applicationContext.contentResolver.openAssetFileDescriptor(uri, "r")
-                val fileSize = fileDescriptor!!.length
-                if (fileSize > 5000000) {
-                    Toast.makeText(
+
+                binding.btnDelImg.setBackgroundColor(
+                    ContextCompat.getColor(
                         this,
-                        "File size is greater than 5MB. Please select another file.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                        R.color.regocolor
+                    )
+                )
+
             }
 
 
@@ -81,74 +82,46 @@ class EditWhatsTemp : AppCompatActivity() {
         _binding = ActivityEditWhatsTempBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-         template = intent.getParcelableExtra<WhatsappTemplateMsg>("temp")
-        originalTemp = template!!
-        if(template!=null)
-        {
+        template = intent.getParcelableExtra<WhatsappTemplateMsg>("temp")!!
+
+        if (template != null) {
             binding.txtMsg.setText(template!!.tempMsg)
-            when (template!!.hederType) {
-                "IMAGE" -> if (template!!.headerPath != null && template!!.headerPath != "") {
 
-                    binding.imgWhats.setImageURI(null)
-                    Picasso.get()
-                        .load(template!!.headerPath)
-                        .fit()
-                        .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                        .into(binding.imgWhats)
-                    binding.imgWhats.visibility = View.VISIBLE
-                }
+            if (template!!.header_name != null && template!!.header_name != "") {
+                binding.imgWhats.setImageURI(null)
+                val filetype = template!!.header_name!!.split("\\.".toRegex())
+                when (filetype[1]) {
+                    "pdf" -> {
+                        binding.imgWhats.setImageResource(R.drawable.doc_icon)
+                    }
 
-                "VIDEO" -> {
-                    binding.imgWhats.setImageURI(null)
-                    binding.imgWhats.setImageResource(R.drawable.video_icon)
-                    binding.imgWhats.visibility = View.VISIBLE
-                    binding.imgWhats.setOnClickListener {
-                        if (template!!.headerPath != null && template!!.headerPath != "") {
-                            val builders = AlertDialog.Builder(this)
-                            //set title for alert dialog
-                            val vView = VideoView(this)
-                            val uri = Uri.parse(template!!.headerPath)
-                            vView.setVideoURI(uri)
-                            val mediaController = MediaController(this)
-                            mediaController.setAnchorView(vView)
+                    "mp4" -> {
+                        binding.imgWhats.setImageResource(R.drawable.video_icon)
+                    }
 
-                            mediaController.setMediaPlayer(vView)
-                            vView.setMediaController(mediaController)
-
-                            builders.setView(vView)
-                            val alertDialog: AlertDialog = builders.create()
-                            alertDialog.setCancelable(true)
-                            alertDialog.show()
-                            vView.start()
-
-                        } else {
-                            Toast.makeText(this, "Video not found.", Toast.LENGTH_SHORT).show()
-                        }
+                    else -> {
+                        Picasso.get()
+                            .load(Constans.BASE_URL + "assets/whatstemp/" + template!!.header_name)
+                            .fit()
+                            .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                            .into(binding.imgWhats)
                     }
 
                 }
-                "DOCUMENT" -> {
-                    binding.imgWhats.setImageURI(null)
-                    binding.imgWhats.setImageResource(R.drawable.doc_icon)
-                    binding.imgWhats.visibility = View.VISIBLE
-                    binding.imgWhats.setOnClickListener {
-                        if (template!!.headerPath != "" && template!!.headerPath != null) {
-                            val urlString = template!!.headerPath
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlString))
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            intent.setPackage("com.android.chrome")
-                            startActivity(intent)
-                        } else {
-                            Toast.makeText(this, "File not found.", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
 
-                else -> {
+                binding.btnDelImg.isEnabled = true
+                binding.txtSelect.text = "Change File"
 
-                }
 
-            }
+                binding.imgWhats.visibility = View.VISIBLE
+                binding.btnDelImg.setBackgroundColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.regocolor
+                    )
+                )
+            } else
+                binding.btnDelImg.setBackgroundColor(ContextCompat.getColor(this, R.color.temp5))
         }
 
         binding.btnSelectImg.setOnClickListener {
@@ -162,8 +135,8 @@ class EditWhatsTemp : AppCompatActivity() {
             binding.imgWhats.visibility = View.GONE
             binding.btnDelImg.isActivated = false
             binding.txtSelect.text = "select File"
-            template!!.headerPath= ""
-            template!!.hederType=""
+            binding.btnDelImg.setBackgroundColor(ContextCompat.getColor(this, R.color.temp5))
+            template!!.header_name = ""
 
         }
 
@@ -175,68 +148,11 @@ class EditWhatsTemp : AppCompatActivity() {
         }
 
 
-
-
-
     }
 
     private fun selectDoc() {
         try {
-            val builders = AlertDialog.Builder(this)
-            //set title for alert dialog
-            builders.setTitle("Whatsapp Documents")
-
-
-            builders.setMessage("Select the type of documents which will share on Whatsapp")
-            builders.setPositiveButton("Documents") { _, which ->
-
-                    try {
-
-                        template!!.hederType = "DOCUMENT"
-                        contract.launch("document/*")
-                        headerFile = "DOCUMENT"
-                        headerChange = true
-                    } catch (e: Exception) {
-                        Log.d(
-                            TAG,
-                            "Error in EditWhatsTempActivity.kt selectImage() is " + e.message
-                        )
-                    }
-
-            }
-            builders.setNegativeButton("Video") { _, _ ->
-
-                    try {
-                        template!!.hederType = "VIDEO"
-                        contract.launch("video/*")
-                        headerFile = "VIDEO"
-                        headerChange = true
-                    } catch (e: Exception) {
-                        Log.d(
-                            TAG,
-                            "Error in EditWhatsTempActivity.kt selectImage() is " + e.message
-                        )
-                    }
-
-            }
-            builders.setNeutralButton("Image") { _, _ ->
-                try {
-
-                    template!!.hederType = "IMAGE"
-                    contract.launch("image/*")
-                    headerFile = "IMAGE"
-                    headerChange = true
-                } catch (e: Exception) {
-                    Log.d(TAG, "Error in EditWhatsTempActivity.kt selectImage() is " + e.message)
-                }
-
-            }
-
-            builders.setIcon(ContextCompat.getDrawable(this, R.drawable.regologo))
-
-            val alertDialog: AlertDialog = builders.create()
-            alertDialog.setCancelable(true)
-            alertDialog.show()
+            contract.launch("*/*")
 
 
         } catch (e: Exception) {
@@ -246,111 +162,62 @@ class EditWhatsTemp : AppCompatActivity() {
     }
 
     private fun updateWhatsReq() {
-        val dbVer = (System.currentTimeMillis() / 1000).toString()
-        if (!headerChange && template!!.tempMsg == binding.txtMsg.text.toString()) {
-            //Here we check the Any changes detect in the template
-            Toast.makeText(this, "Change not detect.", Toast.LENGTH_SHORT).show()
-        }
-        else {
+        try {
+            if (ProfileUri != null || template!!.tempMsg != binding.txtMsg.text.toString() || deleteFile) {
+                if (ProfileUri != null) {
+                            //Header File Changed
 
-            if (template!!.tempMsg != binding.txtMsg.text.toString()) {
+                    val intent = Intent(this, ImageUploadFrgnd::class.java)
 
-                try {
-
-                    if (ProfileUri != null) {
-                            val intent = Intent(this, ImageUploadFrgnd::class.java)
-
-                            intent.putExtra("intentType","UploadImageWithNewTemp")
-                            intent.putExtra("FileUri", ProfileUri.toString())
-                            intent.putExtra("temp",template)
-                            intent.putExtra("template",binding.txtMsg.text.toString())
+                    intent.putExtra("intentType", "UploadImageWithNewTemp")
+                    intent.putExtra("FileUri", ProfileUri.toString())
+                    intent.putExtra("temp", template)
+                    intent.putExtra("template", binding.txtMsg.text.toString())
 
 
-                            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
 
-                                startForegroundService(intent)
-
-                            } else {
-
-                                startService(intent)
-                            }
-                            Toast.makeText(this, "Updating WhatsApp Template may take a long time. Please wait for some time. Check after some time template is updated successfully or not.",Toast.LENGTH_LONG).show()
-                            val intents  = Intent(this,AdminDashboard::class.java)
-                            startActivity(intents)
-                            this.finish()
-
-
-
+                        startForegroundService(intent)
 
                     } else {
-                        template!!.tempMsg = binding.txtMsg.text.toString()
 
-                        candidateViewModel.whatApiTemplateTextUpdate(template!!)
-                        Toast.makeText(this, "Updating WhatsApp Template may take a long time. Please wait for some time. Check after some time template is updated successfully or not.",Toast.LENGTH_LONG).show()
-                        val intent  = Intent(this,AdminDashboard::class.java)
-                        startActivity(intent)
-                        this.finish()
+                        startService(intent)
                     }
-
-
-
-
-                }
-                catch (e:Exception)
-                {
-                    Log.d(TAG,"Error in EditWhatsApiTemActivity.kt updateWhatsReq() GlobalScope.launch is "+e.message)
-                }
-
-
-
-            }
-            else {
-                if (ProfileUri != null) {
-                        //Here is two conditions 1. Change Header type  2. Header Type not change
-                        if(originalTemp.hederType != template!!.hederType)
-                        {
-                            Toast.makeText(this,"Please change the template for change the attachment of template.",Toast.LENGTH_SHORT).show()
-
-                        }
-                        else
-                        {
-
-                            val intent = Intent(this, ImageUploadFrgnd::class.java)
-
-                            intent.putExtra("intentType","UploadImage")
-                            intent.putExtra("FileUri", ProfileUri.toString())
-                            intent.putExtra("tempId",template!!.id.toString())
-                            intent.putExtra("headerType",template!!.hederType)
-
-
-
-                            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
-
-                                startForegroundService(intent)
-
-                            } else {
-
-                                startService(intent)
-                            }
-                            Toast.makeText(this, "Updating WhatsApp Template may take a long time. Please wait for some time. Check after some time template is updated successfully or not.",Toast.LENGTH_LONG).show()
-                            val intents  = Intent(this,AdminDashboard::class.java)
-                            startActivity(intents)
-                            this.finish()
-
-                        }
-
-
-                }
-                else {
-                    template!!.tempMsg = binding.txtMsg.text.toString()
-                    candidateViewModel.whatApiTemplateUpdate(template!!)
-                    Toast.makeText(this, "Updating WhatsApp Template may take a long time. Please wait for some time. Check after some time template is updated successfully or not.",Toast.LENGTH_LONG).show()
-                    val intent  = Intent(this,AdminDashboard::class.java)
-                    startActivity(intent)
+                    Toast.makeText(this,"Uploading file may take longer.",Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this,AdminDashboard::class.java))
                     this.finish()
+
+
+                } else {
+                    //Only Text Change
+                    candidateViewModel.updateTemp(template!!.id.toString(),binding.txtMsg.text.toString(),template!!.header_name.toString())
+
+                    candidateViewModel.stringResData.observe(this)
+                    {
+                        binding.progressbar.visibility = View.GONE
+                        when(it)
+                        {
+                            is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
+                            is NetworkResult.Error ->
+                                Toast.makeText(this,it.message.toString(),Toast.LENGTH_SHORT).show()
+                            is NetworkResult.Success -> {
+                                Toast.makeText(this, it.data.toString(), Toast.LENGTH_SHORT).show()
+                                startActivity(Intent(this,AdminDashboard::class.java))
+                                this.finish()
+                            }
+
+                        }
+                    }
                 }
 
+
+            } else {
+                Toast.makeText(this, "Changes not detect.", Toast.LENGTH_SHORT).show()
             }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in EditWhatsTemp.kt EditWhatsReq() is " + e.message)
         }
+
+
     }
 }
