@@ -99,8 +99,7 @@
                     android:layout_marginRight="10dp"
                     android:background="@color/white"
                     android:orientation="vertical"
-                    android:visibility="gone"
-                    >
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -139,43 +138,45 @@
                         android:orientation="horizontal">
 
                         <EditText
-                            android:inputType="textCapWords"
                             android:id="@+id/edttxtFirstName"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.33"
                             android:hint="First Name"
+                            android:inputType="textCapWords"
                             android:textColor="@color/black"
                             android:textColorHint="#716F6F"
                             android:textSize="15sp" />
 
                         <EditText
-                            android:inputType="textCapWords"
                             android:id="@+id/edtMiddleName"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.33"
                             android:hint="Middle Name"
+                            android:inputType="textCapWords"
                             android:textColor="@color/black"
                             android:textColorHint="#716F6F"
                             android:textSize="15sp" />
 
                         <EditText
-                            android:inputType="textCapWords"
                             android:id="@+id/edtLastName"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.33"
                             android:hint="Last Name"
+                            android:inputType="textCapWords"
                             android:textColor="@color/black"
                             android:textColorHint="#716F6F"
                             android:textSize="15sp" />
                     </LinearLayout>
+
                     <CheckBox
                         android:id="@+id/middName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Middle Name Visibility"/>
+                        android:text="Middle Name Visibility" />
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -299,11 +300,11 @@
                         android:textSize="15sp" />
 
                     <EditText
-                        android:inputType="textMultiLine|textCapWords"
                         android:id="@+id/edtAdd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Address"
+                        android:inputType="textMultiLine|textCapWords"
                         android:textColor="@color/black"
                         android:textColorHint="#716F6F"
                         android:textSize="15sp" />
@@ -317,11 +318,11 @@
                         android:textSize="15sp" />
 
                     <EditText
-                        android:inputType="textCapWords"
                         android:id="@+id/edtBankName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Bank Name"
+                        android:inputType="textCapWords"
                         android:maxLength="45"
                         android:textColor="@color/black"
                         android:textColorHint="#716F6F"
@@ -354,11 +355,11 @@
                         android:textSize="15sp" />
 
                     <EditText
-                        android:inputType="textCapCharacters"
                         android:id="@+id/edtPanNo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="PAN no."
+                        android:inputType="textCapCharacters"
                         android:maxLength="10"
                         android:textColor="@color/black"
                         android:textColorHint="#716F6F"
@@ -373,11 +374,11 @@
                         android:textSize="15sp" />
 
                     <EditText
-                        android:inputType="textCapCharacters"
                         android:id="@+id/edtBloodGroup"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Blood Group"
+                        android:inputType="textCapCharacters"
                         android:maxLength="3"
                         android:textColor="@color/black"
                         android:textColorHint="#716F6F"
@@ -439,11 +440,11 @@
                         android:textSize="15sp" />
 
                     <EditText
-                        android:inputType="textCapWords"
                         android:id="@+id/edtEduDegree"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Educational Degree"
+                        android:inputType="textCapWords"
                         android:textColor="@color/black"
                         android:textColorHint="#716F6F"
                         android:textSize="15sp" />
@@ -483,11 +484,11 @@
                         android:textSize="15sp" />
 
                     <EditText
-                        android:inputType="textCapWords"
                         android:id="@+id/edtCollegeName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="College Name"
+                        android:inputType="textCapWords"
                         android:textColor="@color/black"
                         android:textColorHint="#716F6F"
                         android:textSize="15sp" />
@@ -501,11 +502,11 @@
                         android:textSize="15sp" />
 
                     <EditText
-                        android:inputType="textCapWords"
                         android:id="@+id/edtUniName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="University / Board Name"
+                        android:inputType="textCapWords"
                         android:textColor="@color/black"
                         android:textColorHint="#716F6F"
                         android:textSize="15sp" />
@@ -566,11 +567,11 @@
                         android:textSize="15sp" />
 
                     <EditText
-                        android:inputType="textCapWords"
                         android:id="@+id/edtJobTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Job Title"
+                        android:inputType="textCapWords"
                         android:textColor="@color/black"
                         android:textColorHint="#716F6F"
                         android:textSize="15sp" />
@@ -637,11 +638,11 @@
                         android:textSize="15sp" />
 
                     <EditText
-                        android:inputType="textCapWords"
                         android:id="@+id/edtEmployeeId"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Employee Id"
+                        android:inputType="textCapWords"
                         android:textColor="@color/black"
                         android:textColorHint="#716F6F"
                         android:textSize="15sp" />
@@ -703,11 +704,11 @@
                         android:textSize="15sp" />
 
                     <EditText
-                        android:inputType="textCapWords"
                         android:id="@+id/edtCurJobTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Job Title"
+                        android:inputType="textCapWords"
                         android:textColor="@color/black"
                         android:textColorHint="#716F6F"
                         android:textSize="15sp" />
@@ -776,8 +777,7 @@
                     android:layout_marginBottom="20dp"
                     android:background="@color/white"
                     android:orientation="vertical"
-                    android:visibility="gone"
-                    >
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"

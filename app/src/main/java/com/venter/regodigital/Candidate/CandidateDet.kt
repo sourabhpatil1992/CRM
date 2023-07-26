@@ -289,6 +289,7 @@ class CandidateDet : AppCompatActivity() {
                 binding.edtJobTitle.text.isNotEmpty() && binding.edtJoiningDate.text.isNotEmpty() &&
                 binding.edtJoinPackage.text.isNotEmpty() && binding.edtFee.text.isNotEmpty() &&
                 binding.edtTransFee.text.isNotEmpty() && binding.edtTransComm.text.isNotEmpty()
+
             ) {
 
                 val dateFormat = SimpleDateFormat("dd-MM-yyyy")

@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId "com.venter.regodigital"
-        minSdk 29
+        minSdk 28
         targetSdk 32
         versionCode 2
         versionName "2.0.1"
@@ -96,6 +96,8 @@ dependencies {
 
     implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.0.6"
 
+    implementation 'androidx.cardview:cardview:1.0.0'
+
     // Kotlin + coroutines
     implementation("androidx.work:work-runtime-ktx:2.7.1")
 
@@ -138,4 +140,9 @@ dependencies {
     implementation 'com.nineoldandroids:library:2.4.0'
 
     implementation 'com.facebook.android:facebook-android-sdk:15.2.0'
+
+    implementation 'com.google.zxing:core:3.4.1' // You can check for the latest version on the ZXing repository
+    implementation 'com.journeyapps:zxing-android-embedded:4.2.0'
+
+    implementation 'io.socket:socket.io-client:2.0.0'
 }

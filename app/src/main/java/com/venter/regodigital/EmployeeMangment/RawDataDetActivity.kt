@@ -307,9 +307,9 @@ class RawDataDetActivity : AppCompatActivity() {
             layout.addView(prospectLevelText)
             var prospectLevel :Array<String>
             if (tokenManger.getUserType().toString() != "Employee")
-                prospectLevel = arrayOf("Coming for visit","Visited","Demo","Not Interested","Information on call","Will Join/Inform","Admission")
+                prospectLevel = arrayOf("NA","Coming for visit","Visited","Demo","Not Interested","Information on call","Will Join/Inform","Admission")
             else
-                prospectLevel = arrayOf("Coming for visit","Demo","Not Interested","Information on call","Will Join/Inform")
+                prospectLevel = arrayOf("NA","Coming for visit","Demo","Not Interested","Information on call","Will Join/Inform")
             val prospectLevelSpinner = Spinner(this)
              val prosAdapters = ArrayAdapter<String>(
                 this,

@@ -10,6 +10,7 @@ import com.venter.regodigital.utils.Constans.TAG
 import com.venter.regodigital.utils.NetworkResult
 import org.json.JSONObject
 import retrofit2.http.Query
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
@@ -1343,6 +1344,34 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
         catch (e:Exception)
         {Log.d(TAG, "Error in UserAuthRepository.kt updateComment() is " + e.message)
+
+        }
+
+    }
+
+    suspend fun intilWhats(id: Int) {
+        try {
+            _stringResLiveData.postValue(NetworkResult.Loading())
+
+         val response = userApi.intilWhats(id)
+            if (response.isSuccessful && response.body() != null) {
+
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+        }
+        catch (e:Exception)
+        {
+
+            Log.d(TAG, "Error in UserAuthRepository.kt intilWhats() is " + e.message)
 
         }
 

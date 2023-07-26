@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- custom_card_background.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/temp3" /> <!-- Yellow color for the shadow -->
+            <corners android:radius="18dp" /> <!-- Set the corner radius as needed -->
+        </shape>
+    </item>
+    <item android:right="0dp" android:left="0dp" android:bottom="5dp"> <!-- Adjust the shadow size here -->
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" /> <!-- Use a transparent or semi-transparent color here -->
+            <corners android:radius="18dp" /> <!-- Set the corner radius as needed -->
+        </shape>
+    </item>
+</layer-list>

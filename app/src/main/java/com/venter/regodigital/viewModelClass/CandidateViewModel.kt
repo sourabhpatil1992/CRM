@@ -619,4 +619,15 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
             Log.d(TAG, "Error in CandidateViewModel.kt updateComment() is " + e.message)
         }
     }
+
+    fun intilWhats(id: Int) {
+        try {
+            viewModelScope.launch {
+                userRepository.intilWhats(id)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt intilWhats() is " + e.message)
+        }
+
+    }
 }

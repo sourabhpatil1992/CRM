@@ -2,6 +2,10 @@ package com.venter.regodigital.EmployeeMangment
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.LayerDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -32,46 +36,52 @@ class RawDataListAdapter(val cnt: Context,val chkClick:chkListner,val chkVisible
 
                 binding.txtUpdate.text = candidate.update_on
 
-                if(empType =="Employee")
-                {
-                    binding.level.visibility = View.GONE
-                }
-                else
-                {
 
-                   if(candidate.prosLevel != null) {
 
-                       when (candidate.prosLevel) {
-                           "Coming for visit" -> {
-                               binding.level.setBackgroundColor(ContextCompat.getColor(cnt, R.color.temp1))
-                           }
-                           "Visited" -> {
-                               binding.level.setBackgroundColor(ContextCompat.getColor(cnt, R.color.temp2))
-                           }
-                           "Demo" -> {
-                               binding.level.setBackgroundColor(ContextCompat.getColor(cnt, R.color.temp3))
-                           }
-                           "Not Interested" -> {
-                               binding.level.setBackgroundColor(ContextCompat.getColor(cnt, R.color.temp4))
-                           }
-                           "Information on call" -> {
-                               binding.level.setBackgroundColor(ContextCompat.getColor(cnt, R.color.temp5))
-                           }
-                           "Admission" -> {
-                               binding.level.setBackgroundColor(ContextCompat.getColor(cnt, R.color.temp6))
-                           }
-                           "Will Join/Inform" ->{
-                               binding.level.setBackgroundColor(ContextCompat.getColor(cnt, R.color.temp7))
-                           }
-                           else -> {
-                               binding.level.setBackgroundColor(ContextCompat.getColor(cnt, R.color.white))
-                           }
-                       }
-                   }
-                    else  {
-                       binding.level.setBackgroundColor(ContextCompat.getColor(cnt, R.color.white))
+
+
+                if(candidate.prosLevel != null) {
+                    var desiredColor:Int = 0 //= ContextCompat.getColor(cnt, R.color.your_desired_color)
+
+                    when (candidate.prosLevel) {
+                        "Coming for visit" -> {
+                            binding.linRawData.background = ContextCompat.getDrawable(cnt, R.drawable.card_shadow_temp1)
+
+                        }
+                        "Visited" -> {
+                            binding.linRawData.background = ContextCompat.getDrawable(cnt, R.drawable.card_shadow_temp2)
+                        }
+                        "Demo" -> {
+                            binding.linRawData.background = ContextCompat.getDrawable(cnt, R.drawable.card_shadow_temp3)
+                        }
+                        "Not Interested" -> {
+                            binding.linRawData.background = ContextCompat.getDrawable(cnt, R.drawable.card_shadow_temp4)
+                        }
+                        "Information on call" -> {
+                            binding.linRawData.background = ContextCompat.getDrawable(cnt, R.drawable.card_shadow_temp5)
+                        }
+                        "Admission" -> {
+                            binding.linRawData.background = ContextCompat.getDrawable(cnt, R.drawable.card_shadow_temp6)
+                        }
+                        "Will Join/Inform" ->{
+                            binding.linRawData.background = ContextCompat.getDrawable(cnt, R.drawable.card_shadow_temp7)
+                        }
+                        else -> {
+
+                        }
+                    }
+
+
+
+
+
+
+
+
+
                 }
-                    //binding.le
+                else  {
+                    //binding.linRawData.setBackgroundColor(ContextCompat.getColor(cnt, R.color.white))
                 }
 
                 if(chkVisible) {
@@ -111,6 +121,10 @@ class RawDataListAdapter(val cnt: Context,val chkClick:chkListner,val chkVisible
                 Log.d(Constans.TAG,"Error in RawDataListAdapter .kt bind() is "+e.message)
             }
         }
+
+
+
+
     }
 
     class ComparatorDiffUtil : DiffUtil.ItemCallback<RawDataList>() {
