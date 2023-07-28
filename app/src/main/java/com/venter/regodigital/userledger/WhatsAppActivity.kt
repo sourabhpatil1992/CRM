@@ -1,26 +1,20 @@
 package com.venter.regodigital.userledger
 
-import android.content.Intent
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.common.BitMatrix
 import com.google.zxing.qrcode.QRCodeWriter
-import com.venter.regodigital.Dashboard.AdminDashboard
-import com.venter.regodigital.Dashboard.EmpDashboard
-import com.venter.regodigital.Login.LogInActivity
-import com.venter.regodigital.R
+
 import com.venter.regodigital.databinding.ActivityWhatsAppBinding
 import com.venter.regodigital.utils.Constans.BASE_URL
 import com.venter.regodigital.utils.Constans.TAG
-import com.venter.regodigital.utils.NetworkResult
+
 import com.venter.regodigital.viewModelClass.CandidateViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import io.socket.client.IO
@@ -60,28 +54,9 @@ class WhatsAppActivity : AppCompatActivity() {
 
             binding.progressbar.visibility = View.VISIBLE
 
-            mSocket.emit("chat message", "Hi Server")
+
 
             mSocket.emit("WhatsApp", userId.toString())
-
-            /*mSocket.on("chat message")
-            { args ->
-
-                runOnUiThread {
-                    try
-                    {
-                        binding.progressbar.visibility = View.GONE
-                        val qrCodeBitmap = generateQRCode(args[0].toString())
-                        binding.qrCodeImageView.setImageBitmap(qrCodeBitmap)
-//Log.d(TAG,"---------------------------"+args[0])
-
-                    }
-                    catch (e: Exception) {
-                        Log.d(TAG, "Erro In the activity Budget.."+e.message.toString())
-
-                    }
-                }
-            }*/
 
             mSocket.on("qrCode")
             { args ->
@@ -94,6 +69,10 @@ class WhatsAppActivity : AppCompatActivity() {
                         {
                             "Application is Authenticated" ->{
                                 Toast.makeText(this, "Application Authenticate.", Toast.LENGTH_SHORT).show()
+                                this.finish()
+                            }
+                            "Please try after some Time"->{
+                                Toast.makeText(this, "Please try after some Time", Toast.LENGTH_SHORT).show()
                                 this.finish()
                             }
                             else ->{
@@ -111,77 +90,37 @@ class WhatsAppActivity : AppCompatActivity() {
                     }
                 }
             }
+
+            mSocket.on("progress")
+            { args->
+
+                runOnUiThread {
+                    try
+                    {
+
+
+                        if(args[0].toString() !="100")
+                        {
+                            binding.progress.visibility = View.GONE
+                        }
+                        else{
+                            binding.progress.visibility = View.VISIBLE
+                            binding.progress.progress = args[0].toString().toInt()
+                        }
+
+
+
+                    }
+                    catch (e: Exception) {
+                        Log.d(TAG, "Erro In the activity Budget.."+e.message.toString())
+
+                    }
+                }
+
+            }
         } catch (e: URISyntaxException) {
             e.printStackTrace()
         }
-
-        /*candidateViewModel.intilWhats(userId)
-
-        val currentDateTime = LocalDateTime.now()
-        Log.d(TAG,currentDateTime.toString())
-
-        Handler().postDelayed(
-            {
-
-
-                try {
-                    Toast.makeText(this,"Please try again or wait for some time.",Toast.LENGTH_SHORT).show()
-                    this.finish()
-                } catch (e: Exception) {
-                    Log.d(TAG, "Error in WhatsAppActivity.kt Handler().postDelayed is  " + e.message)
-                }
-
-            }, 60000
-        )
-
-        candidateViewModel.stringResData.observe(this)
-        {
-            binding.progressbar.visibility =View.GONE
-            when(it)
-            {
-                is NetworkResult.Loading ->{
-                    binding.progressbar.visibility =View.VISIBLE
-                }
-                is NetworkResult.Error ->{
-                    Log.d(TAG,"Error in WhatsAppActivity.kt getting server data is () "+it.message)
-                    Toast.makeText(this,"Please try again or wait for some time.",Toast.LENGTH_SHORT).show()
-                    this.finish()
-
-                }
-                is NetworkResult.Success ->{
-                    if(it.data!! != "Application is Authenticated") {
-                        val qrCodeBitmap = generateQRCode(it.data!!)
-                        binding.qrCodeImageView.setImageBitmap(qrCodeBitmap)
-
-                        Handler().postDelayed(
-                            {
-
-
-                                try {
-                                    Toast.makeText(
-                                        this,
-                                        "Please try again or wait for some time.",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    this.finish()
-                                } catch (e: Exception) {
-                                    Log.d(
-                                        TAG,
-                                        "Error in WhatsAppActivity.kt Handler().postDelayed is  " + e.message
-                                    )
-                                }
-
-                            }, 30000
-                        )
-                    }
-                    else {
-                        Toast.makeText(this, "Application Authenticate.", Toast.LENGTH_SHORT).show()
-                        this.finish()
-                    }
-
-                }
-            }
-        }*/
 
 
     }

@@ -73,10 +73,16 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     }
 
-    fun printOfferLetter(cId: Int, outWard: String, letterDate: String, stamp: Boolean) {
+    fun printOfferLetter(
+        cId: Int,
+        outWard: String,
+        letterDate: String,
+        stamp: Boolean,
+        varAmt: Int
+    ) {
         try {
             viewModelScope.launch {
-                userRepository.printOfferLetter(cId, outWard, letterDate, stamp)
+                userRepository.printOfferLetter(cId, outWard, letterDate, stamp,varAmt)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt candidateList() is " + e.message)

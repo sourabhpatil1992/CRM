@@ -22,6 +22,7 @@ data class CanCertDetRes(
     val offerletter_date: String?,
     val offerletter_outward: String?,
     val offerStamp:Int,
+    val offerVari:Int =0,
 
     val hikeletter_date: String?,
     val effective_date: String?,

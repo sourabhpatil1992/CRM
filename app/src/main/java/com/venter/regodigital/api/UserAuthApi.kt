@@ -34,7 +34,8 @@ interface UserAuthApi {
         @Query("cId") cId: String,
         @Query("outWardId") outwardId: String,
         @Query("letterDate") letterDate: String,
-        @Query("stamp") stamp: Boolean
+        @Query("stamp") stamp: Boolean,
+        @Query("varAmt") varAmt: Int,
     ): Response<String>
 
     @POST("/candidateApi/printHikeLetter")

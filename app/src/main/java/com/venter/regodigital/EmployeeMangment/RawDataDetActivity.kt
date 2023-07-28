@@ -239,8 +239,9 @@ class RawDataDetActivity : AppCompatActivity() {
 
 
             managedCursor.moveToNext()
+            
 
-            while (managedCursor.getString(type) == CallLog.Calls.MISSED_TYPE.toString()) {
+            while (managedCursor.getString(type) == CallLog.Calls.MISSED_TYPE.toString() || managedCursor.getString(type) == CallLog.Calls.REJECTED_TYPE.toString()) {
 
                 managedCursor.moveToNext()
             }
@@ -406,7 +407,8 @@ class RawDataDetActivity : AppCompatActivity() {
 
 
 
-            val tempType = arrayOf("0","1", "2", "3", "4", "5", "6", "7", "8", "9", "10" )
+            val tempType = arrayOf("Null","Address & Location", "Syllabus", "Fee Structure",
+                "Not Responding", "Demo", "Admission", "Admission Not Responding", "Candidate Place List", "9", "10" )
             val tempSpinner = Spinner(this)
             val adapterss = ArrayAdapter<String>(
                 this,
@@ -432,12 +434,14 @@ class RawDataDetActivity : AppCompatActivity() {
                                 0
                         if (prospectSpinner.selectedItem.toString() == "Not Responding" || RemarkEditText.text.contains("Not Responding"))
                             callTime = "30"
+
                         submitData(
                             callTime,
                             prospectSpinner.selectedItem.toString(),
                             RemarkEditText.text.toString(),
                             letterDate.text.toString(),
-                            tempSpinner.selectedItem.toString(), update,data!!.mob_no.toString(),data!!.altenate_mobno.toString(),prospectLevelSpinner.selectedItem.toString()
+                            tempType.indexOf(tempSpinner.selectedItem.toString()).toString(),
+                             update,data!!.mob_no.toString(),data!!.altenate_mobno.toString(),prospectLevelSpinner.selectedItem.toString()
                         )
                     }
                 } catch (e: Exception) {

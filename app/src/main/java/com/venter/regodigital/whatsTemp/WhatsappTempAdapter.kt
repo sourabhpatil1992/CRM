@@ -32,30 +32,44 @@ class WhatsappTempAdapter(val cnt:Context):ListAdapter<WhatsappTemplateMsg,Whats
             binding.txtMsg.setText(temp.tempMsg)
 
 
-            if(temp.header_name != null && temp.header_name !="")
+            if(temp.header_name != null && temp.header_name !="" && temp.header_name !="null")
             {
+
+                //Log.d(TAG,"---"+filetype)
                 binding.imgWhats.setImageURI(null)
-                val filetype = temp.header_name.toString().split("\\.".toRegex())
-                when(filetype[1])
-                {
-                    "pdf" ->{
-                        binding.imgWhats.setImageResource(R.drawable.doc_icon)
-                    }
-                    "mp4" ->{
-                        binding.imgWhats.setImageResource(R.drawable.video_icon)
-                    }
-                    else ->{
-                        Picasso.get()
-                            .load(BASE_URL+"assets/whatstemp/"+temp.header_name)
-                            .fit()
-                            .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                            .into(binding.imgWhats)
+
+                val filetype = temp!!.header_name!!.toString().split("\\.".toRegex())
+
+                if(filetype.size>1) {
+                    when (filetype[1]!!) {
+                        "pdf" -> {
+                            binding.imgWhats.setImageResource(R.drawable.doc_icon)
+                        }
+
+                        "mp4" -> {
+                            binding.imgWhats.setImageResource(R.drawable.video_icon)
+                        }
+
+                        else -> {
+                            Picasso.get()
+                                .load(BASE_URL + "assets/whatstemp/" + temp.header_name)
+                                .fit()
+                                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                                .into(binding.imgWhats)
+                        }
+
                     }
 
+
+                    binding.imgWhats.visibility = View.VISIBLE
                 }
-
-                binding.imgWhats.visibility = View.VISIBLE
             }
+            else
+            {
+                binding.imgWhats.visibility = View.GONE
+               // Log.d(TAG,"---"+temp)
+            }
+
             binding.linWhatsTemp.setOnClickListener {
                 val intent = Intent(cnt, EditWhatsTemp::class.java)
                 intent.putExtra("temp",temp)

@@ -9,8 +9,6 @@ import com.venter.regodigital.utils.Constans
 import com.venter.regodigital.utils.Constans.TAG
 import com.venter.regodigital.utils.NetworkResult
 import org.json.JSONObject
-import retrofit2.http.Query
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
@@ -140,12 +138,13 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         candidateId: Int,
         outWard: String,
         letterDate: String,
-        stamp: Boolean
+        stamp: Boolean,
+        varAmt: Int
     ) {
         try {
             _stringResLiveData.postValue(NetworkResult.Loading())
             val response =
-                userApi.printOfferLetter(candidateId.toString(), outWard, letterDate, stamp)
+                userApi.printOfferLetter(candidateId.toString(), outWard, letterDate, stamp,varAmt)
 
             if (response.isSuccessful && response.body() != null) {
 

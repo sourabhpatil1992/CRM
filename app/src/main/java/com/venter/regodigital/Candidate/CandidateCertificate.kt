@@ -203,6 +203,18 @@ class CandidateCertificate : AppCompatActivity() {
 
             outWard.filters = arrayOf(InputFilter.LengthFilter(20))
 
+
+            val variText = TextView(this)
+            variText.setText("Variable Amount")
+            variText.setTextColor(resources.getColor(R.color.black))
+            val vari = EditText(this)
+            vari.filters = arrayOf(InputFilter.LengthFilter(6))
+            vari.setHint("Variable Amount")
+            vari.setText("0")
+            vari.inputType = 2
+
+
+
             val rdoGrp: RadioGroup = RadioGroup(this)
             val withStamp: RadioButton = RadioButton(this)
             withStamp.setText("With Stamp")
@@ -218,6 +230,8 @@ class CandidateCertificate : AppCompatActivity() {
             if (data.offerletter_outward != null && data.offerletter_outward != "" && data.offerletter_outward != "null")
                 outWard.setText(data.offerletter_outward)
 
+            vari.setText(data.offerVari.toString())
+
 
 
             layout.addView(letterDateText)
@@ -228,6 +242,12 @@ class CandidateCertificate : AppCompatActivity() {
             layout.setPadding(40, 0, 40, 0);
             layout.addView(outWard)
             layout.setPadding(60, 0, 60, 0);
+
+            layout.addView(variText)
+            layout.setPadding(40, 0, 40, 0);
+            layout.addView(vari)
+            layout.setPadding(60, 0, 60, 0);
+
             layout.addView(rdoGrp)
             layout.setPadding(60, 0, 60, 0);
 
@@ -239,11 +259,19 @@ class CandidateCertificate : AppCompatActivity() {
                     val dateFormat = SimpleDateFormat("dd-MM-yyyy")
                     try {
                         dateFormat.parse(letterDate.text.toString())
-                        candidateViewModel.printOfferLetter(
-                            candidateId, outWard.text.toString(),
-                            letterDate.text.toString(), withStamp.isChecked
-                        )
-                        serverRes("Offer")
+                        if(vari.text.isNotEmpty()) {
+                            candidateViewModel.printOfferLetter(
+                                candidateId,
+                                outWard.text.toString(),
+                                letterDate.text.toString(),
+                                withStamp.isChecked,
+                                vari.text.toString().toInt()
+                            )
+
+                            serverRes("Offer")
+                        }
+                        else
+                            Toast.makeText(this,"Please fill all details correctly.",Toast.LENGTH_SHORT).show()
                     } catch (e: Exception) {
                         Log.d(TAG, "Error in CandidateCertificate.kt offerLetter() is " + e.message)
                         Toast.makeText(

@@ -141,10 +141,9 @@ class EditWhatsTemp : AppCompatActivity() {
         }
 
         binding.btnUpdateTemp.setOnClickListener {
-            if (binding.txtMsg.text.isNotEmpty())
+
                 updateWhatsReq()
-            else
-                Toast.makeText(this, "Empty Message is not allowed.", Toast.LENGTH_SHORT).show()
+
         }
 
 
@@ -190,6 +189,8 @@ class EditWhatsTemp : AppCompatActivity() {
 
                 } else {
                     //Only Text Change
+                    if(template!!.header_name.toString()=="null")
+                        template!!.header_name = ""
                     candidateViewModel.updateTemp(template!!.id.toString(),binding.txtMsg.text.toString(),template!!.header_name.toString())
 
                     candidateViewModel.stringResData.observe(this)

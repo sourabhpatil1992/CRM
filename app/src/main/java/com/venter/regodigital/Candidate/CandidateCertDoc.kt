@@ -144,7 +144,7 @@ class CandidateCertDoc : Fragment(), onClick {
                 val stamp = data.offerStamp == 1
                 candidateViewModel.printOfferLetter(
                     candidateId!!.toInt(), data.offerletter_outward.toString(),
-                    data.offerletter_date.toString(), stamp
+                    data.offerletter_date.toString(), stamp, 0
                 )
                 serverRes("Offer")
             }
