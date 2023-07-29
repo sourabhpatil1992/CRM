@@ -4,11 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.viewModels
 import com.venter.regodigital.databinding.ActivityUserDetBinding
 import com.venter.regodigital.models.UserListRes
 import com.venter.regodigital.utils.Constans.TAG
-import com.venter.regodigital.viewModelClass.CandidateViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -32,6 +30,12 @@ class UserDetActivity : AppCompatActivity()
 
         binding.whatsButton.setOnClickListener {
             whatsAppInitialization()
+        }
+        binding.dataSwapping.setOnClickListener {
+            val intent = Intent(this, DataTransActivity::class.java)
+            intent.putExtra("userId",user.id)
+            intent.putExtra("userName",user.user_name)
+            startActivity(intent)
         }
 
     }

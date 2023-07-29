@@ -636,4 +636,15 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         }
 
     }
+
+    fun dataTransfer(userId: Int, dataTo: Int, cold: Int, hot: Int, warm: Int, notRes: Int, admission: Int, raw: Int) {
+        try {
+            viewModelScope.launch {
+                userRepository.dataTransfer(userId, dataTo, cold, hot, warm, notRes, admission, raw)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt dataTransfer() is " + e.message)
+        }
+
+    }
 }

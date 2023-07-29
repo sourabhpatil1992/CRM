@@ -28,6 +28,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/dataSwapping"
                 android:layout_width="match_parent"
                 android:layout_height="140dp"
                 android:layout_marginTop="10dp"
@@ -96,7 +97,7 @@
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_centerInParent="true"
-                            android:src="@drawable/account" />
+                            android:src="@drawable/garbage" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -105,7 +106,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
-                            android:text="Candidate Account"
+                            android:text="Remove Account"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 

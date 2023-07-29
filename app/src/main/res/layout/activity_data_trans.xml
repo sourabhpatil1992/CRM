@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".userledger.DataTransActivity">
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Data Transfer"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title"
+        android:layout_marginTop="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Data From"
+                android:textSize="16sp"
+                />
+            <TextView
+                android:id="@+id/txtDataFrom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Employee Name"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Data Transfer To"
+                android:layout_marginTop="10dp"
+                android:textSize="16sp"
+                />
+            <Spinner
+                android:id="@+id/spinEmpName"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:orientation="vertical"
+                >
+                <CheckBox
+                    android:id="@+id/chkAll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="All Data"
+                    android:textSize="18sp"/>
+                <CheckBox
+                    android:id="@+id/chkCold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Cold Data"
+                    android:textSize="18sp"/>
+                <CheckBox
+                    android:id="@+id/chkHot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Hot Data"
+                    android:textSize="18sp"/>
+                <CheckBox
+                    android:id="@+id/chkWarm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Warm Data"
+                    android:textSize="18sp"/>
+                <CheckBox
+                    android:id="@+id/chkNotResponding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Not Responding Data"
+                    android:textSize="18sp"/>
+                <CheckBox
+                    android:id="@+id/chkAdmission"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Admission Data"
+                    android:textSize="18sp"/>
+                <CheckBox
+                    android:id="@+id/chkRaw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Raw Data"
+                    android:textSize="18sp"/>
+
+
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSubmit"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Submit"
+                android:background="@drawable/rounded_back_btn_blue"
+                android:textColor="@color/white"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/progressbar"
+        style="@style/SpinKitView.ChasingDots"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:SpinKit_Color="@color/regocolor" />
+
+</RelativeLayout>

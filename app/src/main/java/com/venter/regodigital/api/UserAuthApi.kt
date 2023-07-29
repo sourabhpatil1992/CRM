@@ -238,6 +238,17 @@ interface UserAuthApi {
     suspend fun updateComment(@Query("commentId")commentId: Int,@Query("comment") comment: String): Response<String>
     @POST("/whatsAppTemp/initializeWhats")
     suspend fun intilWhats(@Query("userId")id: Int): Response<String>
+    @POST("/userManagement/dataTransfer")
+    suspend fun dataTransfer(
+        @Query("dataFrom")dataFrom: Int,
+        @Query("dataTo")dataTo: Int,
+        @Query("cold")cold: Int,
+        @Query("hot")hot: Int,
+        @Query("warm")warm: Int,
+        @Query("notRes")notRes: Int,
+        @Query("admission")admission: Int,
+        @Query("raw")raw: Int
+    ): Response<String>
 
 
 }
