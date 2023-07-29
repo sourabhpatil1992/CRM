@@ -45,8 +45,8 @@ class RawDataDetActivity : AppCompatActivity() {
     private var dataId = 0
 
 
-
     var data: RawCandidateData? = null
+
     @Inject
     lateinit var tokenManger: TokenManger
 
@@ -56,8 +56,8 @@ class RawDataDetActivity : AppCompatActivity() {
         _binding = ActivityRawDataDetBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.editTransfer.visibility =  if(tokenManger.getUserType()!="Employee")
-              View.VISIBLE
+        binding.editTransfer.visibility = if (tokenManger.getUserType() != "Employee")
+            View.VISIBLE
         else
             View.GONE
 
@@ -78,6 +78,7 @@ class RawDataDetActivity : AppCompatActivity() {
                             it.message.toString(),
                             Toast.LENGTH_SHORT
                         ).show()
+
                         is NetworkResult.Success -> {
                             setView(it.data)
 
@@ -163,11 +164,18 @@ class RawDataDetActivity : AppCompatActivity() {
             candidateViewModel.userListLiveData.observe(this)
             {
                 binding.progressbar.visibility = View.GONE
-                when(it)
-                {
-                    is NetworkResult.Loading ->{binding.progressbar.visibility = View.VISIBLE}
-                    is NetworkResult.Error -> Toast.makeText(this, it.message.toString(), Toast.LENGTH_SHORT).show()
-                    is NetworkResult.Success ->{
+                when (it) {
+                    is NetworkResult.Loading -> {
+                        binding.progressbar.visibility = View.VISIBLE
+                    }
+
+                    is NetworkResult.Error -> Toast.makeText(
+                        this,
+                        it.message.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    is NetworkResult.Success -> {
                         setTransferAlertBox(it.data!!)
 
                     }
@@ -175,10 +183,8 @@ class RawDataDetActivity : AppCompatActivity() {
 
             }
             binding.progressbar.visibility
-        }
-        catch (e:Exception)
-        {
-            Log.d(TAG,"Error in RawDataDetActivity.kt dataTransfer() is ${e.message}")
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in RawDataDetActivity.kt dataTransfer() is ${e.message}")
         }
     }
 
@@ -204,9 +210,9 @@ class RawDataDetActivity : AppCompatActivity() {
         layout.addView(empSpinner)
 
         builders.setPositiveButton("Submit") { _, _ ->
-            Log.d(TAG,user[empSpinner.selectedItemId.toInt()].toString())
+            Log.d(TAG, user[empSpinner.selectedItemId.toInt()].toString())
 
-            if(dataId !=0) {
+            if (dataId != 0) {
                 candidateViewModel.swipeData(dataId, user[empSpinner.selectedItemId.toInt()].id)
                 observerRes()
             }
@@ -273,7 +279,7 @@ class RawDataDetActivity : AppCompatActivity() {
                         edtMobNo.text.toString(),
                         alterEdtMobNo.text.toString()
                     )
-observerRes()
+                    observerRes()
 
                 } else
                     Toast.makeText(this, "Please insert mobile no correctly.", Toast.LENGTH_SHORT)
@@ -301,14 +307,18 @@ observerRes()
     }
 
     private fun observerRes() {
-        candidateViewModel.stringResData.observe(this){
+        candidateViewModel.stringResData.observe(this) {
             binding.progressbar.visibility = View.GONE
-            when(it)
-            {
+            when (it) {
                 is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
-                is NetworkResult.Error -> Toast.makeText(this,it.message.toString(),Toast.LENGTH_SHORT).show()
-                is NetworkResult.Success ->{
-                    Toast.makeText(this,"Data Update Successfully.",Toast.LENGTH_SHORT).show()
+                is NetworkResult.Error -> Toast.makeText(
+                    this,
+                    it.message.toString(),
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                is NetworkResult.Success -> {
+                    Toast.makeText(this, "Data Update Successfully.", Toast.LENGTH_SHORT).show()
                     this.finish()
                 }
             }
@@ -318,9 +328,15 @@ observerRes()
     private fun setComment() {
         try {
             //Get Call Time
-            Log.d(TAG,data.toString())
+            Log.d(TAG, data.toString())
             var callTime = "0"
-            val managedCursor: Cursor? =this.contentResolver.query(CallLog.Calls.CONTENT_URI, null, null, null, CallLog.Calls.DATE + " DESC")
+            val managedCursor: Cursor? = this.contentResolver.query(
+                CallLog.Calls.CONTENT_URI,
+                null,
+                null,
+                null,
+                CallLog.Calls.DATE + " DESC"
+            )
 
 
             val number = managedCursor!!.getColumnIndex(CallLog.Calls.NUMBER)
@@ -330,14 +346,15 @@ observerRes()
 
 
             managedCursor.moveToNext()
-            
 
-            while (managedCursor.getString(type) == CallLog.Calls.MISSED_TYPE.toString() || managedCursor.getString(type) == CallLog.Calls.REJECTED_TYPE.toString()) {
+
+            while (managedCursor.getString(type) == CallLog.Calls.MISSED_TYPE.toString() || managedCursor.getString(
+                    type
+                ) == CallLog.Calls.REJECTED_TYPE.toString()
+            ) {
 
                 managedCursor.moveToNext()
             }
-
-
 
 
             var candNo = ""
@@ -345,12 +362,11 @@ observerRes()
 
                 candNo = managedCursor.getString(number).replace("+91", "")
 
-                if (data!!.mob_no.contains(candNo) || data!!.altenate_mobno!!.contains(candNo) ) {
+                if (data!!.mob_no.contains(candNo) || data!!.altenate_mobno!!.contains(candNo)) {
                     callTime = managedCursor.getInt(duration).toString()
                 }
 
             }
-
 
 
             //Message Box After Click on Comment Button
@@ -378,11 +394,11 @@ observerRes()
             prospectText.textSize = 20F
             prospectText.setTextColor(getColor(R.color.black))
             layout.addView(prospectText)
-            var prosType :Array<String>
-            if(data!!.prospect_type =="Hot" || data!!.prospect_type =="Warm" || data!!.prospect_type =="Admission")
-             prosType = arrayOf("Warm", "Hot", "Cold",  "Admission")
+            var prosType: Array<String>
+            if (data!!.prospect_type == "Hot" || data!!.prospect_type == "Warm" || data!!.prospect_type == "Admission")
+                prosType = arrayOf("Warm", "Hot", "Cold", "Admission")
             else
-             prosType = arrayOf("Warm", "Hot", "Cold", "Not Responding", "Admission")
+                prosType = arrayOf("Warm", "Hot", "Cold", "Not Responding", "Admission")
             val prospectSpinner = Spinner(this)
             val adapters = ArrayAdapter<String>(
                 this,
@@ -397,16 +413,33 @@ observerRes()
             prospectLevelText.textSize = 20F
             prospectLevelText.setTextColor(getColor(R.color.black))
             layout.addView(prospectLevelText)
-            var prospectLevel :Array<String>
+            var prospectLevel: Array<String>
             if (tokenManger.getUserType().toString() != "Employee")
-                prospectLevel = arrayOf("NA","Coming for visit","Visited","Demo","Not Interested","Information on call","Will Join/Inform","Admission")
+                prospectLevel = arrayOf(
+                    "NA",
+                    "Coming for visit",
+                    "Visited",
+                    "Demo",
+                    "Not Interested",
+                    "Information on call",
+                    "Will Join/Inform",
+                    "Admission"
+                )
             else
-                prospectLevel = arrayOf("NA","Coming for visit","Demo","Not Interested","Information on call","Will Join/Inform")
+                prospectLevel = arrayOf(
+                    "NA",
+                    "Coming for visit",
+                    "Visited",
+                    "Demo",
+                    "Not Interested",
+                    "Information on call",
+                    "Will Join/Inform"
+                )
             val prospectLevelSpinner = Spinner(this)
-             val prosAdapters = ArrayAdapter<String>(
+            val prosAdapters = ArrayAdapter<String>(
                 this,
                 R.layout.select_dialog_item,
-                 prospectLevel
+                prospectLevel
             )
             prospectLevelSpinner.adapter = prosAdapters
             layout.addView(prospectLevelSpinner)
@@ -497,9 +530,19 @@ observerRes()
             layout.addView(marketingText)
 
 
-
-            val tempType = arrayOf("Null","Address & Location", "Syllabus", "Fee Structure",
-                "Not Responding", "Demo", "Admission", "Admission Not Responding", "Candidate Place List", "9", "10" )
+            val tempType = arrayOf(
+                "Null",
+                "Address & Location",
+                "Syllabus",
+                "Fee Structure",
+                "Not Responding",
+                "Demo",
+                "Admission",
+                "Admission Not Responding",
+                "Candidate Place List",
+                "9",
+                "10"
+            )
             val tempSpinner = Spinner(this)
             val adapterss = ArrayAdapter<String>(
                 this,
@@ -523,7 +566,10 @@ observerRes()
                                 1
                             else
                                 0
-                        if (prospectSpinner.selectedItem.toString() == "Not Responding" || RemarkEditText.text.contains("Not Responding"))
+                        if (prospectSpinner.selectedItem.toString() == "Not Responding" || RemarkEditText.text.contains(
+                                "Not Responding"
+                            )
+                        )
                             callTime = "30"
 
                         submitData(
@@ -532,7 +578,10 @@ observerRes()
                             RemarkEditText.text.toString(),
                             letterDate.text.toString(),
                             tempType.indexOf(tempSpinner.selectedItem.toString()).toString(),
-                             update,data!!.mob_no.toString(),data!!.altenate_mobno.toString(),prospectLevelSpinner.selectedItem.toString()
+                            update,
+                            data!!.mob_no.toString(),
+                            data!!.altenate_mobno.toString(),
+                            prospectLevelSpinner.selectedItem.toString()
                         )
                     }
                 } catch (e: Exception) {
@@ -559,15 +608,17 @@ observerRes()
 
             val lastData = tokenManger.getLastCommentDet()
 
-           if(callTime == lastData["call_time"]  && data!!.mob_no == lastData["mob_no"])
-           {
-               if(callTime=="0")
-                   alertDialog.show()
-               else
-                   Toast.makeText(applicationContext,"Comment already submitted on this call.",Toast.LENGTH_SHORT).show()
-           }
-           else
-            alertDialog.show()
+            if (callTime == lastData["call_time"] && data!!.mob_no == lastData["mob_no"]) {
+                if (callTime == "0")
+                    alertDialog.show()
+                else
+                    Toast.makeText(
+                        applicationContext,
+                        "Comment already submitted on this call.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+            } else
+                alertDialog.show()
 
 
         } catch (e: Exception) {
@@ -592,7 +643,7 @@ observerRes()
                 remark,
                 folloupDate,
                 selectedItem,
-                dataId.toString(), update,mobNo,alternateMob,prosLevel
+                dataId.toString(), update, mobNo, alternateMob, prosLevel
             )
             candidateViewModel.stringResData.observe(this)
             {
@@ -614,7 +665,7 @@ observerRes()
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        tokenManger.saveLastCommentDet(mobNo,callTime)
+                        tokenManger.saveLastCommentDet(mobNo, callTime)
 //                        val intent = Intent(this, RawDataDetActivity::class.java)
 //                        startActivity(intent)
 //                        this.finishAffinity()

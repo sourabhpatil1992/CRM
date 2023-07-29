@@ -34,10 +34,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".userledger.DataTransActivity"
+            android:name=".userledger.UserReport"
             android:exported="false" />
         <activity
-            android:name=".whatsTemp.UserReportActivity"
+            android:name=".userledger.DataTransActivity"
             android:exported="false" />
         <activity
             android:name=".userledger.WhatsAppActivity"

@@ -657,4 +657,17 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
             Log.d(TAG, "Error in CandidateViewModel.kt dataTransfer() is " + e.message)
         }
     }
+
+    val userReportListResLiveData : LiveData<NetworkResult<List<UserReportData>>>
+        get() = userRepository.userReportListResLiveData
+    fun getUserReport(userId: Int, toDate: String, fromDate: String) {
+        try {
+            viewModelScope.launch {
+                userRepository.getUserReport(userId, toDate, fromDate)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getUserReport() is " + e.message)
+        }
+
+    }
 }

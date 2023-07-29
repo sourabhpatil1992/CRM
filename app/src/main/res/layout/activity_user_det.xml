@@ -128,7 +128,7 @@
 
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/candidateManagement"
+                    android:id="@+id/userReport"
                     android:layout_width="0dp"
                     android:layout_height="135dp"
                     android:layout_gravity="center"

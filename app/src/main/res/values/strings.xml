@@ -46,6 +46,7 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="title_activity_data">DataActivity</string>
+    <string name="title_activity_user_report">UserReportActivity</string>
 
 
 </resources>

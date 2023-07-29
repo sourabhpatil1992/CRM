@@ -37,6 +37,12 @@ class UserDetActivity : AppCompatActivity()
             intent.putExtra("userName",user.user_name)
             startActivity(intent)
         }
+        binding.userReport.setOnClickListener {
+            val intent = Intent(this, UserReport::class.java)
+            intent.putExtra("userId",user.id)
+            intent.putExtra("userName",user.user_name)
+            startActivity(intent)
+        }
 
     }
 

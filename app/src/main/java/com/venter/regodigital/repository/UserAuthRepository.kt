@@ -1430,5 +1430,35 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
     }
 
+    private val _userReportListResLiveData = MutableLiveData<NetworkResult<List<UserReportData>>>()
+    val userReportListResLiveData : LiveData<NetworkResult<List<UserReportData>>>
+        get() = _userReportListResLiveData
+    suspend fun getUserReport(userId: Int, toDate: String, fromDate: String) {
+        try {
+            _userReportListResLiveData.postValue(NetworkResult.Loading())
+
+            val response = userApi.getUserReport(userId, toDate, fromDate)
+            if (response.isSuccessful && response.body() != null) {
+
+                _userReportListResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _userReportListResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _userReportListResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+        }
+        catch (e:Exception)
+        {
+
+            Log.d(TAG, "Error in UserAuthRepository.kt getUserReport() is " + e.message)
+
+        }
+    }
+
 
 }

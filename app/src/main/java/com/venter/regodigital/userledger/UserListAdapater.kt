@@ -10,12 +10,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
-import com.venter.regodigital.Candidate.CandidateCertificate
-import com.venter.regodigital.Candidate.CandidateListAdapter
-import com.venter.regodigital.R
-import com.venter.regodigital.databinding.LayoutCandidatelistBinding
+
 import com.venter.regodigital.databinding.LayoutUserlistBinding
-import com.venter.regodigital.models.CandidateList
+
 import com.venter.regodigital.models.UserListRes
 import com.venter.regodigital.utils.Constans
 
@@ -109,3 +106,4 @@ class UserListAdapate(val cnt: Context, val statusUser: statusUser) :
 interface statusUser {
     fun changeUserStatus(userId: Int, status: Int)
 }
+

@@ -252,6 +252,8 @@ interface UserAuthApi {
 
     @POST("/userManagement/dataSwipe")
     suspend fun swipeData(@Query("dataId")dataId: Int, @Query("userId")userId: Int): Response<String>
+    @POST("/userManagement/getUserReport")
+    suspend fun getUserReport(@Query("userID")userId: Int, @Query("toDate")toDate: String, @Query("fromDate")fromDate: String):Response<List<UserReportData>>
 
 
 }
