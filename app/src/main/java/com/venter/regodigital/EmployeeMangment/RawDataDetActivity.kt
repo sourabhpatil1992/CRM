@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
 import android.provider.CallLog
 import android.text.InputFilter
@@ -20,6 +21,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.venter.regodigital.databinding.ActivityRawDataDetBinding
 import com.venter.regodigital.models.RawCandidateData
+import com.venter.regodigital.models.UserList
 import com.venter.regodigital.utils.Constans.TAG
 import com.venter.regodigital.utils.NetworkResult
 import com.venter.regodigital.utils.TokenManger
@@ -29,6 +31,7 @@ import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
@@ -52,6 +55,11 @@ class RawDataDetActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityRawDataDetBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.editTransfer.visibility =  if(tokenManger.getUserType()!="Employee")
+              View.VISIBLE
+        else
+            View.GONE
 
         dataId = intent.getIntExtra("rawDataId", 0)
 
@@ -143,6 +151,84 @@ class RawDataDetActivity : AppCompatActivity() {
             editAction()
         }
 
+        binding.editTransfer.setOnClickListener {
+            dataTransfer()
+        }
+
+    }
+
+    private fun dataTransfer() {
+        try {
+            candidateViewModel.getEmpListRawData()
+            candidateViewModel.userListLiveData.observe(this)
+            {
+                binding.progressbar.visibility = View.GONE
+                when(it)
+                {
+                    is NetworkResult.Loading ->{binding.progressbar.visibility = View.VISIBLE}
+                    is NetworkResult.Error -> Toast.makeText(this, it.message.toString(), Toast.LENGTH_SHORT).show()
+                    is NetworkResult.Success ->{
+                        setTransferAlertBox(it.data!!)
+
+                    }
+                }
+
+            }
+            binding.progressbar.visibility
+        }
+        catch (e:Exception)
+        {
+            Log.d(TAG,"Error in RawDataDetActivity.kt dataTransfer() is ${e.message}")
+        }
+    }
+
+    private fun setTransferAlertBox(user: List<UserList>) {
+
+        // Create Alert Box for the transfer candidate from one emp to other by Tl or admin
+        val empList: List<String> = user.map { it.user_name }
+
+
+        val empSpinner = Spinner(this)
+
+        val adapters = ArrayAdapter<String>(
+            this,
+            R.layout.select_dialog_item,
+            empList
+        )
+        empSpinner.adapter = adapters
+        val builders = AlertDialog.Builder(this)
+        builders.setTitle("Candidate Comment")
+        val layout = LinearLayout(this)
+        layout.orientation = LinearLayout.VERTICAL
+        layout.setPadding(20, 20, 20, 20)
+        layout.addView(empSpinner)
+
+        builders.setPositiveButton("Submit") { _, _ ->
+            Log.d(TAG,user[empSpinner.selectedItemId.toInt()].toString())
+
+            if(dataId !=0) {
+                candidateViewModel.swipeData(dataId, user[empSpinner.selectedItemId.toInt()].id)
+                observerRes()
+            }
+
+
+        }
+        builders.setNegativeButton("Cancel") { _, _ ->
+
+        }
+
+        builders.setView(layout)
+        builders.setIcon(
+            ContextCompat.getDrawable(
+                this,
+                com.venter.regodigital.R.drawable.regologo
+            )
+        )
+        val alertDialog: AlertDialog = builders.create()
+        alertDialog.setCancelable(true)
+        alertDialog.show()
+
+
     }
 
     private fun editAction() {
@@ -187,19 +273,8 @@ class RawDataDetActivity : AppCompatActivity() {
                         edtMobNo.text.toString(),
                         alterEdtMobNo.text.toString()
                     )
+observerRes()
 
-                    candidateViewModel.stringResData.observe(this){
-                        binding.progressbar.visibility = View.GONE
-                        when(it)
-                        {
-                            is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
-                            is NetworkResult.Error -> Toast.makeText(this,it.message.toString(),Toast.LENGTH_SHORT).show()
-                            is NetworkResult.Success ->{
-                                Toast.makeText(this,"Data Update Successfully.",Toast.LENGTH_SHORT).show()
-                                this.finish()
-                            }
-                        }
-                    }
                 } else
                     Toast.makeText(this, "Please insert mobile no correctly.", Toast.LENGTH_SHORT)
                         .show()
@@ -225,9 +300,25 @@ class RawDataDetActivity : AppCompatActivity() {
         }
     }
 
+    private fun observerRes() {
+        candidateViewModel.stringResData.observe(this){
+            binding.progressbar.visibility = View.GONE
+            when(it)
+            {
+                is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
+                is NetworkResult.Error -> Toast.makeText(this,it.message.toString(),Toast.LENGTH_SHORT).show()
+                is NetworkResult.Success ->{
+                    Toast.makeText(this,"Data Update Successfully.",Toast.LENGTH_SHORT).show()
+                    this.finish()
+                }
+            }
+        }
+    }
+
     private fun setComment() {
         try {
             //Get Call Time
+            Log.d(TAG,data.toString())
             var callTime = "0"
             val managedCursor: Cursor? =this.contentResolver.query(CallLog.Calls.CONTENT_URI, null, null, null, CallLog.Calls.DATE + " DESC")
 
@@ -254,7 +345,7 @@ class RawDataDetActivity : AppCompatActivity() {
 
                 candNo = managedCursor.getString(number).replace("+91", "")
 
-                if (data!!.mob_no.contains(candNo) ) {
+                if (data!!.mob_no.contains(candNo) || data!!.altenate_mobno!!.contains(candNo) ) {
                     callTime = managedCursor.getInt(duration).toString()
                 }
 

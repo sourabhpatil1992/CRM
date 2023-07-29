@@ -80,6 +80,8 @@ class EmpProsFragement : Fragment(), chkListner {
                 rawList.forEach {
                     it.srNo = srNo++
                 }
+                adapter.submitList(null)
+                adapter.notifyDataSetChanged()
                 adapter.submitList(rawList)
                 adapter.notifyDataSetChanged();
                 //binding.rcCandidate.layoutManager =
@@ -87,6 +89,12 @@ class EmpProsFragement : Fragment(), chkListner {
                // binding.rcCandidate.adapter = adapter
 
                 binding.linviewFilter.visibility = View.GONE
+            }
+            else
+            {
+                adapter.submitList(null)
+                adapter.notifyDataSetChanged()
+
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in EmpProsFrgmanrt.kt filterResult() is " + e.message)
@@ -274,11 +282,13 @@ class EmpProsFragement : Fragment(), chkListner {
                         is NetworkResult.Error -> {
                             Toast.makeText(context, it.message.toString(), Toast.LENGTH_SHORT)
                                 .show()
+                            showDataList = ArrayList()
                             showDataList = othersProsDataList
                             filterResult()
                         }
                         is NetworkResult.Success -> {
                             othersProsDataList = (it.data as ArrayList<RawDataList>?)!!
+                            showDataList = ArrayList()
                             showDataList = othersProsDataList
                             filterResult()
                         }

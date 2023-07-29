@@ -1403,5 +1403,32 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
     }
 
+    suspend fun swipeData(dataId: Int, userId: Int) {
+        try {
+            _stringResLiveData.postValue(NetworkResult.Loading())
+
+            val response = userApi.swipeData(dataId,userId)
+            if (response.isSuccessful && response.body() != null) {
+
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+        }
+        catch (e:Exception)
+        {
+
+            Log.d(TAG, "Error in UserAuthRepository.kt swipeData() is " + e.message)
+
+        }
+    }
+
 
 }

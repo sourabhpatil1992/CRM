@@ -51,6 +51,19 @@
         android:clickable="true"
         app:srcCompat="@drawable/whatslogo" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/editTransfer"
+        android:contentDescription="Edit Candidate Details"
+        android:layout_above="@+id/linButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="140dp"
+        android:layout_weight="1"
+        app:rippleColor="@color/white"
+        android:clickable="true"
+        app:srcCompat="@drawable/baseline_forward_to_inbox_24" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/editButton"
         android:contentDescription="Edit Candidate Details"
         android:layout_above="@+id/linButtons"

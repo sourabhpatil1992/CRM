@@ -250,5 +250,8 @@ interface UserAuthApi {
         @Query("raw")raw: Int
     ): Response<String>
 
+    @POST("/userManagement/dataSwipe")
+    suspend fun swipeData(@Query("dataId")dataId: Int, @Query("userId")userId: Int): Response<String>
+
 
 }

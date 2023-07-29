@@ -647,4 +647,14 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         }
 
     }
+
+    fun swipeData(dataId: Int, userId: Int) {
+        try {
+            viewModelScope.launch {
+                userRepository.swipeData(dataId,userId)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt dataTransfer() is " + e.message)
+        }
+    }
 }
