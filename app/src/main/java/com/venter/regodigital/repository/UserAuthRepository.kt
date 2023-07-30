@@ -175,7 +175,8 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         effectiveDate: String,
         jobPosition: String,
         newPackage: String,
-        stamp: Boolean
+        stamp: Boolean,
+        varAmt: String
     ) {
         try {
             _stringResLiveData.postValue(NetworkResult.Loading())
@@ -185,7 +186,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
                 effectiveDate,
                 jobPosition,
                 newPackage,
-                stamp
+                stamp,varAmt
             )
 
             if (response.isSuccessful && response.body() != null) {
@@ -1457,6 +1458,55 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
 
             Log.d(TAG, "Error in UserAuthRepository.kt getUserReport() is " + e.message)
 
+        }
+    }
+
+    suspend fun delAcc(id: Int) {
+        try {
+            _stringResLiveData.postValue(NetworkResult.Loading())
+
+            val response = userApi.delAcc(id)
+            if (response.isSuccessful && response.body() != null) {
+
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+        }
+        catch (e:Exception)
+        {
+
+            Log.d(TAG, "Error in UserAuthRepository.kt delAcc() is " + e.message)
+
+        }
+    }
+
+   private  val _hikeLettersLiveData =MutableLiveData<NetworkResult<List<HikeLetterDet>>>()
+    val hikeLettersLiveData :LiveData<NetworkResult<List<HikeLetterDet>>>
+        get() = _hikeLettersLiveData
+    suspend fun getHikeLetterList(cId: Int) {
+        try {
+            _hikeLettersLiveData.postValue(NetworkResult.Loading())
+            val response = userApi.getHikeLetterList(cId)
+            if (response.isSuccessful && response.body() != null) {
+                _hikeLettersLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+                _hikeLettersLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+                _hikeLettersLiveData.postValue(NetworkResult.Error("Something Went Wrong."))
+            }
+        }
+        catch (e:Exception)
+        {
+            Log.d(TAG,"Error in UserAuthRepository.ke getHikeLetterList() is ${e.message}")
         }
     }
 

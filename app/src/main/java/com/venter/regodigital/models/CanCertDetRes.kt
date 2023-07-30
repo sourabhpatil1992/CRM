@@ -29,6 +29,7 @@ data class CanCertDetRes(
     val newPosition: String?,
     val newPackage: String?,
     val hikeStamp:Int,
+    val hikeVari:Int =0,
 
 
     val last_date: String?,

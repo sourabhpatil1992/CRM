@@ -45,7 +45,8 @@ interface UserAuthApi {
         @Query("effectiveDate") effectiveDate: String,
         @Query("jobPosition") jobPosition: String,
         @Query("newPackage") newPackage: String,
-        @Query("stamp") stamp: Boolean
+        @Query("stamp") stamp: Boolean,
+        @Query("varAmt") varAmt: String
     ): Response<String>
 
     @POST("/candidateApi/printExperienceLetter")
@@ -108,7 +109,8 @@ interface UserAuthApi {
     @POST("/candidateApi/getSalarySlips")
     suspend fun getSalaryList(@Query("cId")cId: Int): Response<List<SalarySlipDet>>
 
-
+    @POST("/candidateApi/getHikeLetterList")
+    suspend fun getHikeLetterList(@Query("cId")cId: Int):Response<List<HikeLetterDet>>
     //Candidate Fee Api
 
     @POST("/candidateFeeApi/feeList")
@@ -254,6 +256,9 @@ interface UserAuthApi {
     suspend fun swipeData(@Query("dataId")dataId: Int, @Query("userId")userId: Int): Response<String>
     @POST("/userManagement/getUserReport")
     suspend fun getUserReport(@Query("userID")userId: Int, @Query("toDate")toDate: String, @Query("fromDate")fromDate: String):Response<List<UserReportData>>
+    @POST("/userManagement/delAccount")
+    suspend fun delAcc(@Query("id")id: Int): Response<String>
+
 
 
 }

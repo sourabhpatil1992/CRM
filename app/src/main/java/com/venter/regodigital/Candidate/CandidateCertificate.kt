@@ -341,6 +341,15 @@ class CandidateCertificate : AppCompatActivity() {
             newPackageText.setTextColor(resources.getColor(R.color.black))
             newPackageText.setText("New Package")
 
+            val variText = TextView(this)
+            variText.setText("Variable Amount")
+            variText.setTextColor(resources.getColor(R.color.black))
+            val vari = EditText(this)
+            vari.filters = arrayOf(InputFilter.LengthFilter(6))
+            vari.setHint("Variable Amount")
+            vari.setText("0")
+            vari.inputType = 2
+
             val rdoGrp: RadioGroup = RadioGroup(this)
             val withStamp: RadioButton = RadioButton(this)
             withStamp.setText("With Stamp")
@@ -368,6 +377,8 @@ class CandidateCertificate : AppCompatActivity() {
             layout.addView(jobPosition)
             layout.addView(newPackageText)
             layout.addView(newPackage)
+            layout.addView(variText)
+            layout.addView(vari)
             layout.addView(rdoGrp)
 
             withStamp.isChecked = true
@@ -375,7 +386,9 @@ class CandidateCertificate : AppCompatActivity() {
 
             builders.setPositiveButton("Create") { dialogInterface, which ->
 
-                if (letterDate.text.toString().length == 10 && effectDate.text.length == 10 && jobPosition.text.isNotEmpty() && newPackage.text.isNotEmpty()) {
+                if (letterDate.text.toString().length == 10 && effectDate.text.length == 10 &&
+                    jobPosition.text.isNotEmpty() && newPackage.text.isNotEmpty() && vari.text.isNotEmpty()
+                ) {
                     val dateFormat = SimpleDateFormat("dd-MM-yyyy")
                     dateFormat.setLenient(false)
                     try {
@@ -387,7 +400,8 @@ class CandidateCertificate : AppCompatActivity() {
                             effectDate.text.toString(),
                             jobPosition.text.toString(),
                             newPackage.text.toString(),
-                            withStamp.isChecked
+                            withStamp.isChecked,
+                            vari.text.toString()
                         )
                         serverRes("Hike")
                     } catch (e: Exception) {

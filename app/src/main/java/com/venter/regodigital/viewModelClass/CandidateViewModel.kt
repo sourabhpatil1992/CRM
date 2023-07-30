@@ -96,7 +96,8 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         effectiveDate: String,
         jobPosition: String,
         newPackage: String,
-        stamp: Boolean
+        stamp: Boolean,
+        varAmt: String
     ) {
         try {
             viewModelScope.launch {
@@ -106,7 +107,7 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
                     effectiveDate,
                     jobPosition,
                     newPackage,
-                    stamp
+                    stamp,varAmt
                 )
             }
         } catch (e: Exception) {
@@ -669,5 +670,28 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
             Log.d(TAG, "Error in CandidateViewModel.kt getUserReport() is " + e.message)
         }
 
+    }
+
+    fun delAcc(id: Int) {
+        try {
+            viewModelScope.launch {
+                userRepository.delAcc(id)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt delAcc() is " + e.message)
+        }
+    }
+
+
+    val hikeLetterListResLiveData : LiveData<NetworkResult<List<HikeLetterDet>>>
+        get() = userRepository.hikeLettersLiveData
+    fun getHikeLetterList(cId: Int) {
+        try {
+            viewModelScope.launch {
+                userRepository.getHikeLetterList(cId)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getHikeLetterList() is " + e.message)
+        }
     }
 }

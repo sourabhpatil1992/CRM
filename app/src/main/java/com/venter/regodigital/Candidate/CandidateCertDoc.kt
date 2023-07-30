@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.venter.regodigital.databinding.FragmentCandidateCertDocBinding
 import com.venter.regodigital.models.CanCertDetRes
+import com.venter.regodigital.models.HikeLetterDet
 import com.venter.regodigital.models.SalarySlipDet
 import com.venter.regodigital.utils.Constans
 import com.venter.regodigital.utils.Constans.TAG
@@ -36,6 +37,7 @@ class CandidateCertDoc : Fragment(), onClick {
     private lateinit var act: CandidateDoc
 
     private lateinit var salaryList: ArrayList<SalarySlipDet>
+    private lateinit var hikeLetterList: ArrayList<HikeLetterDet>
     private var candidateId: String? = null
 
     private val candidateViewModel by viewModels<CandidateViewModel>()
@@ -62,8 +64,8 @@ class CandidateCertDoc : Fragment(), onClick {
                 docArray.add("${data.first_name} ${data.last_name} Offer Letter")
             if (data.expletter_date != null)
                 docArray.add("${data.first_name} ${data.last_name} Experience Letter")
-            if (data.hikeletter_date != null)
-                docArray.add("${data.first_name} ${data.last_name} Hike Letter")
+           // if (data.hikeletter_date != null)
+             //   docArray.add("${data.first_name} ${data.last_name} Hike Letter")
             if (data.internletterDate != null)
                 docArray.add("${data.first_name} ${data.last_name} Internship Letter")
             if (data.icertDate != null)
@@ -83,6 +85,29 @@ class CandidateCertDoc : Fragment(), onClick {
                         salaryList = it.data as ArrayList<SalarySlipDet>
                         salaryList.forEach {
                             docArray.add("${data.first_name} ${data.last_name} ${it.salaryMonth.toString()} ${it.salaryYear}")
+                        }
+                        adapter.submitList(docArray)
+                        binding.rcView.layoutManager =
+                            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                        binding.rcView.adapter = adapter
+                    }
+                }
+            }
+
+            candidateViewModel.getHikeLetterList(candidateId!!.toInt())
+            candidateViewModel.hikeLetterListResLiveData.observe(viewLifecycleOwner)
+            { it ->
+                when(it)
+                {
+                    is NetworkResult.Loading -> {}
+                    is NetworkResult.Error -> {
+                        Toast.makeText(requireContext(), it.message.toString(), Toast.LENGTH_SHORT).show()}
+                    is NetworkResult.Success -> {
+                        hikeLetterList = ArrayList()
+                        hikeLetterList = (it.data as ArrayList<HikeLetterDet>?)!!
+                        val hikeList = hikeLetterList.map {"${data.first_name} ${data.last_name}  ${it.newPosition} Hike Letter" }
+                        hikeList.forEach{list->
+                            docArray.add(list)
                         }
                         adapter.submitList(docArray)
                         binding.rcView.layoutManager =
@@ -144,7 +169,7 @@ class CandidateCertDoc : Fragment(), onClick {
                 val stamp = data.offerStamp == 1
                 candidateViewModel.printOfferLetter(
                     candidateId!!.toInt(), data.offerletter_outward.toString(),
-                    data.offerletter_date.toString(), stamp, 0
+                    data.offerletter_date.toString(), stamp, data.offerVari
                 )
                 serverRes("Offer")
             }
@@ -166,9 +191,10 @@ class CandidateCertDoc : Fragment(), onClick {
                     candidateId.toString(),
                     data.hikeletter_date.toString(),
                     data.effective_date.toString(),
-                   data.newPosition.toString(),
+                    data.newPosition.toString(),
                     data.newPackage.toString(),
-                   stamp
+                    stamp,
+                    "0"
                 )
                 serverRes("Hike")
             }
