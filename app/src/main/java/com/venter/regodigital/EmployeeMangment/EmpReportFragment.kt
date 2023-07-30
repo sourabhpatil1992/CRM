@@ -154,7 +154,7 @@ class EmpReportFragment : Fragment() {
             //Set The Manual Data
             binding.txtTotalCall.text = data.totalCall.toString()
             binding.txtTotalAdmi.text = data.admissions.toString()
-            binding.txtTotalProspect.text = data.prospects.toString()
+            binding.txtTotalProspect.text = "${data.prospects} + ${data.tprospects}"
             binding.txtTotalTime.text = times
 
 
@@ -163,7 +163,7 @@ class EmpReportFragment : Fragment() {
             {
                 binding.txtTodaysCall.text = data.totalCall.toString()
                 binding.txtTodaysAds.text = data.admissions.toString()
-                binding.txtTodayPros.text = data.prospects.toString()
+                binding.txtTodayPros.text = "${data.prospects} + ${data.tprospects}"//data.prospects.toString()
                 binding.txtTodaysTime.text = times
             }
 

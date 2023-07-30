@@ -33,7 +33,11 @@ class ColdDataFragment : Fragment(), chkListner {
     private var offset = 0
     private lateinit var dataList: ArrayList<RawDataList>
 
-    private var isScrolled: Boolean = false
+    private var isLoading = false
+    private var isLastPage = false
+    private var currentPage = 1
+
+    private var srNo = 1
 
     @Inject
     lateinit var tokenManger: TokenManger
@@ -57,19 +61,6 @@ class ColdDataFragment : Fragment(), chkListner {
         binding.floatingRefreshButton.setOnClickListener {
             refreshData()
         }
-
-        binding.rcCandidate.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                isScrolled = true
-            }
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-
-            }
-        })
 
 
 
@@ -120,20 +111,52 @@ class ColdDataFragment : Fragment(), chkListner {
         val layoutManager = LinearLayoutManager(context)
         if (data.size > 0) {
             var cnt = dataList.size
+
             data.forEach {
-                cnt++
-                it.srNo = cnt
+                it.srNo = srNo++
                 dataList.add(it)
             }
+           // data.map {  }
 
+            adapter.submitList(null)
+            adapter.notifyDataSetChanged()
             adapter.submitList(dataList)
 
             binding.rcCandidate.layoutManager = layoutManager
             binding.rcCandidate.adapter = adapter
+            setRescyclerView()
         }
 
 
     }
+
+    private fun setRescyclerView() {
+        val layoutManager = LinearLayoutManager(requireContext())
+        binding.rcCandidate.layoutManager = layoutManager
+        binding.rcCandidate.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+
+                if (!isLoading && !isLastPage) {
+                    if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+                        && firstVisibleItemPosition >= 0
+                    ) {
+
+                        // Load more data here
+                        offset +=100
+                        candidateViewModel.getAllRawData(offset)
+                        getData()
+                    }
+                }
+
+            }
+        })
+    }
+
 
 
 }

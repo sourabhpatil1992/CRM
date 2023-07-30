@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.venter.regodigital.databinding.ActivityRawDataBinding
 import com.venter.regodigital.models.RawDataList
@@ -28,7 +30,13 @@ class RawDataActivity : AppCompatActivity(),chkListner {
     @Inject
     lateinit var tokenManger: TokenManger
 
+    private var srNo = 1
+    private var offset = 0
     private val candidateViewModel by viewModels<CandidateViewModel>()
+
+    private var isLoading = false
+    private var isLastPage = false
+    private var currentPage = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,12 +44,22 @@ class RawDataActivity : AppCompatActivity(),chkListner {
         setContentView(binding.root)
 
         rawList = ArrayList()
+
+
         adapter = RawDataListAdapter(this,this,true, empType = tokenManger.getUserType().toString())
+
+        adapter.submitList(null)
+        val layoutManager = LinearLayoutManager(this)
+        binding.rcCandidate.layoutManager = layoutManager
+//                        binding.rcCandidate.layoutManager =
+//                            StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+        binding.rcCandidate.adapter = adapter
 
         binding.floatingActionButton.setOnClickListener {
            addData()
         }
-        
+
+        candidateViewModel.getAllRawData(offset)
         showData()
 
         binding.floatingDelButton.setOnClickListener {
@@ -50,6 +68,36 @@ class RawDataActivity : AppCompatActivity(),chkListner {
                 deleteRawData()
             }
         }
+
+
+
+
+    }
+
+    private fun setRescyclerView() {
+        val layoutManager = LinearLayoutManager(this)
+        binding.rcCandidate.layoutManager = layoutManager
+        binding.rcCandidate.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+
+                if (!isLoading && !isLastPage) {
+                    if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+                        && firstVisibleItemPosition >= 0
+                    ) {
+
+                        // Load more data here
+                        candidateViewModel.getAllRawData(offset)
+                        showData()
+                    }
+                }
+
+            }
+        })
     }
 
     override fun onDestroy() {
@@ -67,7 +115,7 @@ class RawDataActivity : AppCompatActivity(),chkListner {
                 is NetworkResult.Error -> Toast.makeText(this,it.message.toString(),Toast.LENGTH_SHORT).show()
                 is NetworkResult.Success ->{
                     Toast.makeText(this,"Data Added successfully.",Toast.LENGTH_SHORT).show()
-                    showData()
+
                 }
             }
 
@@ -78,26 +126,40 @@ class RawDataActivity : AppCompatActivity(),chkListner {
     {
         try{
 
-            candidateViewModel.getAllRawData()
-            val dataObserver = candidateViewModel.allrawDataListResLiveData.observe(this)
+
+            candidateViewModel.allrawDataListResLiveData.observe(this)
             {
                 binding.progressbar.visibility = View.GONE
                 when(it){
                     is NetworkResult.Loading ->binding.progressbar.visibility = View.VISIBLE
                     is NetworkResult.Error -> Toast.makeText(this,it.message.toString(),Toast.LENGTH_SHORT).show()
                     is NetworkResult.Success ->{
-                        rawList = (it.data as ArrayList<RawDataList>)!!
+                        val firstVisiblePosition = (binding.rcCandidate.layoutManager as LinearLayoutManager)
+                            .findFirstVisibleItemPosition()
+                        val rList = (it.data as ArrayList<RawDataList>)
+                        offset+=100
                         var srNo = 1
-                        rawList.forEach{
-                            it.srNo = srNo++
+                        val oldItemCount = rawList.size
+                        rList.forEach{can->
+                            can.srNo = srNo++
+
                         }
+                        rawList.addAll(rList)
+
+
+
+                        adapter.submitList(null)
+                        adapter.notifyDataSetChanged()
                         adapter.submitList(rawList)
-                        binding.rcCandidate.layoutManager =
-                            StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-                        binding.rcCandidate.adapter = adapter
-                      
+                        //adapter.notifyDataSetChanged()
+                        adapter.notifyItemRangeInserted(oldItemCount, rawList.size)
+                        binding.rcCandidate.layoutManager?.scrollToPosition(firstVisiblePosition)
+
+                        isLoading = false
+                        setRescyclerView()
                     }
                 }
+
 
 
             }
@@ -127,12 +189,12 @@ class RawDataActivity : AppCompatActivity(),chkListner {
                         is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
                         is NetworkResult.Error -> {
                             Toast.makeText(this, it.message.toString(), Toast.LENGTH_SHORT).show()
-                            showData()
+                            //showData()
                         }
                         is NetworkResult.Success -> {
                             Toast.makeText(this, "Data Removed successfully.", Toast.LENGTH_SHORT)
                                 .show()
-                            showData()
+                            //showData()
                         }
                     }
                 }

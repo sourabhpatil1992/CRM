@@ -786,11 +786,11 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
     val allrawDataListResLiveData: LiveData<NetworkResult<List<RawDataList>>>
         get() = _allrawDataListResLiveData
 
-    suspend fun getAllRawData() {
+    suspend fun getAllRawData(offset: Int) {
         try {
             _allrawDataListResLiveData.postValue(NetworkResult.Loading())
             val response =
-                userApi.getAllRawData()
+                userApi.getAllRawData(offset)
 
             if (response.isSuccessful && response.body() != null) {
 
@@ -833,6 +833,31 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
 
         } catch (e: Exception) {
             Log.d(TAG, "Error in UserAuthRepository.kt getEmpRaw() is " + e.message)
+        }
+    }
+
+    suspend fun getEmpSearchData(serach: String) {
+        try {
+            _allrawDataListResLiveData.postValue(NetworkResult.Loading())
+            val response =
+                userApi.getEmpSearchData(serach)
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _allrawDataListResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _allrawDataListResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _allrawDataListResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.kt getEmpSearchData() is " + e.message)
         }
     }
 
@@ -1509,6 +1534,8 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
             Log.d(TAG,"Error in UserAuthRepository.ke getHikeLetterList() is ${e.message}")
         }
     }
+
+
 
 
 }

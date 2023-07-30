@@ -152,10 +152,13 @@ interface UserAuthApi {
     suspend fun deleteMultipleRawData(@Body rawList: ArrayList<RawDataList> ): Response<String>
 
     @POST("/candidateRawData/getAllRawData")
-    suspend fun getAllRawData(): Response<List<RawDataList>>
+    suspend fun getAllRawData(@Query("offset")offset: Int): Response<List<RawDataList>>
 
     @POST("/candidateRawData/getEmpRawData")
     suspend fun getEmpRawData(): Response<List<RawDataList>>
+
+    @POST("/candidateRawData/getEmpSearchData")
+    suspend fun getEmpSearchData(@Query("search")search: String): Response<List<RawDataList>>
 
     @POST("/candidateRawData/getOtherProsData")
     suspend fun getOtherProsData(@Query("otherUserId") userId: Int): Response<List<RawDataList>>

@@ -1,6 +1,7 @@
 package com.venter.regodigital.EmployeeMangment
 
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
@@ -31,7 +32,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class EmpRawDataFragment : Fragment(),chkListner {
+class EmpRawDataFragment : Fragment(), chkListner {
 
     private var _binding: FragmentEmpRawDataBinding? = null
     private val binding: FragmentEmpRawDataBinding
@@ -43,12 +44,14 @@ class EmpRawDataFragment : Fragment(),chkListner {
     lateinit var tokenManger: TokenManger
 
 
-    var rawDataList: ArrayList<RawDataList> =ArrayList()
+    var rawDataList: ArrayList<RawDataList> = ArrayList()
 
     private val candidateViewModel by viewModels<CandidateViewModel>()
 
     //This is used for the Checking the Current Position of the Recyclerview
     private var currentPosition = 0
+
+    private var rData = true
 
     var textWatcher: TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
@@ -61,40 +64,55 @@ class EmpRawDataFragment : Fragment(),chkListner {
         }
 
         override fun afterTextChanged(s: Editable) {
-            val text =  s.toString()
+            val text = s.toString()
 
-            var rawData: ArrayList<RawDataList> = ArrayList()
-            if(text.isNotEmpty()) {
-                if (rawDataList.isNotEmpty()) {
-                    var sr_no = 1
-                    rawDataList.forEach { it ->
-                        if (it.candidate_name.contains(text, true) || it.mob_no.contains(text)) {
-                            it.srNo = sr_no++
+            Handler().postDelayed({
+                if (s.isNullOrEmpty()) {
+                    candidateViewModel.getEmpRawData()
+                    observeData()
 
-                            rawData.add(it)
-                        }
-                    }
+                } else {
+
+
+                    candidateViewModel.getEmpSearchData(s.toString())
+                    searchData()
+
                 }
-                adapter.submitList(rawData)
-            }
-            else
-            {
-                var sr_no = 1
-                rawDataList.forEach{
-                   it.srNo = sr_no++
-                }
-                adapter.submitList(rawDataList)
-            }
+                observeData()
+            }, 2000)
+
+            /* var rawData: ArrayList<RawDataList> = ArrayList()
+             if(text.isNotEmpty()) {
+                 if (rawDataList.isNotEmpty()) {
+                     var sr_no = 1
+                     rawDataList.forEach { it ->
+                         if (it.candidate_name.contains(text, true) || it.mob_no.contains(text)) {
+                             it.srNo = sr_no++
+
+                             rawData.add(it)
+                         }
+                     }
+                 }
+                 adapter.submitList(rawData)
+             }
+             else
+             {
+                 var sr_no = 1
+                 rawDataList.forEach{
+                    it.srNo = sr_no++
+                 }
+                 adapter.submitList(rawDataList)
+             }
 
 
-            val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            binding.rcCandidate.setLayoutManager(linearLayoutManager)
 
-            binding.rcCandidate.adapter = adapter
+             val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+             binding.rcCandidate.setLayoutManager(linearLayoutManager)
+
+             binding.rcCandidate.adapter = adapter*/
 
         }
     }
-
 
 
     override fun onCreateView(
@@ -104,79 +122,130 @@ class EmpRawDataFragment : Fragment(),chkListner {
     ): View? {
         _binding = FragmentEmpRawDataBinding.inflate(layoutInflater)
 
-        rawDataList =ArrayList()
+        rawDataList = ArrayList()
 
 
-        adapter = RawDataListAdapter(requireContext(),this, empType = tokenManger.getUserType().toString())
+        adapter = RawDataListAdapter(
+            requireContext(),
+            this,
+            empType = tokenManger.getUserType().toString()
+        )
 
-         binding.floatingActionButton.setOnClickListener {
-             candidateViewModel.getEmpRawData()
-         }
+        binding.floatingActionButton.setOnClickListener {
+            candidateViewModel.getEmpRawData()
+        }
 
-        binding.rcCandidate.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+        binding.rcCandidate.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 try {
-                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                      currentPosition = layoutManager!!.findFirstVisibleItemPosition()
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                    currentPosition = layoutManager!!.findFirstVisibleItemPosition()
 
 
-                }
-                catch (e:Exception)
-                {
-                    Log.d(TAG,"Error in ..."+e.message)
+                } catch (e: Exception) {
+                    Log.d(TAG, "Error in ..." + e.message)
                 }
             }
         })
 
 
-
-       // candidateViewModel.getEmpRawData()
-        candidateViewModel.allrawDataListResLiveData.observe(viewLifecycleOwner)
-        {
-            binding.progressbar.visibility = View.GONE
-            binding.swiperefresh.isRefreshing = false
-            when(it){
-                is NetworkResult.Loading ->{
-                    binding.progressbar.visibility = View.VISIBLE
-                }
-                is NetworkResult.Error -> {
-                    Toast.makeText(context, it.message.toString(), Toast.LENGTH_SHORT).show()
-                }
-                is NetworkResult.Success ->{
-
-                    rawDataList =ArrayList()
-                    it.data?.forEach{
-                        if(it.prospect_type.isNullOrEmpty())
-                            rawDataList.add(it)
-
-                    }
-                    showData()
+        // candidateViewModel.getEmpRawData()
+        observeData()
 
 
+        binding.edtSearch.doOnTextChanged { text, _, _, _ ->
+            Handler().postDelayed({
+                if (text!!.isEmpty()) {
 
-                }
-            }
+                    candidateViewModel.getEmpRawData()
+                    rData = true
+                } else {
+                    candidateViewModel.getEmpSearchData(text.toString())
+                    rData = false
+                   // rawDataList = ArrayList()
+
+                }},1000)
 
 
         }
 
-        binding.edtSearch.addTextChangedListener(textWatcher)
-
-        binding.swiperefresh.setOnRefreshListener{
+        binding.swiperefresh.setOnRefreshListener {
             candidateViewModel.getEmpRawData()
-           // binding.swiperefresh.isRefreshing = false
+            // binding.swiperefresh.isRefreshing = false
         }
 
 
         return binding.root
     }
 
+    private fun observeData() {
+        candidateViewModel.allrawDataListResLiveData.observe(viewLifecycleOwner)
+        {
+            binding.progressbar.visibility = View.GONE
+            binding.swiperefresh.isRefreshing = false
+            when (it) {
+                is NetworkResult.Loading -> {
+                    binding.progressbar.visibility = View.VISIBLE
+                }
+
+                is NetworkResult.Error -> {
+                    Toast.makeText(context, it.message.toString(), Toast.LENGTH_SHORT).show()
+                }
+
+                is NetworkResult.Success -> {
+
+                    rawDataList = ArrayList()
+                    it.data?.forEach {
+
+                        if (it.prospect_type.isNullOrEmpty() && rData)
+                            rawDataList.add(it)
+                        else
+                            rawDataList.add(it)
+
+                    }
+                    showData()
+
+
+                }
+            }
+
+
+        }
+    }
+
+    private fun searchData() {
+        candidateViewModel.allrawDataListResLiveData.observe(viewLifecycleOwner)
+        {
+            binding.progressbar.visibility = View.GONE
+            binding.swiperefresh.isRefreshing = false
+            when (it) {
+                is NetworkResult.Loading -> {
+                    binding.progressbar.visibility = View.VISIBLE
+                }
+
+                is NetworkResult.Error -> {
+                    Toast.makeText(context, it.message.toString(), Toast.LENGTH_SHORT).show()
+                }
+
+                is NetworkResult.Success -> {
+
+                    rawDataList = ArrayList()
+                    rawDataList = (it.data as ArrayList<RawDataList>?)!!
+                    showData()
+
+
+                }
+            }
+
+
+        }
+    }
+
     private fun searchList() {
         try {
             val text = binding.edtSearch.text.toString()
-            if (rawDataList.isNotEmpty() && text.isNotEmpty())
-            {
+            if (rawDataList.isNotEmpty() && text.isNotEmpty()) {
 
                 var rawData: ArrayList<RawDataList> = ArrayList()
                 var srNo = 1
@@ -185,7 +254,7 @@ class EmpRawDataFragment : Fragment(),chkListner {
                             text,
                             true
                         ) || it.mob_no.contains(text) || it.prospect_type!!.contains(text, true)
-                    ){
+                    ) {
                         it.srNo = srNo++
                         rawData.add(it)
                     }
@@ -195,37 +264,37 @@ class EmpRawDataFragment : Fragment(),chkListner {
                 /*binding.rcCandidate.layoutManager =
                     StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)*/
 
-                val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                val linearLayoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 binding.rcCandidate.setLayoutManager(linearLayoutManager)
 
                 binding.rcCandidate.adapter = adapter
             }
 
-        }
-        catch (e:Exception)
-        {
-            Log.d(TAG,"Error in EmpRawDataFrgament.kt searchlist() is "+e.message)
-            Toast.makeText(context,e.message,Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in EmpRawDataFrgament.kt searchlist() is " + e.message)
+            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun showData() {
         var srNo = 1
-        rawDataList.forEach{
+        rawDataList.forEach {
             it.srNo = srNo++
         }
 
-            adapter.submitList(rawDataList)
-           /* binding.rcCandidate.layoutManager =
-                StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)*/
+        adapter.submitList(null)
+        adapter.notifyDataSetChanged()
+
+        adapter.submitList(rawDataList)
+        /* binding.rcCandidate.layoutManager =
+             StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)*/
 
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rcCandidate.setLayoutManager(linearLayoutManager)
 
-            binding.rcCandidate.adapter = adapter
+        binding.rcCandidate.adapter = adapter
         binding.rcCandidate.layoutManager?.scrollToPosition(currentPosition)
-
-
 
 
     }
@@ -305,7 +374,7 @@ class EmpRawDataFragment : Fragment(),chkListner {
 
     override fun onResume() {
         super.onResume()
-        
+
         candidateViewModel.getEmpRawData()
         binding.rcCandidate.layoutManager?.scrollToPosition(currentPosition)
     }

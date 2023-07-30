@@ -363,11 +363,11 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
     val allrawDataListResLiveData: LiveData<NetworkResult<List<RawDataList>>>
         get() = userRepository.allrawDataListResLiveData
 
-    fun getAllRawData()
+    fun getAllRawData(offset: Int)
     {
         try {
             viewModelScope.launch {
-                userRepository.getAllRawData()
+                userRepository.getAllRawData(offset)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt getAllRawData() is " + e.message)
@@ -385,6 +385,17 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt getEmpRawData() is " + e.message)
+        }
+
+    }
+
+    fun getEmpSearchData(serach:String) {
+        try {
+            viewModelScope.launch {
+                userRepository.getEmpSearchData(serach)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getEmpSearchData() is " + e.message)
         }
 
     }
@@ -694,4 +705,6 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
             Log.d(TAG, "Error in CandidateViewModel.kt getHikeLetterList() is " + e.message)
         }
     }
+
+
 }
