@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EmployeeMangment.EmpFolloupCandFragment">
+    tools:context=".empMang.EmpFolloupCandFragment">
     <LinearLayout
         android:id="@+id/linEmpSpin"
         android:layout_width="match_parent"
@@ -22,12 +22,27 @@
             android:layout_marginRight="10dp" />
 
     </LinearLayout>
+    <TextView
+        android:id="@+id/calView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linEmpSpin"
+        android:text="01-01-1111"
+        android:drawableStart="@drawable/ic_baseline_calendar_month_24"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:drawablePadding="10dp"
+        android:layout_alignParentEnd="true"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="22dp"/>
     <LinearLayout
         android:id="@+id/filter"
-        android:layout_below="@+id/linEmpSpin"
+        android:layout_below="@+id/calView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
         android:orientation="horizontal">
 
         <EditText
@@ -49,7 +64,7 @@
             android:textColorHint="#9E9B9B"
             android:textSize="18sp" />
 
-        <androidx.appcompat.widget.AppCompatImageButton
+        <!--androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btnFilter"
             android:layout_width="0dp"
             android:layout_height="48dp"
@@ -66,10 +81,10 @@
             android:paddingBottom="5dp"
             android:src="@drawable/baseline_filter_alt_24"
             android:textColor="@color/white"
-            android:textSize="15sp" />
+            android:textSize="15sp" /-->
     </LinearLayout>
 
-    <LinearLayout
+    <!--LinearLayout
         android:id="@+id/linviewFilter"
         android:layout_below="@+id/filter"
         android:layout_width="match_parent"
@@ -112,13 +127,13 @@
             android:text="Warm"
             android:textColor="@color/black" />
 
-        <!--CheckBox
+        <CheckBox
             android:id="@+id/chkCold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
             android:text="Cold"
-            android:textColor="@color/black" /-->
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/txtApply"
@@ -132,12 +147,12 @@
             android:textStyle="bold" />
 
 
-    </LinearLayout>
+    </LinearLayout-->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
-        android:layout_below="@+id/linviewFilter"
+        android:layout_below="@+id/filter"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -166,6 +181,6 @@
         android:layout_gravity="center"
         android:indeterminate="true"
         android:visibility="gone"
-        app:SpinKit_Color="#211a46" />
+        app:SpinKit_Color="@color/regocolor" />
 
 </RelativeLayout>

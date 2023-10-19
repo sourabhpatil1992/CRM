@@ -1,21 +1,25 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.RegoDigital" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.CRM" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">#211a46</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorPrimary">@color/purple_500</item>
+        <!--item name="colorPrimaryVariant">@color/purple_700</item-->
+        <item name="colorPrimaryVariant">#8EC5E8</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. >
+        <item name="colorSecondary">#211a46</item-->
+        <item name="colorSecondary">#4CAF50</item>
+        <item name="colorSecondaryVariant">#9BF19E</item>
         <item name="colorOnSecondary">#FFFFFF</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">#211a46</item>
+        <!-- Status bar color. >
+        <item name="android:statusBarColor" tools:targetApi="l">#211a46</item-->
+        <item name="android:statusBarColor" tools:targetApi="l">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
     </style>
     <!-- Base application theme. -->
-    <style name="Base.Theme.RegoDigital" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.CRM" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>

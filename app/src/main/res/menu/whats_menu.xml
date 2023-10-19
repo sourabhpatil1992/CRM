@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/temp1"
+        android:title="Template 1" />
+    <item
+        android:id="@+id/temp2"
+        android:title="Template 2" />
+    <item
+        android:id="@+id/temp3"
+        android:title="Template 3" />
+    <item
+        android:id="@+id/temp4"
+        android:title="Template 4" />
+    <item
+        android:id="@+id/temp5"
+        android:title="Template 5" />
+    <item
+        android:id="@+id/temp6"
+        android:title="Template 6" />
+    <item
+        android:id="@+id/temp7"
+        android:title="Template 7" />
+    <item
+        android:id="@+id/temp8"
+        android:title="Template 8" />
+    <item
+        android:id="@+id/temp9"
+        android:title="Template 9" />
+    <item
+        android:id="@+id/temp10"
+        android:title="Template 10" />
+    <item
+        android:id="@+id/temp11"
+        android:title="Chat" />
+
+</menu>

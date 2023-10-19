@@ -3,10 +3,16 @@
     <item
         android:id="@+id/option1"
         android:title="Time" />
+
     <item
         android:id="@+id/option2"
         android:title="Candidate Name" />
     <item
         android:id="@+id/option3"
         android:title="Commented At" />
+    <item
+        android:id="@+id/option4"
+        android:title="Prospect Type" />
+
+
 </menu>

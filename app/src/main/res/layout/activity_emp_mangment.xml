@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="Employee Management"
+        android:text="Office Management"
         android:textColor="@color/black"
         android:textSize="25sp"
         android:textStyle="bold" />
@@ -79,8 +79,8 @@
 
 
                 </androidx.cardview.widget.CardView>
-
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/userLedger"
                     android:layout_width="0dp"
                     android:layout_height="135dp"
                     android:layout_gravity="center"
@@ -93,26 +93,25 @@
                     >
 
                     <RelativeLayout
-                        android:id="@+id/teleReport"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@color/white">
 
                         <ImageView
-                            android:id="@+id/emprpt_icon"
+                            android:id="@+id/user_icon"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_centerInParent="true"
-                            android:src="@drawable/emp_rpt" />
+                            android:src="@drawable/user_icon" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/emprpt_icon"
+                            android:layout_below="@id/user_icon"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
-                            android:text="Telecaller Report"
+                            android:text="Employee Ledger"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
@@ -121,6 +120,8 @@
 
 
                 </androidx.cardview.widget.CardView>
+
+
 
 
             </LinearLayout>
@@ -204,7 +205,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
-                            android:text="Admission Data"
+                            android:text="Paid Client"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
@@ -263,8 +264,7 @@
 
 
                 </androidx.cardview.widget.CardView>
-
-                <View
+                <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="135dp"
                     android:layout_gravity="center"
@@ -276,13 +276,108 @@
 
                     >
 
+                    <RelativeLayout
+                        android:id="@+id/teleReport"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white">
+
+                        <ImageView
+                            android:id="@+id/emprpt_icon"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/emp_rpt" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/emprpt_icon"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:text="Employee Report"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
 
 
+                    </RelativeLayout>
 
-                </View>
+
+                </androidx.cardview.widget.CardView>
+
+
 
 
             </LinearLayout>
+            <!--LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/officeHrs"
+                    android:layout_width="0dp"
+                    android:layout_height="135dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="5dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white">
+
+                        <ImageView
+                            android:id="@+id/officeHrs_logo"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/officehrs" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/officeHrs_logo"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:text="Employee "
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+
+                    </RelativeLayout>
+
+
+                </androidx.cardview.widget.CardView>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="135dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="5dp"
+
+                   />
+
+
+
+
+
+
+
+
+
+            </LinearLayout-->
 
 
 
@@ -302,6 +397,6 @@
         android:layout_gravity="center"
         android:indeterminate="true"
         android:visibility="gone"
-        app:SpinKit_Color="#211a46" />
+        app:SpinKit_Color="@color/regocolor" />
 
 </RelativeLayout>

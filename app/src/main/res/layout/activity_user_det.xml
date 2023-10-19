@@ -9,12 +9,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="User Master"
+        android:text="Employee Master"
         android:gravity="center"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="25sp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"/>
 
     <ScrollView
@@ -25,6 +25,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -88,26 +89,26 @@
                     >
 
                     <RelativeLayout
-                        android:id="@+id/delAcc"
+                        android:id="@+id/assignment"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@color/white">
 
                         <ImageView
-                            android:id="@+id/account_icon"
+                            android:id="@+id/assignment_icon"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_centerInParent="true"
-                            android:src="@drawable/garbage" />
+                            android:src="@drawable/delegation" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/account_icon"
+                            android:layout_below="@id/assignment_icon"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
-                            android:text="Remove Account"
+                            android:text="Employee Assignment"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
@@ -158,7 +159,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
-                            android:text="User Report"
+                            android:text="Employee Report"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
@@ -201,6 +202,99 @@
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
                             android:text="WhatsApp Account"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+
+                    </RelativeLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/userUpdate"
+                    android:layout_width="0dp"
+                    android:layout_height="135dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="5dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white">
+
+                        <ImageView
+                            android:id="@+id/userUpdateImg"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/user_icon" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/userUpdateImg"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:text="Update Details"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+
+                    </RelativeLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="135dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="5dp"
+
+                    >
+
+                    <RelativeLayout
+                        android:id="@+id/delAcc"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white">
+
+                        <ImageView
+                            android:id="@+id/account_icon"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/garbage" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/account_icon"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:text="Remove Account"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 

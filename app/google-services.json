@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "792847812473",
-    "project_id": "regodigitalsolotion",
-    "storage_bucket": "regodigitalsolotion.appspot.com"
+    "project_number": "844372068305",
+    "project_id": "crmapp-c013d",
+    "storage_bucket": "crmapp-c013d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:792847812473:android:417219cac7eb68eda091a8",
+        "mobilesdk_app_id": "1:844372068305:android:097defdc5d01b6570542f0",
         "android_client_info": {
-          "package_name": "com.venter.regodigital"
+          "package_name": "com.venter.crm"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "792847812473-3nc91l2nsk09unbuh7q30h06cfm6m1pf.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCTFNBd-niZSPlsk2jATOLQfsuSotigp4U"
+          "current_key": "AIzaSyBS88epUXcNqun3URABlEckN3SpORWQe8E"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "792847812473-3nc91l2nsk09unbuh7q30h06cfm6m1pf.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

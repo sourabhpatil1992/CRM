@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EmployeeMangment.IncomingLeads"
+    tools:context=".empMang.IncomingLeads"
     android:background="#f0f1ff"
     >
     <LinearLayout
@@ -72,6 +72,41 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Incoming Leads"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:layout_marginTop="20sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Employee Name:"
+                android:textColor="@color/black"
+                android:layout_weight="0.3"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                />
+            <Spinner
+                android:id="@+id/spinEmpName"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:textAlignment="textStart"
+                />
+
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcCandidate"
@@ -122,6 +157,6 @@
         android:layout_gravity="center"
         android:indeterminate="true"
         android:visibility="gone"
-        app:SpinKit_Color="#211a46" />
+        app:SpinKit_Color="@color/regocolor" />
 
 </RelativeLayout>

@@ -4,129 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Dashboard.AdminDashboard"
-    android:background="#f0f1ff">
-    <LinearLayout
-        android:id="@+id/dash_bord"
+    android:background="#f0f1ff"
+    tools:context=".Dashboard.AdminDashboard">
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
         android:layout_width="match_parent"
-        android:layout_height="210dp"
-        android:background="@drawable/regologo"
+        android:layout_height="250dp"
+        app:lottie_autoPlay="true"
+        android:layout_alignParentEnd="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/dashjson" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="160dp"
+        android:fontFamily="@font/comic"
         android:gravity="center"
-        android:orientation="vertical"/>
+        android:text="Hire InfoTech"
+        android:textColor="#D50000"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
     <ScrollView
         android:id="@+id/dash_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="195dp"
-        android:translationZ="90dp"
-        android:background="#f0f1ff">
+        android:layout_below="@+id/animation_view"
+        android:layout_marginTop="-40dp"
+        android:translationZ="180dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#f0f1ff">
+            android:background="#4DF0F1FF">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginRight="10dp"
-
                 android:orientation="vertical">
                 <!---            First Row             -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="140dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:orientation="horizontal">
 
-                    <!--- Valve Icon Button -->
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/candidateManagement"
-                        android:layout_width="0dp"
-                        android:layout_height="135dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="1"
-                        app:cardCornerRadius="15dp"
-                        app:cardElevation="5dp">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@color/white">
-
-                            <ImageView
-                                android:id="@+id/candi_logo"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_centerInParent="true"
-                                android:src="@drawable/candidatelogo" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/candi_logo"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:text="Candidate Mangment"
-                                android:textColor="@color/black"
-                                android:textSize="14sp" />
-
-
-                        </RelativeLayout>
-
-
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_height="135dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="1"
-                        app:cardCornerRadius="15dp"
-                        app:cardElevation="5dp"
-
-                        >
-
-                        <RelativeLayout
-                            android:id="@+id/candidateAccount"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@color/white">
-
-                            <ImageView
-                                android:id="@+id/account_icon"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_centerInParent="true"
-                                android:src="@drawable/account" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/account_icon"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:text="Candidate Account"
-                                android:textColor="@color/black"
-                                android:textSize="14sp" />
-
-
-                        </RelativeLayout>
-
-
-                    </androidx.cardview.widget.CardView>
-
-
-                </LinearLayout>
 
                 <!---            Second Row             -->
                 <LinearLayout
@@ -166,7 +89,7 @@
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="10dp"
                                 android:layout_marginBottom="10dp"
-                                android:text="Employee Management"
+                                android:text="Office Management"
                                 android:textColor="@color/black"
                                 android:textSize="14sp" />
 
@@ -176,9 +99,8 @@
 
                     </androidx.cardview.widget.CardView>
 
-                    <!--- Water Pump Button -->
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/whatsSign"
+                        android:id="@+id/report"
                         android:layout_width="0dp"
                         android:layout_height="135dp"
                         android:layout_gravity="center"
@@ -193,25 +115,23 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@color/white"
-                            android:id="@+id/officeExpenses"
-                            >
+                            android:background="@color/white">
 
                             <ImageView
-                                android:id="@+id/expense_icon"
+                                android:id="@+id/user_icon"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_centerInParent="true"
-                                android:src="@drawable/expense" />
+                                android:src="@drawable/report_logo" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@id/expense_icon"
+                                android:layout_below="@id/user_icon"
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="10dp"
                                 android:layout_marginBottom="10dp"
-                                android:text="Expenses"
+                                android:text="Reports"
                                 android:textColor="@color/black"
                                 android:textSize="14sp" />
 
@@ -220,6 +140,8 @@
 
 
                     </androidx.cardview.widget.CardView>
+
+                    <!--- Water Pump Button -->
 
 
                 </LinearLayout>
@@ -272,9 +194,8 @@
 
                     </androidx.cardview.widget.CardView>
 
-                    <!--- Water Pump Button -->
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/userLedger"
+                        android:id="@+id/whatsSign"
                         android:layout_width="0dp"
                         android:layout_height="135dp"
                         android:layout_gravity="center"
@@ -287,25 +208,26 @@
                         >
 
                         <RelativeLayout
+                            android:id="@+id/hr"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@color/white">
 
                             <ImageView
-                                android:id="@+id/user_icon"
+                                android:id="@+id/hr_icon"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_centerInParent="true"
-                                android:src="@drawable/user_icon" />
+                                android:src="@drawable/hr" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@id/user_icon"
+                                android:layout_below="@id/hr_icon"
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="10dp"
                                 android:layout_marginBottom="10dp"
-                                android:text="User Ledger"
+                                android:text="HR"
                                 android:textColor="@color/black"
                                 android:textSize="14sp" />
 

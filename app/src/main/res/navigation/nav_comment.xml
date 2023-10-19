@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_comment"
+    app:startDestination="@id/hilt_RawCanCommentFragment">
+
+    <fragment
+        android:id="@+id/hilt_RawCanCommentFragment"
+        android:name="com.venter.crm.EmployeeMangment.Hilt_RawCanCommentFragment"
+        android:label="Hilt_RawCanCommentFragment" >
+        <action
+            android:id="@+id/action_hilt_RawCanCommentFragment_to_updateCommentListFragment"
+            app:destination="@id/updateCommentListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateCommentListFragment"
+        android:name="com.venter.crm.EmployeeMangment.UpdateCommentListFragment"
+        android:label="fragment_update_comment_list"
+        tools:layout="@layout/fragment_update_comment_list" />
+</navigation>

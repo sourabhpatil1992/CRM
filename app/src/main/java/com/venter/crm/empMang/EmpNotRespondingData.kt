@@ -1,0 +1,197 @@
+package com.venter.crm.empMang
+
+import android.os.Bundle
+import android.util.Log
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.venter.crm.EmployeeMangment.RawDataListAdapter
+import com.venter.crm.EmployeeMangment.chkListner
+import com.venter.crm.databinding.FragmentEmpNotRespondingDataBinding
+import com.venter.crm.models.RawDataList
+import com.venter.crm.models.UserList
+import com.venter.crm.utils.Constans
+import com.venter.crm.utils.NetworkResult
+import com.venter.crm.utils.TokenManger
+import com.venter.crm.viewModelClass.CandidateViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+
+
+@AndroidEntryPoint
+class EmpNotRespondingData : Fragment() {
+
+    private var _binding: FragmentEmpNotRespondingDataBinding? = null
+    private val binding: FragmentEmpNotRespondingDataBinding
+        get() = _binding!!
+
+
+    private lateinit var adapter: DataListAdapter
+
+    var userDataList: ArrayList<UserList> = ArrayList()
+
+
+    private val candidateViewModel by viewModels<CandidateViewModel>()
+
+    @Inject
+    lateinit var tokenManger: TokenManger
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        try {
+            _binding = FragmentEmpNotRespondingDataBinding.inflate(layoutInflater)
+
+            adapter = DataListAdapter(requireContext())
+            spinnerChange()
+            setEmployeeSpinner()
+
+            return binding.root
+        } catch (e: Exception) {
+            Log.d(Constans.TAG, "Error in EmpNotResponding.kt createView() is " + e.message)
+            return null
+        }
+    }
+
+    private fun spinnerChange() {
+
+        binding.spinEmpName.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                try {
+
+                    if (binding.spinEmpName.selectedItem == "You") {
+                        getLeadData(tokenManger.getUserId()!!.toInt())
+                    } else {
+                        var othersUserId = 0
+                        userDataList.forEach {
+                            if (it.user_name.equals(
+                                    binding.spinEmpName.selectedItem.toString(),
+                                    ignoreCase = true
+                                )
+                            )
+                                othersUserId = it.id
+                        }
+                        getLeadData(othersUserId)
+                    }
+                } catch (e: Exception) {
+                    Log.d(
+                        Constans.TAG,
+                        "Error in IncomingLeads setEmployeeSpinner() onItemSelectedListener is : ${e.message}"
+                    )
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Do nothing
+            }
+        }
+
+
+    }
+    private fun setEmployeeSpinner() {
+        candidateViewModel.getEmpListRawData()
+
+        candidateViewModel.userListLiveData.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
+                is NetworkResult.Error -> {
+                    binding.progressbar.visibility = View.GONE
+                    Toast.makeText(requireContext(), result.message.toString(), Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                is NetworkResult.Success -> {
+                    binding.progressbar.visibility = View.GONE
+                    val empList: ArrayList<String> = ArrayList()
+                    empList.add("You")
+                    userDataList.clear()
+
+                    result.data?.forEach { data ->
+                        userDataList.add(data)
+                        if (data.id.toString() != tokenManger.getUserId().toString()) {
+                            empList.add(data.user_name)
+                        }
+                    }
+
+                    val adapters = ArrayAdapter<String>(
+                        requireContext(),
+                        android.R.layout.select_dialog_item,
+                        empList
+                    )
+                    binding.spinEmpName.adapter = adapters
+
+                }
+            }
+        }
+    }
+
+    private fun getLeadData(userId: Int) {
+        try {
+
+            candidateViewModel.getEmpNotResData(userId)
+            //candidateViewModel.getIncomingLeads(userId)
+
+            candidateViewModel.allrawDataListResLiveData.observe(viewLifecycleOwner)
+            {
+                binding.progressbar.visibility = View.GONE
+                when (it) {
+                    is NetworkResult.Loading -> {
+                        binding.progressbar.visibility = View.VISIBLE
+                    }
+
+                    is NetworkResult.Error -> {
+                        Toast.makeText(requireContext(), it.message.toString(), Toast.LENGTH_LONG)
+                            .show()
+                    }
+
+                    is NetworkResult.Success -> {
+
+                        setData(it.data!!)
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.d(Constans.TAG, "Error in EmpNotRespondingData.kt getLeadData() is: ${e.message}")
+        }
+    }
+
+    private fun setData(data: List<RawDataList>) {
+        try {
+            if (data.isNotEmpty()) {
+                var srNo = 1
+                data.forEach {
+                    it.srNo = srNo++
+                }
+            }
+            adapter.submitList(data)
+            binding.rcCandidate.layoutManager =
+                StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+            binding.rcCandidate.adapter = adapter
+        } catch (e: Exception) {
+            Log.d(Constans.TAG, "Error in EmpNotRespondingData.kt setData() is : ${e.message}")
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+
+
+}

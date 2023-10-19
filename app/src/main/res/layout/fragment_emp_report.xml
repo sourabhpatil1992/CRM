@@ -533,6 +533,6 @@
         android:layout_gravity="center"
         android:indeterminate="true"
         android:visibility="gone"
-        app:SpinKit_Color="#211a46" />
+        app:SpinKit_Color="@color/regocolor" />
 
 </RelativeLayout>

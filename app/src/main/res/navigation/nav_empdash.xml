@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_empdash"
+    app:startDestination="@id/employeeDashFragment">
+
+    <fragment
+        android:id="@+id/employeeDashFragment"
+        android:name="com.venter.crm.Dashboard.EmployeeDashFragment"
+        android:label="fragment_employee_dash"
+        tools:layout="@layout/fragment_employee_dash" >
+        <action
+            android:id="@+id/action_employeeDashFragment_to_rawDataFragment"
+            app:destination="@id/rawDataFragment" />
+        <action
+            android:id="@+id/action_employeeDashFragment_to_incomingLeads"
+            app:destination="@id/incomingLeads" />
+        <action
+            android:id="@+id/action_employeeDashFragment_to_empNotRespondingData"
+            app:destination="@id/empNotRespondingData" />
+        <action
+            android:id="@+id/action_employeeDashFragment_to_coldDataFragment"
+            app:destination="@id/coldDataFragment" />
+        <action
+            android:id="@+id/action_employeeDashFragment_to_empFolloupCandFragment"
+            app:destination="@id/empFolloupCandFragment" />
+        <action
+            android:id="@+id/action_employeeDashFragment_to_stalDataFragment"
+            app:destination="@id/stalDataFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/rawDataFragment"
+        android:name="com.venter.crm.empMang.RawDataFragment"
+        android:label="fragment_raw_data"
+        tools:layout="@layout/fragment_raw_data" />
+    <fragment
+        android:id="@+id/incomingLeads"
+        android:name="com.venter.crm.empMang.IncomingLeads"
+        android:label="fragment_incoming_leads"
+        tools:layout="@layout/fragment_incoming_leads" />
+    <fragment
+        android:id="@+id/empNotRespondingData"
+        android:name="com.venter.crm.empMang.EmpNotRespondingData"
+        android:label="fragment_emp_not_responding_data"
+        tools:layout="@layout/fragment_emp_not_responding_data" />
+    <fragment
+        android:id="@+id/coldDataFragment"
+        android:name="com.venter.crm.empMang.ColdDataFragment"
+        android:label="fragment_cold_data"
+        tools:layout="@layout/fragment_cold_data" />
+    <fragment
+        android:id="@+id/empFolloupCandFragment"
+        android:name="com.venter.crm.empMang.EmpFolloupCandFragment"
+        android:label="fragment_emp_folloup_cand"
+        tools:layout="@layout/fragment_emp_folloup_cand" />
+    <fragment
+        android:id="@+id/stalDataFragment"
+        android:name="com.venter.crm.empMang.StalDataFragment"
+        android:label="fragment_stal_data"
+        tools:layout="@layout/fragment_stal_data" />
+</navigation>

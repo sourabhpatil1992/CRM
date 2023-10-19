@@ -1,76 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Login.LogInActivity"
-    android:background="@color/regocolor">
+    >
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        >
-        <LinearLayout
+        android:layout_height="match_parent">
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageView
-                android:id="@+id/waveHeader"
+            android:layout_height="fill_parent"
+            >
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/regologo" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/txtmobno"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/round_back_white"
-                android:hint="Mobile No."
-                android:autofillHints="phone"
-                android:inputType="number"
-                android:maxLength="10"
-                android:paddingLeft="20dp"
-                android:textColor="@color/white"
-                android:textColorHint="#8A8989"
-                android:textSize="20sp" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_otp"
-                android:layout_width="150dp"
-                android:layout_height="45dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/rounded_back_button"
-                android:text="OTP"
-                android:textSize="20dp"
-                android:textColor="@color/white"
-                />
+                    <com.scwang.wave.MultiWaveHeader
+                        android:id="@+id/waveHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        app:mwhCloseColor="#DD58C0"
+                        app:mwhStartColor="#DD58C0"
+                        app:mwhWaveHeight="60dp" />
 
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/imgview_spalshscreen"
+                        android:layout_width="230dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"
+                        app:lottie_rawRes="@raw/signup_animation" />
 
-        </LinearLayout>
-
-
-    </ScrollView>
-
-
-    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/progressbar"
-        style="@style/SpinKitView.ChasingDots"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:indeterminate="true"
-        android:visibility="gone"
-        app:SpinKit_Color="#DD58C0" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="140dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20dp"
+                        android:fontFamily="@font/bungee"
+                        android:gravity="center"
+                        android:paddingRight="90sp"
+                        android:text="Sign \nIn"
+                        android:textColor="#08DA36"
+                        android:textSize="50sp" />
 
 
+                </RelativeLayout>
 
-</RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/txtSigin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/arial_bold"
+                        android:text="@string/sign_in"
+                        android:textColor="@color/black"
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/txtmobno"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/round_back_blue5_15"
+                        android:hint="@string/mobile_no"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:paddingLeft="20dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="#B3B2B2"
+                        android:textSize="20sp" />
+
+                    <LinearLayout
+                        android:id="@+id/linview_otp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        >
+
+                        <EditText
+                            android:id="@+id/txtotp"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/round_back_blue5_15"
+                            android:hint="OTP"
+                            android:inputType="number"
+                            android:maxLength="4"
+                            android:textColor="@color/black"
+                            android:paddingLeft="20dp"
+                            android:textColorHint="#B3B2B2"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/txtresend"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10sp"
+                            android:text="Resend OTP"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_otp"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rounded_back_button"
+                        android:fontFamily="@font/arial_bold"
+                        android:text="@string/otp"
+                        android:textSize="20dp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+
+
+
+
+                    <TextView
+                        android:id="@+id/txtcontactus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20sp"
+                        android:text="@string/contact_us"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+
+
+                </LinearLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/m_pant_b" />
+
+
+
+
+
+
+
+
+
+
+            </LinearLayout>
+        </ScrollView>
+
+        <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/progressbar"
+            style="@style/SpinKitView.ChasingDots"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:SpinKit_Color="#DD58C0" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

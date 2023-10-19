@@ -8,5 +8,5 @@ dependencyResolutionManagement {
 }
 
 
-rootProject.name = "Rego Digital"
+rootProject.name = "CRM"
 include ':app'

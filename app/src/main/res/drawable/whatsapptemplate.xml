@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/option1"
+        android:title="Address,Location,Syllabus &amp; Fee" />
+
+    <item
+        android:id="@+id/option2"
+        android:title="Syllabus" />
+    <item
+        android:id="@+id/option3"
+        android:title="Fee Structure" />
+    <item
+        android:id="@+id/option4"
+        android:title="Not Responding" />
+    <item
+        android:id="@+id/option5"
+        android:title="Demo" />
+    <item
+        android:id="@+id/option6"
+        android:title="Admission" />
+    <item
+        android:id="@+id/option7"
+        android:title="Admission Not Responding" />
+    <item
+        android:id="@+id/option8"
+        android:title="Candidate Place List" />
+    <item
+        android:id="@+id/option9"
+        android:title="Address &amp; Location" />
+    <item
+        android:id="@+id/option10"
+        android:title="Temp 10" />
+    <item
+        android:id="@+id/option11"
+        android:title="Chat" />
+</menu>

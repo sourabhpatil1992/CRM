@@ -43,7 +43,7 @@
         android:layout_centerInParent="true"
         android:layout_gravity="center"
         android:indeterminate="true"
-        app:SpinKit_Color="#211a46"
+        app:SpinKit_Color="@color/regocolor"
         app:layout_constraintBottom_toBottomOf="@+id/viewPager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

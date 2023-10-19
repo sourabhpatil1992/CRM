@@ -47,6 +47,6 @@
         android:layout_gravity="center"
         android:indeterminate="true"
         android:visibility="gone"
-        app:SpinKit_Color="#211a46" />
+        EmpNotRespondingData.kt="#211a46" />
 
 </RelativeLayout>

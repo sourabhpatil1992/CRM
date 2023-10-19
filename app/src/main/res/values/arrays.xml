@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="roles">
+        <item>Business Analyst</item>
+        <item>Senior Business Analyst</item>
+        <item>Team Lead</item>
+        <item>Floor Manager</item>
+        <item>Sales Manager</item>
+        <item>Admin</item>
+    </string-array>
+</resources>

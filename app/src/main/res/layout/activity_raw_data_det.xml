@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EmployeeMangment.RawDataDetActivity">
+    tools:context=".empMang.RawDataDetActivity">
 
     <TextView
         android:id="@+id/txtTitle"
@@ -127,6 +127,6 @@
         android:layout_gravity="center"
         android:indeterminate="true"
         android:visibility="gone"
-        app:SpinKit_Color="#211a46" />
+        app:SpinKit_Color="@color/regocolor" />
 
 </RelativeLayout>

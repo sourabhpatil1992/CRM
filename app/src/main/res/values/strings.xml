@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Rego Digital</string>
+    <string name="app_name">CRM</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_data_swap">DataSwapActivity</string>
@@ -47,6 +47,13 @@
     </string>
     <string name="title_activity_data">DataActivity</string>
     <string name="title_activity_user_report">UserReportActivity</string>
+    <string name="mobile_no">Mobile No</string>
+    <string name="otp">Get OTP</string>
+    <string name="sign_in">Sign In</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="title_activity_employee_dash">EmployeeDash</string>
+
+
 
 
 </resources>

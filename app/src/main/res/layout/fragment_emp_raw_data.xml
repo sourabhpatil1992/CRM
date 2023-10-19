@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".EmployeeMangment.EmpRawDataFragment">
+
     <EditText
         android:id="@+id/edtSearch"
         android:layout_width="match_parent"
@@ -68,6 +69,6 @@
         android:layout_gravity="center"
         android:indeterminate="true"
         android:visibility="gone"
-        app:SpinKit_Color="#211a46" />
+        app:SpinKit_Color="@color/regocolor" />
 
 </RelativeLayout>
