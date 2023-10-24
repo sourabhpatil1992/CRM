@@ -1692,5 +1692,74 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
     }
 
+    private  val _userHierarchyDataLiveData =MutableLiveData<NetworkResult<UserHierarchyData>>()
+    val userHierarchyDataLiveData :LiveData<NetworkResult<UserHierarchyData>>
+        get() = _userHierarchyDataLiveData
+    suspend fun getEmpHierarchyData(id: Int) {
+        try {
+
+           _userHierarchyDataLiveData.postValue(NetworkResult.Loading())
+            val response = userApi.getEmpHierarchyData(id)
+            if (response.isSuccessful && response.body() != null) {
+                _userHierarchyDataLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+                _userHierarchyDataLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+                _userHierarchyDataLiveData.postValue(NetworkResult.Error("Something Went Wrong."))
+            }
+        }
+        catch (e:Exception)
+        {
+            Log.d(TAG,"Error in UserAuthRepository.ke commentList() is ${e.message}")
+        }
+    }
+
+
+    private  val _subOrdinateDataLiveData =MutableLiveData<NetworkResult<SubOrdinateData>>()
+    val subOrdinateDataLiveData :LiveData<NetworkResult<SubOrdinateData>>
+        get() = _subOrdinateDataLiveData
+    suspend fun getSubOrdinateList(selectedId: Int, userType: String) {
+        try {
+
+            _subOrdinateDataLiveData.postValue(NetworkResult.Loading())
+            val response = userApi.getSubOrdinateList(selectedId,userType)
+
+            if (response.isSuccessful && response.body() != null) {
+                _subOrdinateDataLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+                _subOrdinateDataLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+                _subOrdinateDataLiveData.postValue(NetworkResult.Error("Something Went Wrong."))
+            }
+        }
+        catch (e:Exception)
+        {
+            Log.d(TAG,"Error in UserAuthRepository.ke getSubOrdinateList() is ${e.message}")
+        }
+    }
+
+    suspend fun updateUserHierarchy(id: Int?, slId: Int, flId: Int, tlId: Int, sbaId: Int) {
+        try {
+
+            _stringResLiveData.postValue(NetworkResult.Loading())
+            val response = userApi.updateUserHierarchy(id!!,slId,flId,tlId,sbaId)
+
+            if (response.isSuccessful && response.body() != null) {
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong."))
+            }
+        }
+        catch (e:Exception)
+        {
+            Log.d(TAG,"Error in UserAuthRepository.ke updateUserHierarchy() is ${e.message}")
+        }
+    }
+
 
 }

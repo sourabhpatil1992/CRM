@@ -109,14 +109,14 @@ class CandidateCertificate : AppCompatActivity() {
                 val builders = AlertDialog.Builder(this)
                 builders.setTitle("Candidate Profile")
                 val img_per = ImageView(this)
-                img_per.setBackgroundResource(R.drawable.regologo)
+                img_per.setBackgroundResource(R.drawable.crm)
                 Picasso.get()
                     .load(BASE_URL + "assets/profile/" + candidateId + ".jpeg")
                     .fit()
                     .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .into(img_per)
                 builders.setView(img_per)
-                builders.setIcon(ContextCompat.getDrawable(this, R.drawable.regologo))
+                builders.setIcon(ContextCompat.getDrawable(this, R.drawable.crm))
                 val alertDialog: AlertDialog = builders.create()
                 alertDialog.setCancelable(true)
                 alertDialog.show()
@@ -294,7 +294,7 @@ class CandidateCertificate : AppCompatActivity() {
             }
 
 
-            builders.setIcon(ContextCompat.getDrawable(this, R.drawable.regologo))
+            builders.setIcon(ContextCompat.getDrawable(this, R.drawable.crm))
             val alertDialog: AlertDialog = builders.create()
             alertDialog.setCancelable(true)
             alertDialog.show()
@@ -426,7 +426,7 @@ class CandidateCertificate : AppCompatActivity() {
             }
 
 
-            builders.setIcon(ContextCompat.getDrawable(this, R.drawable.regologo))
+            builders.setIcon(ContextCompat.getDrawable(this, R.drawable.crm))
             val alertDialog: AlertDialog = builders.create()
             alertDialog.setCancelable(true)
             alertDialog.show()
@@ -535,7 +535,7 @@ class CandidateCertificate : AppCompatActivity() {
             }
 
 
-            builders.setIcon(ContextCompat.getDrawable(this, R.drawable.regologo))
+            builders.setIcon(ContextCompat.getDrawable(this, R.drawable.crm))
             val alertDialog: AlertDialog = builders.create()
             alertDialog.setCancelable(true)
             alertDialog.show()
@@ -647,7 +647,7 @@ class CandidateCertificate : AppCompatActivity() {
             }
 
 
-            builders.setIcon(ContextCompat.getDrawable(this, R.drawable.regologo))
+            builders.setIcon(ContextCompat.getDrawable(this, R.drawable.crm))
             val alertDialog: AlertDialog = builders.create()
             alertDialog.setCancelable(true)
             alertDialog.show()
@@ -781,7 +781,7 @@ class CandidateCertificate : AppCompatActivity() {
             }
 
 
-            builders.setIcon(ContextCompat.getDrawable(this, R.drawable.regologo))
+            builders.setIcon(ContextCompat.getDrawable(this, R.drawable.crm))
             val alertDialog: AlertDialog = builders.create()
             alertDialog.setCancelable(true)
             alertDialog.show()
@@ -882,7 +882,7 @@ class CandidateCertificate : AppCompatActivity() {
             }
 
 
-            builders.setIcon(ContextCompat.getDrawable(this, R.drawable.regologo))
+            builders.setIcon(ContextCompat.getDrawable(this, R.drawable.crm))
             val alertDialog: AlertDialog = builders.create()
             alertDialog.setCancelable(true)
             alertDialog.show()
@@ -982,7 +982,7 @@ class CandidateCertificate : AppCompatActivity() {
             }
 
 
-            builders.setIcon(ContextCompat.getDrawable(this, R.drawable.regologo))
+            builders.setIcon(ContextCompat.getDrawable(this, R.drawable.crm))
             val alertDialog: AlertDialog = builders.create()
             alertDialog.setCancelable(true)
             alertDialog.show()

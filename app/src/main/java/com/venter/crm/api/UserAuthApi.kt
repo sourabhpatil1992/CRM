@@ -156,6 +156,17 @@ interface UserAuthApi {
     suspend fun userStatus(@Query("user_id") userId: Int,@Query("status") status: Int) : Response<String>
 
 
+    @POST("/userManagement/getEmpHierarchyData")
+    suspend fun getEmpHierarchyData(@Query("emp_id")id: Int):Response<UserHierarchyData>
+
+
+    @POST("/userManagement/getSubOrdinateList")
+    suspend fun getSubOrdinateList(@Query("emp_id")selectedId: Int, @Query("userType")userType: String): Response<SubOrdinateData>
+
+    @POST("/userManagement/updateUserHierarchy")
+    suspend fun updateUserHierarchy(@Query("id")id: Int, @Query("slId")slId: Int,@Query("flId") flId: Int,
+                                    @Query("tlId") tlId: Int, @Query("sbaId")sbaId: Int): Response<String>
+
     //CandidateRawData Api
     @POST("/candidateRawData/addMultipleRawData")
     suspend fun addMultipleRawData(): Response<String>
@@ -243,6 +254,8 @@ interface UserAuthApi {
     suspend fun getTodayShedule(): Response<userStatus>
 
 
+
+
     //WhatsApp Temp
     @POST("/whatsAppTemp/getMsgList")
     suspend fun getWhatsMsgList():Response<List<WhatsappTemplateMsg>>
@@ -297,6 +310,7 @@ interface UserAuthApi {
     @Multipart
     @POST("/candidateRawData/addMultipleRawData")
     suspend fun updateDatabase(@Part spic: MultipartBody.Part): Response<String>
+
 
 
 }

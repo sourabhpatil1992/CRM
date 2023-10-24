@@ -110,11 +110,11 @@ class ImageUploadFrgnd : Service() {
                 builder = Notification.Builder(this, channelId)
                     .setContentText("Uploading Data on server.....")
                     .setContentTitle("Rego Digital")
-                    .setSmallIcon(R.drawable.regologo)
+                    .setSmallIcon(R.drawable.crm)
                     .setLargeIcon(
                         BitmapFactory.decodeResource(
                             this.resources,
-                            R.drawable.regologo
+                            R.drawable.crm
                         )
                     )
                     .setContentIntent(pendingIntent)
@@ -123,11 +123,11 @@ class ImageUploadFrgnd : Service() {
                 builder = Notification.Builder(this)
                     .setContentText("Uploading Data on server.....")
                     .setContentTitle("Rego Digital")
-                    .setSmallIcon(R.drawable.regologo)
+                    .setSmallIcon(R.drawable.crm)
                     .setLargeIcon(
                         BitmapFactory.decodeResource(
                             this.resources,
-                            R.drawable.regologo
+                            R.drawable.crm
                         )
                     )
                     .setContentIntent(pendingIntent)

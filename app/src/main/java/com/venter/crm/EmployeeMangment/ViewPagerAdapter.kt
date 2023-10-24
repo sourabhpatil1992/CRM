@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.venter.crm.empMang.ColdDataFragment
 import com.venter.crm.empMang.EmpFolloupCandFragment
 import com.venter.crm.empMang.EmpNotRespondingData
+import com.venter.crm.empMang.EmpProsFragement
 import com.venter.crm.empMang.IncomingLeads
 import com.venter.crm.utils.Constans
 

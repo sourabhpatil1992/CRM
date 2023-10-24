@@ -38,6 +38,8 @@ class OtpActivity : AppCompatActivity() {
         otp = intent.getStringExtra("otp").toString()
         userId = intent.getStringExtra("userId").toString()
 
+        //Toast.makeText(this,otp.toString(),Toast.LENGTH_SHORT).show()
+
         resenTime()
 
         otp_set()

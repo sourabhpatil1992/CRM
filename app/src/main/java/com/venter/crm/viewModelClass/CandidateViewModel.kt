@@ -789,7 +789,43 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     }
 
+    val userHierarchyDataLiveData : LiveData<NetworkResult<UserHierarchyData>>
+        get() = userRepository.userHierarchyDataLiveData
 
+    fun getEmpHierarchyData(id: Int) {
+        try {
+            viewModelScope.launch {
+                userRepository.getEmpHierarchyData(id)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getEmpHierarchyData() is " + e.message)
+        }
+    }
+
+
+    val subOrdinateDataLiveData : LiveData<NetworkResult<SubOrdinateData>>
+        get() = userRepository.subOrdinateDataLiveData
+
+    fun getSubOrdinateList(selectedId: Int, userType: String) {
+        try {
+            viewModelScope.launch {
+                userRepository.getSubOrdinateList(selectedId,userType)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getSubOrdinateList() is " + e.message)
+        }
+
+    }
+
+    fun updateUserHierarchy(id: Int?, slId: Int, flId: Int, tlId: Int, sbaId: Int) {
+        try {
+            viewModelScope.launch {
+                userRepository.updateUserHierarchy(id,slId,flId,tlId,sbaId)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt updateUserHierarchy() is " + e.message)
+        }
+    }
 
 
 }

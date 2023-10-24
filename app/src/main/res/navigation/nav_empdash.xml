@@ -28,6 +28,15 @@
         <action
             android:id="@+id/action_employeeDashFragment_to_stalDataFragment"
             app:destination="@id/stalDataFragment" />
+        <action
+            android:id="@+id/action_employeeDashFragment_to_empProsFragement"
+            app:destination="@id/empProsFragement" />
+        <action
+            android:id="@+id/action_employeeDashFragment_to_callLogFragment"
+            app:destination="@id/callLogFragment" />
+        <action
+            android:id="@+id/action_employeeDashFragment_to_empSettingFragment"
+            app:destination="@id/empSettingFragment" />
     </fragment>
     <fragment
         android:id="@+id/rawDataFragment"
@@ -59,4 +68,19 @@
         android:name="com.venter.crm.empMang.StalDataFragment"
         android:label="fragment_stal_data"
         tools:layout="@layout/fragment_stal_data" />
+    <fragment
+        android:id="@+id/empProsFragement"
+        android:name="com.venter.crm.empMang.EmpProsFragement"
+        android:label="fragment_emp_pros_fragement"
+        tools:layout="@layout/fragment_emp_pros_fragement" />
+    <fragment
+        android:id="@+id/callLogFragment"
+        android:name="com.venter.crm.empMang.CallLogFragment"
+        android:label="fragment_call_log"
+        tools:layout="@layout/fragment_call_log" />
+    <fragment
+        android:id="@+id/empSettingFragment"
+        android:name="com.venter.crm.empMang.EmpSettingFragment"
+        android:label="fragment_emp_setting"
+        tools:layout="@layout/fragment_emp_setting" />
 </navigation>

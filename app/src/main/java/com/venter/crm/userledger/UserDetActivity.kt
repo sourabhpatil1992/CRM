@@ -59,6 +59,12 @@ class UserDetActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.assignment.setOnClickListener {
+            val intent =Intent(this,UserAssignmentActivity::class.java)
+            intent.putExtra("user", user)
+            startActivity(intent)
+        }
+
     }
 
     private fun delAcc() {

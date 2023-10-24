@@ -29,7 +29,6 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/dataSwapping"
                 android:layout_width="match_parent"
                 android:layout_height="140dp"
                 android:layout_marginTop="10dp"
@@ -38,6 +37,7 @@
 
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/dataSwapping"
                     android:layout_width="0dp"
                     android:layout_height="135dp"
                     android:layout_gravity="center"
@@ -108,7 +108,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
-                            android:text="Employee Assignment"
+                            android:text="Employee hierarchy"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 

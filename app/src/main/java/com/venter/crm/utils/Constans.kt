@@ -1,7 +1,8 @@
 package com.venter.crm.utils
 
 object Constans {
-    const val BASE_URL = "http://149.102.141.128:7002/"
+    //const val BASE_URL = "http://149.102.141.128:7002/"
+    const val BASE_URL = "http://149.102.141.128:3002/"
     //const val BASE_URL = "http://vijenter.in:3000/"
     //const val BASE_URL = "http://192.168.1.48:3000/"
     const val WHATSAPI_URL = "https://graph.facebook.com/v15.0/"

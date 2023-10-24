@@ -52,8 +52,9 @@
     <string name="sign_in">Sign In</string>
     <string name="contact_us">Contact Us</string>
     <string name="title_activity_employee_dash">EmployeeDash</string>
-
-
+    <string name="bio_security">Bio Security</string>
+    <string name="bioSecurityMsg">Bio Security is important for your data security.</string>
+    <string name="bio_screen_msg">Data Security is important for your data security.</string>
 
 
 </resources>

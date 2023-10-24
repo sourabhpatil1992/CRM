@@ -1,4 +1,4 @@
-package com.venter.crm.EmployeeMangment
+package com.venter.crm.empMang
 
 import android.os.Bundle
 import android.util.Log
@@ -25,18 +25,17 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class EmpProsFragement : Fragment(), chkListner {
+class EmpProsFragement : Fragment() {
     private var _binding: FragmentEmpProsFragementBinding? = null
     private val binding: FragmentEmpProsFragementBinding
         get() = _binding!!
 
-    private lateinit var adapter: RawDataListAdapter
+    private lateinit var adapter: DataListAdapter
 
     // private lateinit var act: EmpDashboard
     var rawDataList: ArrayList<RawDataList> = ArrayList()
     var userDataList: ArrayList<UserList> = ArrayList()
-    var othersProsDataList: ArrayList<RawDataList> = ArrayList()
-    var showDataList: ArrayList<RawDataList> = ArrayList()
+
 
     private val candidateViewModel by viewModels<CandidateViewModel>()
 
@@ -47,32 +46,32 @@ class EmpProsFragement : Fragment(), chkListner {
     private fun filterResult() {
         try {
             //Create Filtered Empty List
-            var rawList: ArrayList<RawDataList> = ArrayList()
+            val rawList: ArrayList<RawDataList> = ArrayList()
             var srNo = 1
-            //Insert Filtered Data
-            if (!showDataList.isNullOrEmpty()) {
 
-                showDataList.forEach {
+
+            //Insert Filtered Data
+            if (!rawDataList.isNullOrEmpty()) {
+
+                rawDataList.forEach {
                     if (binding.edtSearch.text.isNotEmpty()) {
                         val text = binding.edtSearch.text.toString()
-                        if (it.candidate_name.contains(
-                                text,
-                                true
-                            ) || it.mob_no.contains(text) || (it.id.toString() == text)
-                        ) {
-                            /*  if (binding.chkCold.isChecked && it.prospect_type == "Cold")
-                                  rawList.add(it)*/
-                            if (binding.chkWarm.isChecked && it.prospect_type == "Warm")
-                                rawList.add(it)
-                            if (binding.chkHot.isChecked && it.prospect_type == "Hot")
-                                rawList.add(it)
+                        if(text.isNotEmpty())
+                        {
+                            if (it.candidate_name.contains(text, true) || it.mob_no.contains(text) || (it.id.toString() == text))
+                            {
+
+                                //if (it.prospect_type == "Interested")
+                                    rawList.add(it)
+
+                            }
                         }
-                    } else {
-                        /*if (binding.chkCold.isChecked && it.prospect_type == "Cold")
-                            rawList.add(it)*/
-                        if (binding.chkWarm.isChecked && it?.prospect_type == "Warm")
+                        else
                             rawList.add(it)
-                        if (binding.chkHot.isChecked && it.prospect_type == "Hot")
+
+                    } else {
+
+
                             rawList.add(it)
                     }
                 }
@@ -87,12 +86,12 @@ class EmpProsFragement : Fragment(), chkListner {
                 adapter.submitList(null)
 
                 adapter.submitList(rawList)
-                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged()
                 binding.rcCandidate.layoutManager =
                    StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
                 binding.rcCandidate.adapter = adapter
 
-                binding.linviewFilter.visibility = View.GONE
+
             }
             else
             {
@@ -115,11 +114,10 @@ class EmpProsFragement : Fragment(), chkListner {
 
         try {
             _binding = FragmentEmpProsFragementBinding.inflate(layoutInflater)
-            adapter = RawDataListAdapter(requireContext(), this, empType = tokenManger.getUserType().toString())
+            adapter = DataListAdapter(requireContext())
             rawDataList = ArrayList()
             userDataList = ArrayList()
-            othersProsDataList = ArrayList()
-            showDataList = ArrayList()
+
             val empList: ArrayList<String> = ArrayList()
 
 
@@ -132,12 +130,8 @@ class EmpProsFragement : Fragment(), chkListner {
             )
             binding.spinEmpName.adapter = adapters
 
-
-
-            if (tokenManger.getUserType().toString() != "Employee")
-                getData()
-            else
-                getProsData()
+            getProsData()
+            getData()
 
             binding.edtSearch.doOnTextChanged { text, start, before, count ->
                 filterResult()
@@ -159,7 +153,7 @@ class EmpProsFragement : Fragment(), chkListner {
     private fun showData() {
         try {
             var srNo = 1
-            if (showDataList.isNotEmpty()) {
+            if (rawDataList.isNotEmpty()) {
                 rawDataList.forEach {
                     it.srNo = srNo++
                 }
@@ -219,12 +213,13 @@ class EmpProsFragement : Fragment(), chkListner {
                                         l: Long
                                     ) {
                                         try {
-                                            if (binding.spinEmpName.selectedItem == "You") {
+                                            if(binding.spinEmpName.selectedItem == "You")
                                                 getProsData()
-                                            } else {
+                                            else
+
                                                 getOthersProsData()
 
-                                            }
+
                                         } catch (e: Exception) {
                                             Log.d(
                                                 TAG,
@@ -241,7 +236,7 @@ class EmpProsFragement : Fragment(), chkListner {
 
                             }
 
-                            getProsData()
+                            //getProsData()
 
 
                         } catch (e: Exception) {
@@ -268,9 +263,9 @@ class EmpProsFragement : Fragment(), chkListner {
 
     private fun getOthersProsData() {
         try {
-            showDataList = ArrayList()
+
             var othersUserId = 0
-            othersProsDataList = ArrayList()
+
 
             userDataList.forEach {
                 if (it.user_name.contains(binding.spinEmpName.selectedItem.toString(), true))
@@ -282,22 +277,21 @@ class EmpProsFragement : Fragment(), chkListner {
                 candidateViewModel.getOthersProsData(othersUserId)
                 candidateViewModel.othersrawDataListResLiveData.observe(viewLifecycleOwner) {
                     binding.progressbar.visibility = View.GONE
-                    showDataList = ArrayList()
+                    rawDataList = ArrayList()
                     when (it) {
 
                         is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
                         is NetworkResult.Error -> {
                             Toast.makeText(context, it.message.toString(), Toast.LENGTH_SHORT)
                                 .show()
-                            showDataList = ArrayList()
-                            showDataList = othersProsDataList
+                            rawDataList = ArrayList()
+
                             filterResult()
                         }
                         is NetworkResult.Success -> {
-                            othersProsDataList = ArrayList()
-                            othersProsDataList = (it.data as ArrayList<RawDataList>?)!!
-                            showDataList = ArrayList()
-                            showDataList = othersProsDataList
+                            rawDataList = ArrayList()
+                            rawDataList = (it.data as ArrayList<RawDataList>?)!!
+
                             filterResult()
                         }
 
@@ -330,9 +324,7 @@ class EmpProsFragement : Fragment(), chkListner {
                     is NetworkResult.Success -> {
 
                         rawDataList = ArrayList()
-                        // userDataList= ArrayList()
-                        othersProsDataList = ArrayList()
-                        showDataList = ArrayList()
+
 
                         it.data?.forEach { it ->
 
@@ -340,15 +332,15 @@ class EmpProsFragement : Fragment(), chkListner {
                                 rawDataList.add(it)
 
                         }
-                        showDataList = rawDataList
+
                         showData()
 
-                        binding.btnFilter.setOnClickListener {
+                        /*binding.btnFilter.setOnClickListener {
                             binding.linviewFilter.visibility = View.VISIBLE
                         }
                         binding.txtApply.setOnClickListener {
                             filterResult()
-                        }
+                        }*/
 
 
                     }
@@ -363,8 +355,9 @@ class EmpProsFragement : Fragment(), chkListner {
 
     }
 
-    override fun chkSelect(candidate: RawDataList, checked: Boolean) {
-
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
 }
