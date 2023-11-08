@@ -27,7 +27,7 @@ class WhatsAppActivity : AppCompatActivity() {
     private val binding:ActivityWhatsAppBinding
         get() = _binding!!
 
-    private val candidateViewModel by viewModels<CandidateViewModel>()
+
 
     private var userId = 0
     private var userName = ""

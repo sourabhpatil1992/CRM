@@ -810,6 +810,32 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
     }
 
+    suspend fun updateCustumerData(cust:CustUpdateDet) {
+        try {
+            _stringResLiveData.postValue(NetworkResult.Loading())
+
+            val response =
+                userApi.updateCustumerData(cust)
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.kt updateCandidateRawData() is " + e.message)
+        }
+    }
+
     private val _allrawDataListResLiveData = MutableLiveData<NetworkResult<List<RawDataList>>>()
     val allrawDataListResLiveData: LiveData<NetworkResult<List<RawDataList>>>
         get() = _allrawDataListResLiveData
@@ -1078,7 +1104,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
 
 
 
-    suspend fun setEmpRawDataComment(
+    /*suspend fun setEmpRawDataComment(
         callTime: String,
         prosType: String,
         remark: String,
@@ -1099,6 +1125,32 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
                     candiateId,
                     update,mobNo,alternateMob,prosLevel
                 )
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.kt setEmpRawDataComment() is " + e.message)
+        }
+    }*/
+
+    suspend fun setEmpRawDataComment(commentData: RawCommentData)
+    {
+        try {
+            _stringResLiveData.postValue(NetworkResult.Loading())
+            val response =
+                userApi.setEmpRawDataComment(commentData)
 
             if (response.isSuccessful && response.body() != null) {
 
@@ -1408,6 +1460,38 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
     }
 
+    private val _msgNameListResLiveData = MutableLiveData<NetworkResult<List<WhatsTempNameList>>>()
+    val msgNameListResLiveData : LiveData<NetworkResult<List<WhatsTempNameList>>>
+        get() = _msgNameListResLiveData
+    suspend fun getMsgNameList()
+    {
+        try {
+            _msgNameListResLiveData .postValue(NetworkResult.Loading())
+            val response = userApi.getMsgNameList()
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _msgNameListResLiveData .postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _msgNameListResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _msgNameListResLiveData .postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        }
+        catch (e: Exception) {
+            Log.d(
+                TAG,
+                "Error in UserAuthRepository.kt getMsgNameList() is " + e.message
+            )
+        }
+    }
+
 
     suspend fun whatsApiTextUpdate(temp:WhatsappTemplateMsg) {
         try {
@@ -1421,12 +1505,71 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
     }
 
-    suspend fun updateTemp(tempId:String, template:String, header:String)
+
+    private val _whatsAccListResLiveData = MutableLiveData<NetworkResult<List<WhatsAppAccList>>>()
+    val whatsAccListResLiveData : LiveData<NetworkResult<List<WhatsAppAccList>>>
+        get() = _whatsAccListResLiveData
+    suspend fun getWhatsAppList()
+    {
+        try {
+            _whatsAccListResLiveData.postValue(NetworkResult.Loading())
+
+            val response = userApi.getWhatsAppList()
+
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _whatsAccListResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _whatsAccListResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _whatsAccListResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserApiRepostitory.kt getWhatsAppList() is " + e.message)
+        }
+    }
+
+    suspend fun createWhatsAppAcc()
     {
         try {
             _allrawDataListResLiveData.postValue(NetworkResult.Loading())
 
-            val response = userApi.updateTemp(tempId, template, header)
+            val response = userApi.createWhatsAppAcc()
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserApiRepostitory.kt createWhatsAppAcc() is " + e.message)
+        }
+    }
+
+    suspend fun updateTemp(tempId: String, template: String, header: String, tempName: String)
+    {
+        try {
+            _allrawDataListResLiveData.postValue(NetworkResult.Loading())
+
+            val response = userApi.updateTemp(tempId, template, header,tempName)
 
             if (response.isSuccessful && response.body() != null) {
 
@@ -1507,6 +1650,61 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
             _stringResLiveData.postValue(NetworkResult.Loading())
 
          val response = userApi.intilWhats(id)
+            if (response.isSuccessful && response.body() != null) {
+
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+        }
+        catch (e:Exception)
+        {
+
+            Log.d(TAG, "Error in UserAuthRepository.kt intilWhats() is " + e.message)
+
+        }
+
+    }
+    suspend fun logOutWhats(id: Int) {
+        try {
+            _stringResLiveData.postValue(NetworkResult.Loading())
+
+         val response = userApi.logOutWhatsapp(id)
+            if (response.isSuccessful && response.body() != null) {
+
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+        }
+        catch (e:Exception)
+        {
+
+            Log.d(TAG, "Error in UserAuthRepository.kt intilWhats() is " + e.message)
+
+        }
+
+    }
+
+    suspend fun updateWhatsAppAcc(id: Int,userId: Int) {
+        try {
+            _stringResLiveData.postValue(NetworkResult.Loading())
+
+         val response = userApi.updateWhatsAppAcc(id,userId)
             if (response.isSuccessful && response.body() != null) {
 
                 _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
@@ -1619,6 +1817,34 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
             _stringResLiveData.postValue(NetworkResult.Loading())
 
             val response = userApi.delAcc(id)
+            if (response.isSuccessful && response.body() != null) {
+
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+        }
+        catch (e:Exception)
+        {
+
+            Log.d(TAG, "Error in UserAuthRepository.kt delAcc() is " + e.message)
+
+        }
+    }
+
+    suspend fun resetDevice(id: Int) {
+        try {
+            _stringResLiveData.postValue(NetworkResult.Loading())
+
+            val response = userApi.resetDevice(id)
+
             if (response.isSuccessful && response.body() != null) {
 
                 _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
@@ -1760,6 +1986,8 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
             Log.d(TAG,"Error in UserAuthRepository.ke updateUserHierarchy() is ${e.message}")
         }
     }
+
+
 
 
 }

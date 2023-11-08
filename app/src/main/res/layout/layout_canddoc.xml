@@ -12,13 +12,14 @@
     >
     
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:id="@+id/imgDoc"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:src="@drawable/pdf_icon"
         />
     <TextView
         android:id="@+id/txtDocName"
-        android:layout_width="match_parent"
+        android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:text="Candidate Offer Letter"
         android:layout_gravity="center"

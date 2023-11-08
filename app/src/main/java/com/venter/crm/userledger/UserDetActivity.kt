@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.venter.crm.Dashboard.AdminDashboard
+import com.venter.crm.R
 import com.venter.crm.databinding.ActivityUserDetBinding
 import com.venter.crm.models.UserListRes
 import com.venter.crm.utils.Constans.TAG
@@ -65,6 +66,57 @@ class UserDetActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.resetDev.setOnClickListener {
+            resetDevice()
+        }
+
+    }
+
+    private fun resetDevice() {
+        try {
+            val message = TextView(this)
+            message.text =getString(R.string.resetDevMsg)
+            val layout = LinearLayout(this)
+            layout.setPadding(20, 20, 20, 20)
+            layout.addView(message)
+            val builders = AlertDialog.Builder(this)
+            builders.setTitle("Reset Device")
+            builders.setView(layout)
+
+            builders.setPositiveButton("Yes"){_,_->
+                try {
+                    candidateViewModel.resetDevice(user.id)
+                    candidateViewModel.stringResData.observe(this){
+                        when(it)
+                        {
+                            is NetworkResult.Loading ->{}
+                            is NetworkResult.Error -> Toast.makeText(this, it.message.toString(), Toast.LENGTH_SHORT)
+                                .show()
+                            is NetworkResult.Success ->{
+                                Toast.makeText(this, it.data.toString(), Toast.LENGTH_SHORT)
+                                    .show()
+                                startActivity(Intent(this,AdminDashboard::class.java))
+                                this.finish()
+                            }
+                        }
+                    }
+                }
+                catch (e:Exception)
+                {
+                    Log.d(TAG,"Error in UserDetActivity.kt delAcc() is ${e.message}")
+                }
+
+            }
+            builders.setNegativeButton("No"){_,_->
+
+            }
+
+            builders.show()
+        }
+        catch (e:Exception)
+        {
+            Log.d(TAG,"Error in UerDetActivity.kt resetDevice() is : ${e.message}")
+        }
     }
 
     private fun delAcc() {
@@ -114,9 +166,10 @@ class UserDetActivity : AppCompatActivity() {
 
     private fun whatsAppInitialization() {
         try {
-            val intent = Intent(this, WhatsAppActivity::class.java)
+            val intent = Intent(this, WhatsListActivity::class.java)
             intent.putExtra("userId", user.id)
-            intent.putExtra("userName", user.user_name)
+            intent.putExtra("whatsAcc", user.what_acc)
+
             startActivity(intent)
 
 

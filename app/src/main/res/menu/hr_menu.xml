@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/hrDashFragment"
+        android:title="DashBoard"
+        android:icon="@drawable/hr" />
+    <item
+        android:id="@+id/hrTimeFragment"
+        android:title="TimeSheet"
+        android:icon="@drawable/followup" />
+    <item
+        android:id="@+id/hrReportFragment"
+        android:title="Report"
+        android:icon="@drawable/report_logo" />
+    <item
+        android:id="@+id/hrEmpFragment"
+        android:title="Employee"
+        android:icon="@drawable/empmang" />
+
+
+
+</menu>

@@ -109,7 +109,7 @@ class ImageUploadFrgnd : Service() {
 
                 builder = Notification.Builder(this, channelId)
                     .setContentText("Uploading Data on server.....")
-                    .setContentTitle("Rego Digital")
+                    .setContentTitle("CRM")
                     .setSmallIcon(R.drawable.crm)
                     .setLargeIcon(
                         BitmapFactory.decodeResource(
@@ -122,7 +122,7 @@ class ImageUploadFrgnd : Service() {
 
                 builder = Notification.Builder(this)
                     .setContentText("Uploading Data on server.....")
-                    .setContentTitle("Rego Digital")
+                    .setContentTitle("CRM")
                     .setSmallIcon(R.drawable.crm)
                     .setLargeIcon(
                         BitmapFactory.decodeResource(
@@ -159,6 +159,7 @@ class ImageUploadFrgnd : Service() {
             try {
                 val fileUri = Uri.parse(intent!!.getStringExtra("FileUri").toString())
                 val template = intent!!.getStringExtra("template").toString()
+                val tempName = intent!!.getStringExtra("temp_name").toString()
                 val temp: WhatsappTemplateMsg? = intent!!.getParcelableExtra<WhatsappTemplateMsg>("temp")
 
                 val mimeType = applicationContext.contentResolver.getType(fileUri)
@@ -200,7 +201,7 @@ class ImageUploadFrgnd : Service() {
 
                 val response =syncApi.UpdateWhatsApiAttachments(
                     filePart,
-                    temp!!.id.toString(),template.toString()
+                    temp!!.id.toString(),template.toString(),tempName
                 )
 
 

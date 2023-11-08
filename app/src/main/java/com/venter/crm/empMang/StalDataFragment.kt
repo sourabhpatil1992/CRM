@@ -30,14 +30,16 @@ class StalDataFragment : Fragment() {
     private val binding:FragmentStalDataBinding
         get() = _binding!!
 
-    @Inject
-    lateinit var tokenManger: TokenManger
+
 
     private val candidateViewModel: CandidateViewModel by viewModels()
 
     var userDataList: ArrayList<UserList> = ArrayList()
 
     private lateinit var adapter: DataListAdapter
+
+    @Inject
+    lateinit var tokenManger: TokenManger
 
 
 

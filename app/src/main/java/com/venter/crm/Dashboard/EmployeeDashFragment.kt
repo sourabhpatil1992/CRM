@@ -10,18 +10,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.squareup.picasso.Picasso
-import com.venter.crm.EmployeeMangment.AdminViewPagerAdapter
-import com.venter.crm.EmployeeMangment.ViewPagerAdapter
 import com.venter.crm.R
 import com.venter.crm.databinding.FragmentEmployeeDashBinding
-import com.venter.crm.utils.Constans
 import com.venter.crm.utils.Constans.BASE_URL
 import com.venter.crm.utils.Constans.TAG
 import com.venter.crm.utils.NetworkResult
@@ -59,14 +55,16 @@ class EmployeeDashFragment : Fragment() {
 
             //officeClose()
 
-            getTime()
+            if (tokenManger.getUserType() == "Admin")
+                startOffice()
+            else
+                getTime()
 
 
 
             Picasso.get()
                 .load("${BASE_URL}assets/dashResource/${tokenManger.getInstituteId()}.jpg")
                 .into(binding.dashImage)
-
 
 
         } catch (e: Exception) {
@@ -93,7 +91,7 @@ class EmployeeDashFragment : Fragment() {
 
                     is NetworkResult.Success -> {
                         //Log.d(TAG,it.data.toString())
-                        getData(it.data!!.startTime, it.data!!.endTime, it.data!!.uStatus)
+                        getData(it.data!!.startTime, it.data.endTime, it.data.uStatus)
                     }
                 }
 
@@ -180,7 +178,7 @@ class EmployeeDashFragment : Fragment() {
             )
 
         } catch (e: Exception) {
-            Log.d(Constans.TAG, "Error in the asking permission..." + e.message)
+            Log.d(TAG, "Error in the asking permission..." + e.message)
         }
 
 

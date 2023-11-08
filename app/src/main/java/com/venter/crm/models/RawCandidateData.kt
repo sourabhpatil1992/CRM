@@ -11,7 +11,11 @@ data class RawCandidateData(
     val Qualification:String,
     val PassYear:String,
     val prospect_type:String,
-    val commentList:List<RawDataComment>
+    val commentList:List<RawDataComment>,
+    val capital : Double = 0.0,
+    val trader : Int = 0,
+    val segment:String?,
+
 )
 
 data class RawDataComment(

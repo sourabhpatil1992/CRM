@@ -8,6 +8,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="regocolor">#0072BB</color>
+    <color name="red">#D50000</color>
+    <color name="green">#05F86A</color>
+    <color name="greenback">#013C19</color>
+    <color name="gray">#B2797A7A</color>
     <!--color name="regocolor">#211a46</color-->
 
     <color name="temp1">#0C0C42</color>

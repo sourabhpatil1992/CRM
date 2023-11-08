@@ -38,7 +38,7 @@ class EditWhatsTemp : AppCompatActivity() {
     private var deleteFile: Boolean = false
 
 
-    private var headerFile: String = ""
+    //private var headerFile: String = ""
 
     private var headerChange = false
 
@@ -83,6 +83,7 @@ class EditWhatsTemp : AppCompatActivity() {
 
         if (template != null) {
             binding.txtMsg.setText(template!!.tempMsg)
+            binding.tempName.setText(template!!.temp_name)
 
             if (template!!.header_name != null && template!!.header_name != "") {
                 binding.imgWhats.setImageURI(null)
@@ -159,7 +160,7 @@ class EditWhatsTemp : AppCompatActivity() {
 
     private fun updateWhatsReq() {
         try {
-            if (ProfileUri != null || template!!.tempMsg != binding.txtMsg.text.toString() || deleteFile) {
+            if (ProfileUri != null || template!!.tempMsg != binding.txtMsg.text.toString() || deleteFile || template!!.temp_name != binding.tempName.text.toString()) {
                 if (ProfileUri != null) {
                             //Header File Changed
 
@@ -169,6 +170,7 @@ class EditWhatsTemp : AppCompatActivity() {
                     intent.putExtra("FileUri", ProfileUri.toString())
                     intent.putExtra("temp", template)
                     intent.putExtra("template", binding.txtMsg.text.toString())
+                    intent.putExtra("temp_name", binding.tempName.text.toString())
 
 
                     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
@@ -188,7 +190,8 @@ class EditWhatsTemp : AppCompatActivity() {
                     //Only Text Change
                     if(template!!.header_name.toString()=="null")
                         template!!.header_name = ""
-                    candidateViewModel.updateTemp(template!!.id.toString(),binding.txtMsg.text.toString(),template!!.header_name.toString())
+                    candidateViewModel.updateTemp(template!!.id.toString(),binding.txtMsg.text.toString(),
+                        template!!.header_name.toString(),binding.tempName.text.toString())
 
                     candidateViewModel.stringResData.observe(this)
                     {

@@ -11,5 +11,6 @@ data class UserListRes(
     val mobile_no:String,
     val job_title :String,
     val user_type :String,
-    var status:String
+    var status:String,
+    val what_acc:Int
 ):Parcelable

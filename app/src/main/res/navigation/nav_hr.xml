@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_hr.xml"
+    app:startDestination="@id/hrDashFragment">
+
+    <fragment
+        android:id="@+id/hrDashFragment"
+        android:name="com.venter.crm.hrMangment.HrDashFragment"
+        android:label="fragment_hr_dash"
+        tools:layout="@layout/fragment_hr_dash" />
+    <fragment
+        android:id="@+id/hrTimeFragment"
+        android:name="com.venter.crm.hrMangment.HrTimeFragment"
+        android:label="fragment_hr_time"
+        tools:layout="@layout/fragment_hr_time" />
+    <fragment
+        android:id="@+id/hrReportFragment"
+        android:name="com.venter.crm.hrMangment.HrReportFragment"
+        android:label="fragment_hr_report"
+        tools:layout="@layout/fragment_hr_report" />
+    <fragment
+        android:id="@+id/hrEmpFragment"
+        android:name="com.venter.crm.hrMangment.HrEmpFragment"
+        android:label="fragment_hr_emp"
+        tools:layout="@layout/fragment_hr_emp" >
+        <action
+            android:id="@+id/action_hrEmpFragment_to_createEmpFragment"
+            app:destination="@id/createEmpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createEmpFragment"
+        android:name="com.venter.crm.hrMangment.CreateEmpFragment"
+        android:label="fragment_create_emp"
+        tools:layout="@layout/fragment_create_emp" />
+</navigation>

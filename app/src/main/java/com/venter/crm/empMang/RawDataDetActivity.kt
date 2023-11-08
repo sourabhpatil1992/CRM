@@ -1,5 +1,6 @@
 package com.venter.crm.empMang
 
+
 import android.Manifest
 import android.R
 import android.content.Intent
@@ -14,9 +15,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.Spinner
@@ -30,8 +29,13 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.venter.crm.databinding.ActivityRawDataDetBinding
 import com.venter.crm.databinding.LayoutCommentBinding
+import com.venter.crm.databinding.LayoutCustdeteditBinding
+import com.venter.crm.models.CustUpdateDet
 import com.venter.crm.models.RawCandidateData
+import com.venter.crm.models.RawCommentData
+import com.venter.crm.models.SpinnerItem
 import com.venter.crm.models.UserList
+import com.venter.crm.models.WhatsTempNameList
 import com.venter.crm.utils.Constans.TAG
 import com.venter.crm.utils.NetworkResult
 import com.venter.crm.utils.TokenManger
@@ -54,19 +58,22 @@ class RawDataDetActivity : AppCompatActivity() {
 
     private var dataId = 0
 
+    private var tempList: ArrayList<WhatsTempNameList> = ArrayList()
+
 
     var data: RawCandidateData? = null
 
     @Inject
     lateinit var tokenManger: TokenManger
 
+    private var selectedTemplate: ArrayList<String> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityRawDataDetBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.editTransfer.visibility = if (tokenManger.getUserType() != "Employee")
+        binding.editTransfer.visibility = if (tokenManger.getUserType() != "Admin")
             View.VISIBLE
         else
             View.GONE
@@ -96,6 +103,8 @@ class RawDataDetActivity : AppCompatActivity() {
                         }
                     }
                 }
+
+                getTemplateList()
 
 
             } else {
@@ -146,6 +155,7 @@ class RawDataDetActivity : AppCompatActivity() {
 
         binding.btnCommnet.setOnClickListener {
             setComment()
+
         }
         binding.whatsButton.setOnClickListener {
 
@@ -155,22 +165,35 @@ class RawDataDetActivity : AppCompatActivity() {
             }
 
             showPopupMenu(it, mob)
-            /*else if (mob.length <= 10)
-                mob = "91$mob"
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data =
-                Uri.parse("http://api.whatsapp.com/send?phone=$mob&text=hi")
-            startActivity(intent)*/
+
         }
 
         binding.editButton.setOnClickListener {
-            editAction()
+            //editAction()
+            editCustDet()
         }
 
         binding.editTransfer.setOnClickListener {
             dataTransfer()
         }
 
+    }
+
+    private fun getTemplateList() {
+        candidateViewModel.getWhatsMsgNameList()
+        tempList = ArrayList()
+        candidateViewModel.msgNameListResLiveData.observe(this)
+        {
+            when (it) {
+                is NetworkResult.Loading -> {}
+                is NetworkResult.Error -> {}
+                is NetworkResult.Success -> {
+                    tempList = (it.data as ArrayList<WhatsTempNameList>?)!!
+                    // tempList.add(0, WhatsTempNameList(0, "NA"))
+
+                }
+            }
+        }
     }
 
     private fun dataTransfer() {
@@ -218,7 +241,7 @@ class RawDataDetActivity : AppCompatActivity() {
         )
         empSpinner.adapter = adapters
         val builders = AlertDialog.Builder(this)
-        builders.setTitle("Candidate Comment")
+        builders.setTitle("Lead Transfer")
         val layout = LinearLayout(this)
         layout.orientation = LinearLayout.VERTICAL
         layout.setPadding(20, 20, 20, 20)
@@ -255,7 +278,7 @@ class RawDataDetActivity : AppCompatActivity() {
     private fun editAction() {
         try {
             val builders = AlertDialog.Builder(this)
-            builders.setTitle("Candidate Comment")
+            builders.setTitle("Customer Details")
             val layout = LinearLayout(this)
             layout.orientation = LinearLayout.VERTICAL
             layout.setPadding(20, 20, 20, 20)
@@ -321,16 +344,128 @@ class RawDataDetActivity : AppCompatActivity() {
         }
     }
 
+    private fun editCustDet() {
+        try {
+            val bindingMsg = LayoutCustdeteditBinding.inflate(layoutInflater)
+
+            val builder = AlertDialog.Builder(this)
+
+            bindingMsg.custName.setText(data!!.candidate_name)
+            bindingMsg.email.setText(data!!.emailId)
+            bindingMsg.alterMob.setText(data!!.altenate_mobno)
+            if (data!!.trader == 1) {
+                bindingMsg.rdoYes.isChecked = true
+                bindingMsg.linTrade.visibility = View.VISIBLE
+            }
+            else
+            {
+                bindingMsg.rdoNo.isChecked = true
+                bindingMsg.linTrade.visibility = View.GONE
+                }
+            bindingMsg.capital.setText(data!!.capital.toString())
+            if(!data!!.segment.isNullOrEmpty()) {
+                val segment = data!!.segment!!.split(",")
+                if(segment.contains("F&O"))
+                    bindingMsg.chkFo.isChecked = true
+                if(segment.contains("Cash"))
+                    bindingMsg.chkCash.isChecked = true
+                if(segment.contains("Commodity"))
+                    bindingMsg.chkCommodity.isChecked = true
+
+            }
+
+
+
+
+            builder.setView(bindingMsg.root)
+            builder.setTitle("Customer Details")
+            builder.setIcon(
+                ContextCompat.getDrawable(
+                    this,
+                    com.venter.crm.R.drawable.crm
+                )
+            )
+
+            bindingMsg.rdoTrade.setOnCheckedChangeListener { _, _ ->
+
+                bindingMsg.linTrade.visibility = if (bindingMsg.rdoYes.isChecked)
+                    View.VISIBLE
+                else
+                    View.GONE
+            }
+
+
+
+
+
+            builder.setPositiveButton("OK") { _, _ ->
+
+                if (bindingMsg.email.text.isNotEmpty())
+                    if(!emailValidation(bindingMsg.email.text.toString())) {
+                        Toast.makeText(this, "Please Enter Valid Email Id.", Toast.LENGTH_SHORT)
+                            .show()
+                        return@setPositiveButton
+                    }
+                val trader = if (bindingMsg.rdoYes.isChecked)
+                    1
+                else
+                    0
+                val segment: ArrayList<String> = ArrayList()
+                if (bindingMsg.chkFo.isChecked)
+                    segment.add("F&O")
+                if (bindingMsg.chkCash.isChecked)
+                    segment.add("Cash")
+                if (bindingMsg.chkCommodity.isChecked)
+                    segment.add("Commodity")
+                candidateViewModel.updateCustumerData(
+                    CustUpdateDet(
+                        dataId,
+                        bindingMsg.custName.text.toString(),
+                        bindingMsg.alterMob.text.toString(),
+                        bindingMsg.email.text.toString(),
+                        bindingMsg.capital.text.toString().toDouble(),
+                        trader,
+                        segment
+                    )
+                )
+
+            }
+            builder.setNegativeButton("Cancel") { dialog, _ ->
+                // Handle Cancel button click if needed
+            }
+            val alertDialog = builder.create()
+
+            alertDialog.show()
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in RawDataDetActivity.kt editCustDet() is: ${e.message}")
+        }
+
+    }
+
+    private fun emailValidation(emailId: String): Boolean {
+
+        val emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}".toRegex()
+        return emailPattern.matches(emailId)
+
+    }
+
+
     private fun observerRes() {
         candidateViewModel.stringResData.observe(this) {
             binding.progressbar.visibility = View.GONE
             when (it) {
                 is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
-                is NetworkResult.Error -> Toast.makeText(
-                    this,
-                    it.message.toString(),
-                    Toast.LENGTH_SHORT
-                ).show()
+                is NetworkResult.Error -> {
+                    try {
+                        Toast.makeText(
+                            this,
+                            it.message.toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } catch (e: Exception) {
+                        Log.d(TAG, "Error in RawDataDetActivity.kt observerRes() is : ${e.message}")
+                    }
+                }
 
                 is NetworkResult.Success -> {
                     Toast.makeText(this, "Data Update Successfully.", Toast.LENGTH_SHORT).show()
@@ -338,296 +473,6 @@ class RawDataDetActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    private fun setCommentOrigin() {
-        try {
-
-            //Get The Call Time
-            var callTime = getTime()
-
-            //Message Box After Click on Comment Button
-            val builders = AlertDialog.Builder(this)
-            builders.setTitle("Data Comment")
-
-            val layout = LinearLayout(this)
-            layout.orientation = LinearLayout.VERTICAL
-            layout.setPadding(20, 20, 20, 20)
-
-            /****************************************************/
-            //Call Type
-            val callTimeText = TextView(this)
-            callTimeText.text = "Call Time"
-            callTimeText.textSize = 20F
-            callTimeText.setTextColor(getColor(R.color.black))
-            layout.addView(callTimeText)
-            val callTText = TextView(this)
-            callTText.text = callTime.toString() + " Sec"
-            callTText.textSize = 20F
-            callTText.setTextColor(getColor(R.color.black))
-            layout.addView(callTText)
-            /*****************************************************/
-
-
-            /******************************************************/
-            //Prospect Type
-            val prospectText = TextView(this)
-            prospectText.text = "Prospect Type"
-            prospectText.textSize = 20F
-            prospectText.setTextColor(getColor(R.color.black))
-            layout.addView(prospectText)
-            val prosType: Array<String> =
-                arrayOf("Not Interested", "Interested", "Not Responding", "Paid")
-
-            val prospectSpinner = Spinner(this)
-            val adapters = ArrayAdapter<String>(
-                this,
-                R.layout.select_dialog_item,
-                prosType
-            )
-            prospectSpinner.adapter = adapters
-            layout.addView(prospectSpinner)
-            /*****************************************************************/
-
-            /********************************************************/
-            //Prospect Level
-            val prospectSubTypeLayout = LinearLayout(this)
-            prospectSubTypeLayout.orientation = LinearLayout.VERTICAL
-
-            val prospectLevelText = TextView(this)
-            prospectLevelText.text = "Prospect Sub-Type"
-            prospectLevelText.textSize = 20F
-            prospectLevelText.setTextColor(getColor(R.color.black))
-            prospectSubTypeLayout.addView(prospectLevelText)
-            val prospectLevel: Array<String> = arrayOf(
-                "NA",
-                "Coming for visit",
-                "Visited",
-                "Demo",
-                "Not Interested",
-                "Information on call",
-                "Will Join/Inform"
-            )
-            val prospectLevelSpinner = Spinner(this)
-            val prosAdapters = ArrayAdapter<String>(
-                this,
-                R.layout.select_dialog_item,
-                prospectLevel
-            )
-            prospectLevelSpinner.adapter = prosAdapters
-            prospectSubTypeLayout.addView(prospectLevelSpinner)
-            prospectSubTypeLayout.visibility = View.GONE
-            layout.addView(prospectSubTypeLayout)
-            /************************************************************/
-
-
-            /***********************************************************/
-            //Comment
-
-            val remarkLayout = LinearLayout(this)
-            remarkLayout.orientation = LinearLayout.VERTICAL
-
-            val commentList = arrayOf(
-                "Not Responding",
-                "Call Busy",
-                "Out of Coverage area",
-                "Switch off",
-                "Invalid Number",
-                "Not Interested",
-                "Not ready to pay expecting salary",
-                "Interested for demo.\nNeed a Reminder call for Demo.",
-                "He/She will discuss with family and let you knows.",
-                "Interested Ready to visit the office location",
-                "Will join from ",
-                "Shared location and details",
-                "Traveling,Need to call back after some time. ",
-                "Interested for only placement not for course"
-            )
-
-            val RemarkText = TextView(this)
-            RemarkText.text = "Remark"
-            RemarkText.textSize = 20F
-            RemarkText.setTextColor(getColor(R.color.black))
-            remarkLayout.addView(RemarkText)
-            val RemarkEditText = AutoCompleteTextView(this)
-            RemarkEditText.setHint("Remark")
-            RemarkEditText.textSize = 20F
-            RemarkEditText.setTextColor(getColor(R.color.black))
-            val adapter: ArrayAdapter<String> =
-                ArrayAdapter<String>(this, R.layout.simple_dropdown_item_1line, commentList)
-            RemarkEditText.threshold = 1
-            RemarkEditText.setAdapter(adapter)
-            remarkLayout.addView(RemarkEditText)
-            remarkLayout.visibility = View.GONE
-            layout.addView(remarkLayout)
-            /************************************************************************/
-            //Need An Follow Up Message
-            val folloupMsgLayout = LinearLayout(this)
-            folloupMsgLayout.orientation = LinearLayout.VERTICAL
-            val folloupMsgText = TextView(this)
-            folloupMsgText.textSize = 20F
-            folloupMsgText.setTextColor(resources.getColor(com.venter.crm.R.color.black))
-            folloupMsgText.setText("Required Follow Up?")
-            folloupMsgLayout.addView(folloupMsgLayout)
-
-            layout.addView(folloupMsgLayout)
-            /***************************************************************************/
-            //Next Follow-up Date
-
-            val folloupLayout = LinearLayout(this)
-            folloupLayout.orientation = LinearLayout.VERTICAL
-            val letterDateText = TextView(this)
-            letterDateText.textSize = 20F
-            letterDateText.setTextColor(resources.getColor(com.venter.crm.R.color.black))
-            letterDateText.setText("Follow-up Date")
-
-            //For Folloup Date we are putting the Date Edit Text and and calnder Button for the Calder View
-            val linDate = LinearLayout(this)
-            linDate.orientation = LinearLayout.HORIZONTAL
-            val letterDate = EditText(this)
-            letterDate.textSize = 20F
-            letterDate.inputType = 20
-            letterDate.setHint("DD-MM-YYYY")
-            letterDate.filters = arrayOf(InputFilter.LengthFilter(10))
-            folloupLayout.addView(letterDate)
-
-            val calView = ImageButton(this)
-            calView.setBackgroundResource(R.drawable.ic_menu_my_calendar);
-
-            linDate.addView(calView)
-
-            folloupLayout.addView(letterDateText)
-            val layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            linDate.setLayoutParams(layoutParams)
-
-
-            folloupLayout.addView(linDate)
-
-            folloupLayout.visibility = View.GONE
-            layout.addView(folloupLayout)
-
-
-            linDate.setOnClickListener {
-                setDate(letterDate)
-            }
-            letterDate.setOnClickListener {
-                setDate(letterDate)
-            }
-            letterDateText.setOnClickListener {
-                setDate(letterDate)
-            }
-            calView.setOnClickListener {
-                setDate(letterDate)
-            }
-
-
-            //Marketing Template
-            val marketingText = TextView(this)
-            marketingText.text = "WhatsApp Template"
-            marketingText.textSize = 20F
-            marketingText.setTextColor(getColor(R.color.black))
-            layout.addView(marketingText)
-
-
-            val tempType = arrayOf(
-                "Null",
-                "Template 1",
-                "Template 2",
-                "Template 3",
-                "Template 4",
-                "Template 5",
-                "Template 6",
-                "Template 7",
-                "Template 8",
-                "Template 9",
-                "Template 10",
-            )
-            val tempSpinner = Spinner(this)
-            val adapterss = ArrayAdapter<String>(
-                this,
-                R.layout.select_dialog_item,
-                tempType
-            )
-            tempSpinner.adapter = adapterss
-            layout.addView(tempSpinner)
-
-
-            builders.setPositiveButton("Submit") { dialogInterface, which ->
-                //Set Validation
-                try {
-                    if (RemarkEditText.text.isNotEmpty()) {
-
-                        val dateFormat = SimpleDateFormat("dd-MM-yyyy")
-                        dateFormat.parse(letterDate.text.toString())
-
-                        val update =
-                            if (data!!.prospect_type != prospectSpinner.selectedItem.toString())
-                                1
-                            else
-                                0
-                        if (prospectSpinner.selectedItem.toString() == "Not Responding" || RemarkEditText.text.contains(
-                                "Not Responding"
-                            )
-                        )
-                            callTime = "30"
-
-                        submitData(
-                            callTime,
-                            prospectSpinner.selectedItem.toString(),
-                            RemarkEditText.text.toString(),
-                            letterDate.text.toString(),
-                            tempType.indexOf(tempSpinner.selectedItem.toString()).toString(),
-                            update,
-                            data!!.mob_no.toString(),
-                            data!!.altenate_mobno.toString(),
-                            prospectLevelSpinner.selectedItem.toString()
-                        )
-                    }
-                } catch (e: Exception) {
-                    Toast.makeText(
-                        this,
-                        "Please fill date in DD-MM-YYYY format",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-            builders.setNeutralButton("Cancel") { dialogInterface, which ->
-
-            }
-
-            builders.setView(layout)
-            builders.setIcon(
-                ContextCompat.getDrawable(
-                    this,
-                    com.venter.crm.R.drawable.crm
-                )
-            )
-            val alertDialog: AlertDialog = builders.create()
-            alertDialog.setCancelable(true)
-
-            val lastData = tokenManger.getLastCommentDet()
-
-            if (callTime == lastData["call_time"] && data!!.mob_no == lastData["mob_no"]) {
-                if (callTime == "0")
-                    alertDialog.show()
-                else
-                    Toast.makeText(
-                        applicationContext,
-                        "Comment already submitted on this call.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-            } else
-                alertDialog.show()
-
-
-        } catch (e: Exception) {
-            Log.d(TAG, "Error in RawDataDetActivity.kt setComment() is " + e.message)
-        }
-
-
     }
 
     private fun setComment() {
@@ -655,7 +500,8 @@ class RawDataDetActivity : AppCompatActivity() {
                 "Demo",
                 "Not Interested",
                 "Information on call",
-                "Will Join/Inform"
+                "Will Join/Inform",
+                "Paid"
             )
             adapter = ArrayAdapter<String>(
                 this,
@@ -673,16 +519,17 @@ class RawDataDetActivity : AppCompatActivity() {
                         position: Int,
                         id: Long
                     ) {
-                        if (bindingMsg.spinProsType.selectedItemPosition != 0)
-                        {
+                        if (bindingMsg.spinProsType.selectedItemPosition != 0) {
                             bindingMsg.linProsSubType.visibility = View.VISIBLE
-                        }
-                        else
-                        {
+                            if (bindingMsg.spinProsType.selectedItemPosition == 3) {
+                                bindingMsg.linAmount.visibility = View.VISIBLE
+                            } else {
+                                bindingMsg.linAmount.visibility = View.GONE
+                            }
+                        } else {
                             bindingMsg.linProsSubType.visibility = View.GONE
                             bindingMsg.spinProsLevel.setSelection(0)
                         }
-
 
 
                     }
@@ -703,35 +550,71 @@ class RawDataDetActivity : AppCompatActivity() {
 
                 }
 
+            val tempNames = tempList.mapNotNull { it.temp_name }
+            val whatsTemp: ArrayList<String> = ArrayList(tempNames)
 
 
+            val items = ArrayList<SpinnerItem>()
+            whatsTemp.forEach {
+                items.add(SpinnerItem(it, false))
+            }
+            val selectedItems = BooleanArray(whatsTemp.size)
+            var selectedItemsList = mutableListOf<String>()
+            var selectedTempList = ArrayList<Int>()
+            bindingMsg.temp.setOnClickListener {
 
-            val whatsTemp: Array<String> = arrayOf("NA",
-                "Temp 1", "Temp 2", "Temp 3", "Temp 4", "Temp 5", "Temp 7",
-                "Temp 8", "Temp 9", "Temp 10"
+                val dialog = AlertDialog.Builder(this)
+                dialog.setTitle("Select WhatsApp Template")
+                dialog.setMultiChoiceItems(
+                    whatsTemp.toTypedArray(),
+                    selectedItems
+                ) { _, which, isChecked ->
 
-            )
-            adapter = ArrayAdapter<String>(
-                this,
-                R.layout.select_dialog_item, // Custom layout for Spinner items
-                whatsTemp
-            )
-            bindingMsg.spinWhatas.adapter = adapter
+                    selectedItems[which] = isChecked
+                }
+                dialog.setPositiveButton("OK") { _, _ ->
 
-            bindingMsg.rdoGrp.setOnCheckedChangeListener { group, checkedId ->
-               if(bindingMsg.rdoYes.isChecked)
-               {
-                   bindingMsg.linFollowUpDate.visibility = View.VISIBLE
-                   bindingMsg.followUpDate.text.clear()
-               }
-                else
-                {
-                   bindingMsg.linFollowUpDate.visibility = View.GONE
-                   bindingMsg.followUpDate.setText("01-01-1900")
-               }
+                    selectedItemsList = mutableListOf<String>()
+                    selectedTempList = ArrayList()
+                    for (i in whatsTemp.indices) {
+                        if (selectedItems[i]) {
+                            selectedItemsList.add(whatsTemp[i])
+                            tempList.forEach {
+                                if (it.temp_name == whatsTemp[i])
+                                    selectedTempList.add(it.id)
+                            }
+                        }
+                    }
+                    if (selectedItemsList.isEmpty())
+                        bindingMsg.temp.text = "[NA]"
+                    else {
+                        bindingMsg.temp.text = selectedItemsList.toString()
+
+                    }
+
+
+                }
+                dialog.setNegativeButton("Cancel") { _, _ ->
+                    // Handle the Cancel button click if needed
+                }
+                // if(tempList.isNotEmpty())
+                dialog.show()
             }
 
-            bindingMsg.followUp.setOnClickListener{
+
+
+
+            bindingMsg.rdoGrp.setOnCheckedChangeListener { group, checkedId ->
+                if (bindingMsg.rdoYes.isChecked) {
+                    bindingMsg.linFollowUpDate.visibility = View.VISIBLE
+                    bindingMsg.followUpDate.text.clear()
+                } else {
+                    bindingMsg.linFollowUpDate.visibility = View.GONE
+                    bindingMsg.followUpDate.setText("01-01-1900")
+                }
+            }
+
+            bindingMsg.followUp.setOnClickListener {
                 setDate(bindingMsg.followUpDate)
             }
             bindingMsg.followUpDate.setOnClickListener {
@@ -749,35 +632,54 @@ class RawDataDetActivity : AppCompatActivity() {
                 )
             )
             builder.setPositiveButton("OK") { dialog, _ ->
-                if (bindingMsg.spinProsType.selectedItem.toString() == "Not Responding")
-                    callTime = "30"
-                val update =
-                    if (data!!.prospect_type != bindingMsg.spinProsType.selectedItem.toString())
-                        1
-                    else
-                        0
-                submitData(
-                    callTime,
-                    bindingMsg.spinProsType.selectedItem.toString(),
-                    bindingMsg.remark.text.toString(),
-                    bindingMsg.followUpDate.text.toString(),
-                    bindingMsg.spinWhatas.selectedItemId.toString(),
-                    update,
-                    data!!.mob_no.toString(),
-                    data!!.altenate_mobno.toString(),
-                    bindingMsg.spinProsLevel.selectedItem.toString()
-                )
+                try {
+                    if (bindingMsg.spinProsType.selectedItem.toString() == "Not Responding")
+                        callTime = "30"
+                    val update =
+                        if (data!!.prospect_type != bindingMsg.spinProsType.selectedItem.toString())
+                            1
+                        else
+                            0
+
+
+                    var amount =
+                        if (bindingMsg.amt.text.isNullOrEmpty())
+                            0
+                        else
+                            bindingMsg.amt.text.toString().toInt()
+
+
+                    submitData(
+                        callTime,
+                        bindingMsg.spinProsType.selectedItem.toString(),
+                        bindingMsg.remark.text.toString(),
+                        bindingMsg.followUpDate.text.toString(),
+                        selectedTempList,
+                        update,
+                        data!!.mob_no.toString(),
+                        data!!.altenate_mobno.toString(),
+                        bindingMsg.spinProsLevel.selectedItem.toString(),
+                        amount
+                    )
+                } catch (e: Exception) {
+                    Log.d(
+                        TAG,
+                        "Error in RawDataDetActivity.kt setComment() alertDo=ialog() is : ${e.message}"
+                    )
+                }
             }
             builder.setNegativeButton("Cancel") { dialog, _ ->
                 // Handle Cancel button click if needed
             }
             val alertDialog = builder.create()
+
             alertDialog.show()
 
         } catch (e: Exception) {
             Log.d(TAG, "Error in RawDataDetActivity.kt setComment() is: ${e.message} ")
         }
     }
+
 
     private fun getTime(): String {
         try {
@@ -834,18 +736,32 @@ class RawDataDetActivity : AppCompatActivity() {
         prosType: String,
         remark: String,
         folloupDate: String,
-        selectedItem: String,
-        update: Int, mobNo: String, alternateMob: String, prosLevel: String
+        selectedItem: ArrayList<Int>,
+        update: Int, mobNo: String, alternateMob: String, prosLevel: String, amount: Int
     ) {
         try {
-            candidateViewModel.setEmpRawDataComment(
+            val commentData = RawCommentData(
                 callTime,
                 prosType,
                 remark,
                 folloupDate,
                 selectedItem,
-                dataId.toString(), update, mobNo, alternateMob, prosLevel
+                update,
+                mobNo,
+                alternateMob,
+                prosLevel,
+                amount,
+                dataId
             )
+            //Log.d(TAG, commentData.toString())
+            candidateViewModel.setEmpRawDataComment(commentData)
+            /*callTime,
+            prosType,
+            remark,
+            folloupDate,
+            selectedItem,
+            dataId.toString(), update, mobNo, alternateMob, prosLevel
+        )*/
             candidateViewModel.stringResData.observe(this)
             {
                 binding.progressbar.visibility = View.GONE
@@ -920,90 +836,55 @@ class RawDataDetActivity : AppCompatActivity() {
                 com.venter.crm.R.menu.whats_menu,
                 popupMenu.menu
             )
+
+            val tempNames = tempList.mapNotNull { it.temp_name }
+            val whatsTemp: ArrayList<String> = ArrayList(tempNames)
+            whatsTemp.add("Chat")
+
+            whatsTemp.forEach {
+                popupMenu.menu.add(it)
+            }
+
+
             popupMenu.setOnMenuItemClickListener { item: MenuItem ->
-                // Handle the selected item here
-                when (item.itemId) {
-                    com.venter.crm.R.id.temp1 -> {
-                        sendWhatsMsg(1, mobNo)
-                        true
+                try {
+                    when (item.title) {
+                        "Chat" -> {
+                            var mob = mobNo
+                            if (mobNo.length <= 10)
+                                mob = "91$mobNo"
+                            val intent = Intent(Intent.ACTION_VIEW)
+                            intent.data =
+                                Uri.parse("http://api.whatsapp.com/send?phone=$mob&text=hi")
+                            startActivity(intent)
+                        }
+
+                        "NA" -> {
+                            Log.d(TAG, item.title.toString())
+                        }
+
+                        else -> {
+                            if (tempList.isNotEmpty())
+                                tempList.forEach {
+                                    if (it.temp_name == item.title)
+                                        sendWhatsMsg(it.id, data!!.mob_no)
+                                }
+                        }
                     }
-
-                    com.venter.crm.R.id.temp2 -> {
-                        sendWhatsMsg(2, mobNo)
-                        true
-                    }
-
-                    com.venter.crm.R.id.temp3 -> {
-                        sendWhatsMsg(3, mobNo)
-                        // Do something when Option 2 is selected
-                        true
-                    }
-
-                    com.venter.crm.R.id.temp4 -> {
-                        sendWhatsMsg(4, mobNo)
-
-                        // Do something when Option 2 is selected
-                        true
-                    }
-
-                    com.venter.crm.R.id.temp5 -> {
-                        sendWhatsMsg(5, mobNo)
-
-                        // Do something when Option 2 is selected
-                        true
-                    }
-
-                    com.venter.crm.R.id.temp6 -> {
-                        sendWhatsMsg(6, mobNo)
-
-                        // Do something when Option 2 is selected
-                        true
-                    }
-
-                    com.venter.crm.R.id.temp7 -> {
-                        sendWhatsMsg(7, mobNo)
-
-                        // Do something when Option 2 is selected
-                        true
-                    }
-
-                    com.venter.crm.R.id.temp8 -> {
-                        sendWhatsMsg(8, mobNo)
-
-                        // Do something when Option 2 is selected
-                        true
-                    }
-
-                    com.venter.crm.R.id.temp9 -> {
-                        sendWhatsMsg(9, mobNo)
-
-                        // Do something when Option 2 is selected
-                        true
-                    }
-
-                    com.venter.crm.R.id.temp10 -> {
-                        sendWhatsMsg(10, mobNo)
-
-                        // Do something when Option 2 is selected
-                        true
-                    }
-
-                    com.venter.crm.R.id.temp11 -> {
-                        var mob = mobNo
-                        if (mobNo.length <= 10)
-                            mob = "91$mobNo"
-                        val intent = Intent(Intent.ACTION_VIEW)
-                        intent.data =
-                            Uri.parse("http://api.whatsapp.com/send?phone=$mob&text=hi")
-                        startActivity(intent)
-                        // Do something when Option 2 is selected
-                        true
-                    }
-                    // Add more cases for other options as needed
-                    else -> false
+                    true
+                } catch (e: Exception) {
+                    Log.d(
+                        TAG,
+                        "Error in RawDataDetActivity.kt showPopupMenu() setOnMenuItemClickListener() is : ${e.message}"
+                    )
+                    false
                 }
+
+
             }
             popupMenu.show()
+
+
         } catch (e: Exception) {
             Log.d(TAG, "Error in RawDataDetActivity.kt showPopupMenu() ${e.message}")
         }

@@ -8,31 +8,22 @@
     tools:context=".Dashboard.AdminDashboard">
 
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animation_view"
+
+
+    <ImageView
+        android:id="@+id/dash_image"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        app:lottie_autoPlay="true"
         android:layout_alignParentEnd="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/dashjson" />
+        />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="160dp"
-        android:fontFamily="@font/comic"
-        android:gravity="center"
-        android:text="Hire InfoTech"
-        android:textColor="#D50000"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+
 
     <ScrollView
         android:id="@+id/dash_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/animation_view"
+        android:layout_below="@+id/dash_image"
         android:layout_marginTop="-40dp"
         android:translationZ="180dp">
 
@@ -48,10 +39,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="10dp"
                 android:orientation="vertical">
-                <!---            First Row             -->
 
-
-                <!---            Second Row             -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="140dp"
@@ -100,6 +88,155 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/whatsSign"
+                        android:layout_width="0dp"
+                        android:layout_height="135dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        app:cardCornerRadius="15dp"
+                        app:cardElevation="5dp"
+
+                        >
+
+                        <RelativeLayout
+                            android:id="@+id/hr"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white">
+
+                            <ImageView
+                                android:id="@+id/hr_icon"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/hr" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/hr_icon"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="HR Management"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+
+
+                        </RelativeLayout>
+
+
+                    </androidx.cardview.widget.CardView>
+
+
+
+
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/whatsApp"
+                        android:layout_width="0dp"
+                        android:layout_height="135dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        app:cardCornerRadius="15dp"
+                        app:cardElevation="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white">
+
+                            <ImageView
+                                android:id="@+id/whatsapp_icon"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/whatslogo" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/whatsapp_icon"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="WhatsApp Account"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+
+
+                        </RelativeLayout>
+
+
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/msgTemp"
+                        android:layout_width="0dp"
+                        android:layout_height="135dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        app:cardCornerRadius="15dp"
+                        app:cardElevation="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white">
+
+                            <ImageView
+                                android:id="@+id/message_icon"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/marketing_logo" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/message_icon"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="Message Templates"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+
+
+                        </RelativeLayout>
+
+
+                    </androidx.cardview.widget.CardView>
+
+
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <androidx.cardview.widget.CardView
                         android:id="@+id/report"
                         android:layout_width="0dp"
                         android:layout_height="135dp"
@@ -140,22 +277,8 @@
 
 
                     </androidx.cardview.widget.CardView>
-
-                    <!--- Water Pump Button -->
-
-
-                </LinearLayout>
-
-                <!---            Third Row             -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="140dp"
-                    android:layout_marginBottom="5dp"
-                    android:orientation="horizontal">
-
-                    <!--- Valve Icon Button -->
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/msgTemp"
+                        android:id="@+id/setting"
                         android:layout_width="0dp"
                         android:layout_height="135dp"
                         android:layout_gravity="center"
@@ -171,20 +294,20 @@
                             android:background="@color/white">
 
                             <ImageView
-                                android:id="@+id/marketing_icon"
+                                android:id="@+id/setting_icon"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_centerInParent="true"
-                                android:src="@drawable/marketing_logo" />
+                                android:src="@drawable/settings" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@id/marketing_icon"
+                                android:layout_below="@id/setting_icon"
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="10dp"
                                 android:layout_marginBottom="10dp"
-                                android:text="Message Templates"
+                                android:text="Settings"
                                 android:textColor="@color/black"
                                 android:textSize="14sp" />
 
@@ -194,8 +317,23 @@
 
                     </androidx.cardview.widget.CardView>
 
+
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+
+
+
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/whatsSign"
+                        android:id="@+id/profile"
                         android:layout_width="0dp"
                         android:layout_height="135dp"
                         android:layout_gravity="center"
@@ -208,26 +346,69 @@
                         >
 
                         <RelativeLayout
-                            android:id="@+id/hr"
+
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@color/white">
 
                             <ImageView
-                                android:id="@+id/hr_icon"
+                                android:id="@+id/profile_icon"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_centerInParent="true"
-                                android:src="@drawable/hr" />
+                                android:src="@drawable/user_icon" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@id/hr_icon"
+                                android:layout_below="@id/profile_icon"
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="10dp"
                                 android:layout_marginBottom="10dp"
-                                android:text="HR"
+                                android:text="Profile"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+
+
+                        </RelativeLayout>
+
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/kyc"
+                        android:layout_width="0dp"
+                        android:layout_height="135dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        app:cardCornerRadius="15dp"
+                        app:cardElevation="5dp"
+
+                        >
+
+                        <RelativeLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white">
+
+                            <ImageView
+                                android:id="@+id/kyc_icon"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/kyc" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/kyc_icon"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="E-KYC"
                                 android:textColor="@color/black"
                                 android:textSize="14sp" />
 
@@ -239,6 +420,97 @@
 
 
                 </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/marketing"
+                    android:layout_width="0dp"
+                    android:layout_height="135dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="5dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white">
+
+                        <ImageView
+                            android:id="@+id/marketing_icon"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/bullhorn" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/marketing_icon"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:text="Marketing Campaign"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+
+                    </RelativeLayout>
+
+
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/bot"
+                    android:layout_width="0dp"
+                    android:layout_height="135dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="5dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white">
+
+                        <ImageView
+                            android:id="@+id/bot_icon"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/chatbot" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/bot_icon"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:text="Bot"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+
+                    </RelativeLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+
+            </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"/>
 
 
             </LinearLayout>

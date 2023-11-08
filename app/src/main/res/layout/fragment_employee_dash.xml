@@ -304,7 +304,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
-                            android:text="Overdue Data"
+                            android:text="Un-Followed Data"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 

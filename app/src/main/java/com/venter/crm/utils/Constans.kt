@@ -1,17 +1,14 @@
 package com.venter.crm.utils
 
 object Constans {
-    //const val BASE_URL = "http://149.102.141.128:7002/"
+    //Production
+   // const val BASE_URL = "http://149.102.141.128:7002/"
+
+    //Development
     const val BASE_URL = "http://149.102.141.128:3002/"
-    //const val BASE_URL = "http://vijenter.in:3000/"
-    //const val BASE_URL = "http://192.168.1.48:3000/"
-    const val WHATSAPI_URL = "https://graph.facebook.com/v15.0/"
-   // const val BASE_URL ="http://192.168.42.186:9000/"
+
+
     const val TAG ="MY_TAG"
-
-
-   
-
 
     const val PREFS_CONST_FILE = "PREFS_CONST_FILE"
 

@@ -46,6 +46,7 @@ class RawCanCommentFragment : Fragment(), CommentUpdate {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         act = activity as RawDataDetActivity
+        if(act.data != null)
         setView(act.data!!)
     }
 

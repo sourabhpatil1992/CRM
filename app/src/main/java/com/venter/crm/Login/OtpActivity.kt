@@ -3,14 +3,17 @@ package com.venter.crm.Login
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
+import com.facebook.internal.instrument.crashshield.CrashShieldHandler
 import com.venter.crm.Dashboard.AdminDashboard
 import com.venter.crm.Dashboard.EmployeeDash
 import com.venter.crm.databinding.ActivityOtpBinding
 import com.venter.crm.models.SignIn
+import com.venter.crm.utils.Constans.TAG
 import com.venter.crm.utils.NetworkResult
 import com.venter.crm.utils.TokenManger
 import com.venter.crm.viewModelClass.logViewModel
@@ -33,61 +36,71 @@ class OtpActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityOtpBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        otp = intent.getStringExtra("otp").toString()
-        userId = intent.getStringExtra("userId").toString()
+        try {
+            _binding = ActivityOtpBinding.inflate(layoutInflater)
+            setContentView(binding.root)
+            otp = intent.getStringExtra("otp").toString()
+            userId = intent.getStringExtra("userId").toString()
 
-        //Toast.makeText(this,otp.toString(),Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this,otp.toString(),Toast.LENGTH_SHORT).show()
 
-        resenTime()
+            resenTime()
 
-        otp_set()
+            otp_set()
 
-        binding.btnconfirm.setOnClickListener {
-            val userOtp =
-                binding.edtOtp1.text.toString() + binding.edtOtp2.text.toString() + binding.edtOtp3.text.toString() + binding.edtOtp4.text.toString()
-            if (userOtp == otp) {
-                logViewModel.logIn(
-                    SignIn(
-                        userId,
-                        tokenManger.getDevToken().toString(),
-                        tokenManger.getFirebaseToken().toString()
+            binding.btnconfirm.setOnClickListener {
+                val userOtp =
+                    binding.edtOtp1.text.toString() + binding.edtOtp2.text.toString() + binding.edtOtp3.text.toString() + binding.edtOtp4.text.toString()
+                if (userOtp == otp) {
+                    logViewModel.logIn(
+                        SignIn(
+                            userId,
+                            tokenManger.getDevToken().toString(),
+                            tokenManger.getFirebaseToken().toString()
+                        )
                     )
-                )
 
-                logViewModel.logInResData.observe(this) {
-                    binding.progressbar.visibility = View.GONE
-                    when (it) {
-                        is NetworkResult.Loading -> {
-                            binding.progressbar.visibility = View.VISIBLE
-                        }
+                    logViewModel.logInResData.observe(this) {
+                        binding.progressbar.visibility = View.GONE
+                        when (it) {
+                            is NetworkResult.Loading -> {
+                                binding.progressbar.visibility = View.VISIBLE
+                            }
 
-                        is NetworkResult.Error -> {
-                            Toast.makeText(this, it.message.toString(), Toast.LENGTH_SHORT).show()
-                        }
+                            is NetworkResult.Error -> {
+                                Toast.makeText(this, it.message.toString(), Toast.LENGTH_SHORT)
+                                    .show()
+                            }
 
-                        is NetworkResult.Success -> {
-                            //Log.d(TAG,it.data.toString())
-                            tokenManger.saveToken(it.data!!.devToken.toString())
-                            tokenManger.saveUserDet(it.data.user_type, it.data.user_id,it.data.institute_id)
+                            is NetworkResult.Success -> {
+                                //Log.d(TAG,it.data.toString())
+                                tokenManger.saveToken(it.data!!.devToken.toString())
+                                tokenManger.saveUserDet(
+                                    it.data.user_type,
+                                    it.data.user_id,
+                                    it.data.institute_id
+                                )
 
-                            var intent = Intent()
-                            if (it.data!!.user_type == "Admin")
-                                intent = Intent(this, AdminDashboard::class.java)
-                            else
-                            //intent = Intent(this, EmpDashboard::class.java)
-                                intent = Intent(this, EmployeeDash::class.java)
-                            startActivity(intent)
-                            this.finish()
+                                var intent = Intent()
+                                if (it.data!!.user_type == "Admin")
+                                    intent = Intent(this, AdminDashboard::class.java)
+                                else
+                                //intent = Intent(this, EmpDashboard::class.java)
+                                    intent = Intent(this, EmployeeDash::class.java)
+                                startActivity(intent)
+                                this.finish()
+                            }
                         }
                     }
                 }
+
+
+                // val intent = Intent(this, AdminDashboard::class.java)
+                // startActivity(intent)
             }
 
-
-            // val intent = Intent(this, AdminDashboard::class.java)
-            // startActivity(intent)
+        } catch (e: Exception) {
+                Log.d(TAG,"Error in OTPActivity.kt is :${e.message}")
         }
     }
 
@@ -101,6 +114,7 @@ class OtpActivity : AppCompatActivity() {
             for (i in 0..45) {
 
                 this.runOnUiThread {
+                    if(_binding !=null)
                     binding.txtResendotp.text = (45 - i).toString() + " Sec"
                 }
                 Thread.sleep(1000)

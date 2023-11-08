@@ -201,9 +201,11 @@ interface UserAuthApi {
     suspend fun getRawCandidateDet(@Query("candidateId") candidateId: Int): Response<RawCandidateData>
     @POST("/candidateRawData/updateRawCandidateDet")
     suspend fun updateRawCandidateDet(@Query("candidateId") candidateId: Int,@Query("mobNo") mobNo: String,@Query("altermobNo") altermobNo: String): Response<String>
+    @POST("/candidateRawData/updateCustData")
+    suspend fun updateCustumerData(@Body custData:CustUpdateDet): Response<String>
 
 
-    @POST("/candidateRawData/setEmpRawDataComment")
+    /*@POST("/candidateRawData/setEmpRawDataComment")
     suspend fun setEmpRawDataComment(
         @Query("callTime") callTime: String,
         @Query("prosType") prosType: String,
@@ -215,7 +217,10 @@ interface UserAuthApi {
         @Query("mobNo") mobNo: String,
         @Query("alterMobNo") alternateMob: String,
         @Query("prosLevel") prosLevel: String
-    ): Response<String>
+    ): Response<String> */
+
+    @POST("/candidateRawData/setEmpRawDataComment")
+    suspend fun setEmpRawDataComment(@Body commentData: RawCommentData): Response<String>
 
 
     @POST("/candidateRawData/sendWhatsMsg")
@@ -259,6 +264,8 @@ interface UserAuthApi {
     //WhatsApp Temp
     @POST("/whatsAppTemp/getMsgList")
     suspend fun getWhatsMsgList():Response<List<WhatsappTemplateMsg>>
+    @POST("/whatsAppTemp/getMsgNameList")
+    suspend fun getMsgNameList():Response<List<WhatsTempNameList>>
 
 
     @POST("/whatsAppTemp/UpdateTempText")
@@ -266,15 +273,29 @@ interface UserAuthApi {
 
     @Multipart
     @POST("/whatsAppTemp/UpdateWhatsApiAttachments")
-    suspend fun UpdateWhatsApiAttachments(@Part spic: MultipartBody.Part,
-                                          @Query("tempId")tempId:String,
-                                          @Query("template") template:String
+    suspend fun UpdateWhatsApiAttachments(
+        @Part spic: MultipartBody.Part,
+        @Query("tempId") tempId: String,
+        @Query("template") template: String,
+        @Query("tempName")tempName: String
     ) :Response<String>
 
+    @POST("/whatsAppTemp/getWhatsAppList")
+    suspend fun getWhatsAppList():Response<List<WhatsAppAccList>>
+
+    @POST("/whatsAppTemp/logOutWhatsapp")
+    suspend fun logOutWhatsapp(@Query("accId")id: Int): Response<String>
+    @POST("/whatsAppTemp/updateWhatsAppAcc")
+    suspend fun updateWhatsAppAcc(@Query("accId")id: Int,@Query("userId")userId: Int): Response<String>
+    @POST("/whatsAppTemp/createWhatsAppAcc")
+    suspend fun createWhatsAppAcc():Response<String>
+
     @POST("/whatsAppTemp/updateTemp")
-    suspend fun updateTemp( @Query("tempId")tempId:String,
-                                        @Query("template") template:String,
-                                        @Query("header") header:String
+    suspend fun updateTemp(
+        @Query("tempId") tempId: String,
+        @Query("template") template: String,
+        @Query("header") header: String,
+        @Query("tempName")tempName: String
     ):Response<String>
 
      @POST("/candidateRawData/getEmpColdRawData")
@@ -287,6 +308,8 @@ interface UserAuthApi {
 
     @POST("/whatsAppTemp/initializeWhats")
     suspend fun intilWhats(@Query("userId")id: Int): Response<String>
+
+
     @POST("/userManagement/dataTransfer")
     suspend fun dataTransfer(
         @Query("dataFrom")dataFrom: Int,
@@ -305,6 +328,9 @@ interface UserAuthApi {
     suspend fun getUserReport(@Query("userID")userId: Int, @Query("toDate")toDate: String, @Query("fromDate")fromDate: String):Response<List<UserReportData>>
     @POST("/userManagement/delAccount")
     suspend fun delAcc(@Query("id")id: Int): Response<String>
+
+    @POST("/userManagement/resetDevice")
+    suspend fun resetDevice(@Query("id")id: Int): Response<String>
 
 
     @Multipart

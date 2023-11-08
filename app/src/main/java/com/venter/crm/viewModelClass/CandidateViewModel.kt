@@ -92,7 +92,7 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
     ) {
         try {
             viewModelScope.launch {
-                userRepository.printOfferLetter(cId, outWard, letterDate, stamp,varAmt)
+                userRepository.printOfferLetter(cId, outWard, letterDate, stamp, varAmt)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt candidateList() is " + e.message)
@@ -117,7 +117,7 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
                     effectiveDate,
                     jobPosition,
                     newPackage,
-                    stamp,varAmt
+                    stamp, varAmt
                 )
             }
         } catch (e: Exception) {
@@ -135,7 +135,13 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
     ) {
         try {
             viewModelScope.launch {
-                userRepository.printExperienceLetter(cId, letterDate, releaseDate, stamp,jobActivity)
+                userRepository.printExperienceLetter(
+                    cId,
+                    letterDate,
+                    releaseDate,
+                    stamp,
+                    jobActivity
+                )
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt printExperienceLetter() is " + e.message)
@@ -143,17 +149,22 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     }
 
-    fun printRelievingLetter(cId: String, letterDate: String, resignDate: String,relaseDate: String, stamp:Boolean)
-    {
+    fun printRelievingLetter(
+        cId: String,
+        letterDate: String,
+        resignDate: String,
+        relaseDate: String,
+        stamp: Boolean
+    ) {
         try {
             viewModelScope.launch {
-                userRepository.printRelievingLetter(cId, letterDate, resignDate,relaseDate, stamp)
+                userRepository.printRelievingLetter(cId, letterDate, resignDate, relaseDate, stamp)
             }
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt printExperienceLetter() is " + e.message)
         }
     }
+
     fun printSalarySlip(
         cId: String,
         month: String,
@@ -163,22 +174,35 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         lop: String = "0",
         checked: Boolean,
         salaryDays: String = "0"
-    )
-    {
+    ) {
         try {
             viewModelScope.launch {
-                userRepository.printSalarySlip(cId, month,year,jobPos,packages,lop,checked,salaryDays)
+                userRepository.printSalarySlip(
+                    cId,
+                    month,
+                    year,
+                    jobPos,
+                    packages,
+                    lop,
+                    checked,
+                    salaryDays
+                )
             }
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt printSalarySlip() is " + e.message)
         }
     }
 
-    fun printInternshipLetter(cId: Int, outWard: String, letterDate: String, stamp: Boolean,stamped:String) {
+    fun printInternshipLetter(
+        cId: Int,
+        outWard: String,
+        letterDate: String,
+        stamp: Boolean,
+        stamped: String
+    ) {
         try {
             viewModelScope.launch {
-                userRepository.printInternshipLetter(cId, outWard, letterDate, stamp,stamped)
+                userRepository.printInternshipLetter(cId, outWard, letterDate, stamp, stamped)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt candidateList() is " + e.message)
@@ -201,8 +225,8 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         }
 
     }
-    fun printIdCard(cId: String)
-    {
+
+    fun printIdCard(cId: String) {
         try {
             viewModelScope.launch {
                 userRepository.printIdCard(cId)
@@ -217,8 +241,7 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
     val CandidateDetResData: LiveData<NetworkResult<CandidetDetails>>
         get() = userRepository.candidateDetResLiveData
 
-    fun getCandidateDet(cId: String)
-    {
+    fun getCandidateDet(cId: String) {
         try {
             viewModelScope.launch {
                 userRepository.getCandidateDet(cId)
@@ -233,8 +256,7 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
     val candidateFeeListResLiveData: LiveData<NetworkResult<List<CandidateFeeList>>>
         get() = userRepository.candidateFeeListResLiveData
 
-    fun getCandidateFeeList()
-    {
+    fun getCandidateFeeList() {
         try {
             viewModelScope.launch {
                 userRepository.getCandidateFeeList()
@@ -248,8 +270,7 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
     val feeLedgerResLiveData: LiveData<NetworkResult<FeeLedgerDet>>
         get() = userRepository.feeLedgerResLiveData
 
-    fun getCandidateFeeLedger(cId:String)
-    {
+    fun getCandidateFeeLedger(cId: String) {
         try {
             viewModelScope.launch {
                 userRepository.getCandidateFeeLedger(cId)
@@ -260,33 +281,56 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     }
 
-    fun candidateFeeReceipt( cId: String,rcptDate: String,rcptAmt: String, remark: String, nextPayDate: String,candidateName:String,rcptId:Int?,transType:String)
-    {
+    fun candidateFeeReceipt(
+        cId: String,
+        rcptDate: String,
+        rcptAmt: String,
+        remark: String,
+        nextPayDate: String,
+        candidateName: String,
+        rcptId: Int?,
+        transType: String
+    ) {
         try {
             viewModelScope.launch {
-                userRepository.submitFeeReceipt(cId,rcptDate,rcptAmt, remark, nextPayDate,candidateName,rcptId,transType)
+                userRepository.submitFeeReceipt(
+                    cId,
+                    rcptDate,
+                    rcptAmt,
+                    remark,
+                    nextPayDate,
+                    candidateName,
+                    rcptId,
+                    transType
+                )
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt getCandidateFeeLedger() is " + e.message)
         }
 
     }
-    fun expensesReceipt( rcptDate: String,transCat: String, tranType: String,traDesc: String,rcptAmt: String)
-    {
+
+    fun expensesReceipt(
+        rcptDate: String,
+        transCat: String,
+        tranType: String,
+        traDesc: String,
+        rcptAmt: String
+    ) {
         try {
             viewModelScope.launch {
-                userRepository.expenseReceipt(rcptDate,transCat,tranType,traDesc,rcptAmt)
+                userRepository.expenseReceipt(rcptDate, transCat, tranType, traDesc, rcptAmt)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt expensesReceipt() is " + e.message)
         }
 
     }
+
     val expenseReportResLiveData: LiveData<NetworkResult<ExpenseReportRes>>
         get() = userRepository.expenseReportResLiveData
 
-    fun expensesReport()
-    {
+    fun expensesReport() {
         try {
             viewModelScope.launch {
                 userRepository.expenseReport()
@@ -299,17 +343,18 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     val expenseReportPrintResLiveData: LiveData<NetworkResult<List<expensesDet>>>
         get() = userRepository.expenseReportPrintResLiveData
-    fun expensesReportPrint(toDate:String,fromDate:String)
-    {
+
+    fun expensesReportPrint(toDate: String, fromDate: String) {
         try {
             viewModelScope.launch {
-                userRepository.expenseReportPrint(toDate,fromDate)
+                userRepository.expenseReportPrint(toDate, fromDate)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt expensesReportPrint() is " + e.message)
         }
 
     }
+
     fun createUser(
         userName: String,
         mobNo: String,
@@ -317,11 +362,10 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         designation: String,
         userType: String,
         userId: Int
-    )
-    {
+    ) {
         try {
             viewModelScope.launch {
-                userRepository.createUser(userName,mobNo,emailId,designation,userType,userId)
+                userRepository.createUser(userName, mobNo, emailId, designation, userType, userId)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt createUser() is " + e.message)
@@ -331,8 +375,8 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     val userListResLiveData: LiveData<NetworkResult<List<UserListRes>>>
         get() = userRepository.userListResLiveData
-    fun userList()
-    {
+
+    fun userList() {
         try {
             viewModelScope.launch {
                 userRepository.userList()
@@ -343,19 +387,18 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     }
 
-    fun userStatus(userId: Int,status:Int)
-    {
+    fun userStatus(userId: Int, status: Int) {
         try {
             viewModelScope.launch {
-                userRepository.userStatus(userId,status)
+                userRepository.userStatus(userId, status)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt userList() is " + e.message)
         }
 
     }
-    fun addMultipleRawData()
-    {
+
+    fun addMultipleRawData() {
         try {
             viewModelScope.launch {
                 userRepository.addMultipleRawData()
@@ -366,8 +409,7 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     }
 
-    fun deleteMultipleRawData(rawList: ArrayList<RawDataList>)
-    {
+    fun deleteMultipleRawData(rawList: ArrayList<RawDataList>) {
         try {
             viewModelScope.launch {
                 userRepository.deleteMultipleRawData(rawList)
@@ -381,8 +423,7 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
     val allrawDataListResLiveData: LiveData<NetworkResult<List<RawDataList>>>
         get() = userRepository.allrawDataListResLiveData
 
-    fun getAllRawData(offset: Int)
-    {
+    fun getAllRawData(offset: Int) {
         try {
             viewModelScope.launch {
                 userRepository.getAllRawData(offset)
@@ -394,9 +435,7 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
     }
 
 
-
-    fun getEmpRawData()
-    {
+    fun getEmpRawData() {
         try {
             viewModelScope.launch {
                 userRepository.getEmpRawData()
@@ -407,8 +446,7 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     }
 
-    fun getEmpProsData()
-    {
+    fun getEmpProsData() {
         try {
             viewModelScope.launch {
                 userRepository.getEmpProsData()
@@ -419,7 +457,7 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     }
 
-    fun getEmpSearchData(serach:String) {
+    fun getEmpSearchData(serach: String) {
         try {
             viewModelScope.launch {
                 userRepository.getEmpSearchData(serach)
@@ -432,8 +470,8 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     val othersrawDataListResLiveData: LiveData<NetworkResult<List<RawDataList>>>
         get() = userRepository.othersrawDataListResLiveData
-    fun getOthersProsData(userId: Int)
-    {
+
+    fun getOthersProsData(userId: Int) {
         try {
             viewModelScope.launch {
                 userRepository.getOthersProsData(userId)
@@ -446,8 +484,8 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     val userListLiveData: LiveData<NetworkResult<List<UserList>>>
         get() = userRepository.userListLiveData
-    fun getEmpListRawData()
-    {
+
+    fun getEmpListRawData() {
         try {
             viewModelScope.launch {
                 userRepository.getEmpListRawData()
@@ -462,8 +500,7 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
     val rawCandidateDataLiveData: LiveData<NetworkResult<RawCandidateData>>
         get() = userRepository.rawCandidateDataLiveData
 
-    fun getRawCandidateData(Id: Int)
-    {
+    fun getRawCandidateData(Id: Int) {
         try {
             viewModelScope.launch {
                 userRepository.getRawCandidateData(Id)
@@ -483,6 +520,7 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
             Log.d(TAG, "Error in CandidateViewModel.kt getRawCandidateData() is " + e.message)
         }
     }
+
     fun getStealData(userId: Int) {
         try {
             viewModelScope.launch {
@@ -493,6 +531,7 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
             Log.d(TAG, "Error in CandidateViewModel.kt getRawCandidateData() is " + e.message)
         }
     }
+
     fun getEmpNotResData(userId: Int) {
         try {
             viewModelScope.launch {
@@ -504,19 +543,28 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         }
     }
 
-    fun updateRawCandidateData(Id: Int,mobNo: String,alterMobNo:String)
-    {
+    fun updateRawCandidateData(Id: Int, mobNo: String, alterMobNo: String) {
         try {
             viewModelScope.launch {
-                userRepository.updateCandidateRawData(Id,mobNo,alterMobNo)
+                userRepository.updateCandidateRawData(Id, mobNo, alterMobNo)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt updateRawCandidateData() is " + e.message)
         }
 
     }
+    fun updateCustumerData(cust:CustUpdateDet) {
+        try {
+            viewModelScope.launch {
+                userRepository.updateCustumerData(cust)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt updateCustumerData() is " + e.message)
+        }
 
-    fun setEmpRawDataComment(
+    }
+
+    /*fun setEmpRawDataComment(
         callTime: String,
         prosType: String,
         remark: String,
@@ -527,8 +575,24 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
     ) {
         try {
             viewModelScope.launch {
-                userRepository.setEmpRawDataComment(callTime,prosType, remark, folloupDate, selectedItem,
-                    candidateId,update,mobNo,alternateMob,prosLevel)
+                userRepository.setEmpRawDataComment(
+                    callTime, prosType, remark, folloupDate, selectedItem,
+                    candidateId, update, mobNo, alternateMob, prosLevel
+                )
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getRawCandidateData() is " + e.message)
+        }
+    }*/
+    fun setEmpRawDataComment(commentData: RawCommentData)
+    {
+        try {
+            viewModelScope.launch {
+                userRepository.setEmpRawDataComment(commentData)
+                /*(
+                    callTime, prosType, remark, folloupDate, selectedItem,
+                    candidateId, update, mobNo, alternateMob, prosLevel
+                )*/
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt getRawCandidateData() is " + e.message)
@@ -546,12 +610,12 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
     }
 
 
-//    val intListResData: LiveData<NetworkResult<List<RawDataList>>>
+    //    val intListResData: LiveData<NetworkResult<List<RawDataList>>>
 //        get() = userRepository.allrawDataListResLiveData
-    fun getFollowUpList(userId: Int, folloupDate: String){
+    fun getFollowUpList(userId: Int, folloupDate: String) {
         try {
             viewModelScope.launch {
-                userRepository.getFollowUpList(userId,folloupDate)
+                userRepository.getFollowUpList(userId, folloupDate)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt getFollowUpList() is " + e.message)
@@ -561,20 +625,20 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
     val empReptResLiveData: LiveData<NetworkResult<EmpReport>>
         get() = userRepository.empReptResLiveData
 
-    fun getEmpReport(fromDate:String,toDate: String,empId: String){
+    fun getEmpReport(fromDate: String, toDate: String, empId: String) {
         try {
             viewModelScope.launch {
-                userRepository.getEmpReport(fromDate,toDate,empId)
+                userRepository.getEmpReport(fromDate, toDate, empId)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt getFollowUpList()() is " + e.message)
         }
     }
 
-    fun getTelReport(fromDate:String,toDate: String){
+    fun getTelReport(fromDate: String, toDate: String) {
         try {
             viewModelScope.launch {
-                userRepository.getTeleReport(fromDate,toDate)
+                userRepository.getTeleReport(fromDate, toDate)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt getFollowUpList()() is " + e.message)
@@ -584,7 +648,8 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     val salarySlipResLiveData: LiveData<NetworkResult<List<SalarySlipDet>>>
         get() = userRepository.salarySlipResLiveData
-    fun getSalaryList(cId:Int){
+
+    fun getSalaryList(cId: Int) {
         try {
             viewModelScope.launch {
                 userRepository.getSalaryList(cId)
@@ -594,17 +659,17 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         }
     }
 
-    fun setIncomingLead(canName:String,canMob:String){
+    fun setIncomingLead(canName: String, canMob: String) {
         try {
             viewModelScope.launch {
-                userRepository.setIncomingLead(canName,canMob)
+                userRepository.setIncomingLead(canName, canMob)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt setIncomingLead() is " + e.message)
         }
     }
 
-    fun getAddmissionData(){
+    fun getAddmissionData() {
         try {
             viewModelScope.launch {
                 userRepository.getAdmissionData()
@@ -614,9 +679,10 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         }
     }
 
-    val workHrsResLiveData : LiveData<NetworkResult<List<WorkingHrs>>>
+    val workHrsResLiveData: LiveData<NetworkResult<List<WorkingHrs>>>
         get() = userRepository.workHrsResLiveData
-    fun getWorkingHrsData(){
+
+    fun getWorkingHrsData() {
         try {
             viewModelScope.launch {
                 userRepository.getWorkingHrsData()
@@ -626,7 +692,7 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         }
     }
 
-    fun setWorkingHrsData(shedule:WorkingHrs){
+    fun setWorkingHrsData(shedule: WorkingHrs) {
         try {
             viewModelScope.launch {
                 userRepository.setWorkingHrsData(shedule)
@@ -637,9 +703,10 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
     }
 
 
-    val todaySheduleResLiveData : LiveData<NetworkResult<userStatus>>
+    val todaySheduleResLiveData: LiveData<NetworkResult<userStatus>>
         get() = userRepository.todaySheduleResLiveData
-    fun getTodaysShedule(){
+
+    fun getTodaysShedule() {
         try {
             viewModelScope.launch {
                 userRepository.getTodaysShedule()
@@ -649,10 +716,10 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         }
     }
 
-    val msgListResLiveData : LiveData<NetworkResult<List<WhatsappTemplateMsg>>>
+    val msgListResLiveData: LiveData<NetworkResult<List<WhatsappTemplateMsg>>>
         get() = userRepository.msgListResLiveData
 
-    fun getWhatsMsgList(){
+    fun getWhatsMsgList() {
         try {
             viewModelScope.launch {
                 userRepository.getMsgList()
@@ -662,33 +729,62 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         }
     }
 
-    fun whatApiTemplateTextUpdate(temp:WhatsappTemplateMsg)
-    {
+    val msgNameListResLiveData: LiveData<NetworkResult<List<WhatsTempNameList>>>
+        get() = userRepository.msgNameListResLiveData
+
+    fun getWhatsMsgNameList() {
+        try {
+            viewModelScope.launch {
+                userRepository.getMsgNameList()
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getWhatsMsgNameList() is " + e.message)
+        }
+    }
+
+
+    fun whatApiTemplateTextUpdate(temp: WhatsappTemplateMsg) {
         try {
             viewModelScope.launch {
                 userRepository.whatsApiTextUpdate(temp)
             }
-        }
-        catch (e:Exception)
-        {
-            Log.d(TAG,"Error in MsgViewModel.kt whatApiTemplateStatusUpdate() is "+e.message)
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in MsgViewModel.kt whatApiTemplateStatusUpdate() is " + e.message)
         }
     }
 
-    fun updateTemp(tempId:String, template:String, header:String)
-    {
+    val whatsAccListResLiveData: LiveData<NetworkResult<List<WhatsAppAccList>>>
+        get() = userRepository.whatsAccListResLiveData
+    fun getWhatsAppList(){
         try {
             viewModelScope.launch {
-                userRepository.updateTemp(tempId, template, header)
+                userRepository.getWhatsAppList()
             }
-        }
-        catch (e:Exception)
-        {
-            Log.d(TAG,"Error in MsgViewModel.kt whatApiTemplateUpdate() is "+e.message)
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in MsgViewModel.kt getWhatsAppList() is " + e.message)
         }
     }
 
-    fun getColdData(offset:Int) {
+    fun createWhatsAppAcc(){
+        try {
+            viewModelScope.launch {
+                userRepository.createWhatsAppAcc()
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in MsgViewModel.kt createWhatsAppAcc() is " + e.message)
+        }
+    }
+    fun updateTemp(tempId: String, template: String, header: String, tempName: String) {
+        try {
+            viewModelScope.launch {
+                userRepository.updateTemp(tempId, template, header, tempName)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in MsgViewModel.kt whatApiTemplateUpdate() is " + e.message)
+        }
+    }
+
+    fun getColdData(offset: Int) {
         try {
             viewModelScope.launch {
                 userRepository.getColdRawData(offset)
@@ -719,7 +815,36 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     }
 
-    fun dataTransfer(userId: Int, dataTo: Int, cold: Int, hot: Int, warm: Int, notRes: Int, admission: Int, raw: Int) {
+    fun logOutWhatsApp(id: Int) {
+        try {
+            viewModelScope.launch {
+                userRepository.logOutWhats(id)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt logOutWhatsApp() is " + e.message)
+        }
+
+    }
+    fun updateWhatsAppAcc(id: Int, userId: Int) {
+        try {
+            viewModelScope.launch {
+                userRepository.updateWhatsAppAcc(id,userId)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt updateWhatsAppAcc() is " + e.message)
+        }
+    }
+
+    fun dataTransfer(
+        userId: Int,
+        dataTo: Int,
+        cold: Int,
+        hot: Int,
+        warm: Int,
+        notRes: Int,
+        admission: Int,
+        raw: Int
+    ) {
         try {
             viewModelScope.launch {
                 userRepository.dataTransfer(userId, dataTo, cold, hot, warm, notRes, admission, raw)
@@ -733,15 +858,16 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
     fun swipeData(dataId: Int, userId: Int) {
         try {
             viewModelScope.launch {
-                userRepository.swipeData(dataId,userId)
+                userRepository.swipeData(dataId, userId)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt dataTransfer() is " + e.message)
         }
     }
 
-    val userReportListResLiveData : LiveData<NetworkResult<List<UserReportData>>>
+    val userReportListResLiveData: LiveData<NetworkResult<List<UserReportData>>>
         get() = userRepository.userReportListResLiveData
+
     fun getUserReport(userId: Int, toDate: String, fromDate: String) {
         try {
             viewModelScope.launch {
@@ -763,9 +889,20 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         }
     }
 
+    fun resetDevice(id: Int) {
+        try {
+            viewModelScope.launch {
+                userRepository.resetDevice(id)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt resetDevice() is " + e.message)
+        }
+    }
 
-    val hikeLetterListResLiveData : LiveData<NetworkResult<List<HikeLetterDet>>>
+
+    val hikeLetterListResLiveData: LiveData<NetworkResult<List<HikeLetterDet>>>
         get() = userRepository.hikeLettersLiveData
+
     fun getHikeLetterList(cId: Int) {
         try {
             viewModelScope.launch {
@@ -776,8 +913,9 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         }
     }
 
-    val commentListResLiveData : LiveData<NetworkResult<List<RawDataComment>>>
+    val commentListResLiveData: LiveData<NetworkResult<List<RawDataComment>>>
         get() = userRepository.commentListLiveData
+
     fun commentList(commentId: Int) {
         try {
             viewModelScope.launch {
@@ -789,7 +927,7 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     }
 
-    val userHierarchyDataLiveData : LiveData<NetworkResult<UserHierarchyData>>
+    val userHierarchyDataLiveData: LiveData<NetworkResult<UserHierarchyData>>
         get() = userRepository.userHierarchyDataLiveData
 
     fun getEmpHierarchyData(id: Int) {
@@ -803,13 +941,13 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
     }
 
 
-    val subOrdinateDataLiveData : LiveData<NetworkResult<SubOrdinateData>>
+    val subOrdinateDataLiveData: LiveData<NetworkResult<SubOrdinateData>>
         get() = userRepository.subOrdinateDataLiveData
 
     fun getSubOrdinateList(selectedId: Int, userType: String) {
         try {
             viewModelScope.launch {
-                userRepository.getSubOrdinateList(selectedId,userType)
+                userRepository.getSubOrdinateList(selectedId, userType)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt getSubOrdinateList() is " + e.message)
@@ -820,12 +958,14 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
     fun updateUserHierarchy(id: Int?, slId: Int, flId: Int, tlId: Int, sbaId: Int) {
         try {
             viewModelScope.launch {
-                userRepository.updateUserHierarchy(id,slId,flId,tlId,sbaId)
+                userRepository.updateUserHierarchy(id, slId, flId, tlId, sbaId)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt updateUserHierarchy() is " + e.message)
         }
     }
+
+
 
 
 }

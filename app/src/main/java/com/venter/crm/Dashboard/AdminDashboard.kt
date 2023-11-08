@@ -10,25 +10,38 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.squareup.picasso.Picasso
 import com.venter.crm.Candidate.CandidateMang
 import com.venter.crm.EmployeeMangment.EmpMangmentActivity
 import com.venter.crm.candidateFee.FeeDashboard
 import com.venter.crm.databinding.ActivityAdminDashboardBinding
+import com.venter.crm.hrMangment.HrActivity
 import com.venter.crm.officeexpenses.ExpensesDashboardActivity
+import com.venter.crm.reportMangment.AdminReportDash
 import com.venter.crm.userledger.UserLedgerActivity
 import com.venter.crm.utils.Constans
+import com.venter.crm.utils.TokenManger
+import com.venter.crm.whatsTemp.WhatsAppAccounts
 import com.venter.crm.whatsTemp.WhatsappTemplates
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AdminDashboard : AppCompatActivity() {
     private var _binding:ActivityAdminDashboardBinding? = null
     private val binding:ActivityAdminDashboardBinding
     get() = _binding!!
+
+    @Inject
+    lateinit var tokenManger: TokenManger
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityAdminDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        Picasso.get()
+            .load("${Constans.BASE_URL}assets/dashResource/${tokenManger.getInstituteId()}.jpg")
+            .into(binding.dashImage)
 
         if(!permissionGranted(this))
         {
@@ -38,9 +51,9 @@ class AdminDashboard : AppCompatActivity() {
 
 
         binding.report.setOnClickListener {
-            //val intent = Intent(this,UserLedgerActivity::class.java)
-           // startActivity(intent)
-            Toast.makeText(this,"Coming Soon....",Toast.LENGTH_LONG).show()
+            val intent = Intent(this,AdminReportDash::class.java)
+            startActivity(intent)
+            //Toast.makeText(this,"Coming Soon....",Toast.LENGTH_LONG).show()
         }
 
         binding.empMang.setOnClickListener {
@@ -48,14 +61,46 @@ class AdminDashboard : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.whatsApp.setOnClickListener {
+            val intent = Intent(this,WhatsAppAccounts::class.java)
+            startActivity(intent)
+        }
         binding.msgTemp.setOnClickListener {
             val intent = Intent(this,WhatsappTemplates::class.java)
             startActivity(intent)
         }
+        binding.profile.setOnClickListener {
+            val intent = Intent(this,AdminProfileActivity::class.java)
+            startActivity(intent)
+        }
 
         binding.hr.setOnClickListener {
-            Toast.makeText(this,"Coming Soon....",Toast.LENGTH_LONG).show()
+            val intent = Intent(this,HrActivity::class.java)
+            startActivity(intent)
         }
+        binding.marketing.setOnClickListener {
+            Toast.makeText(
+                this,
+                "This feature is not available in your plan. For use this service please upgrade your plan.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        binding.kyc.setOnClickListener {
+            Toast.makeText(
+                this,
+                "This feature is not available in your plan. For use this service please upgrade your plan.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        binding.bot.setOnClickListener {
+            Toast.makeText(
+                this,
+                "This feature is not available in your plan. For use this service please upgrade your plan.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
     }
 
     override fun onDestroy() {

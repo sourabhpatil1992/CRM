@@ -30,6 +30,7 @@ class RawCandetDetFragemtn : Fragment() {
 
     private fun setView(data: RawCandidateData?) {
         try {
+
             binding.txtCandidateName.text = data?.candidate_name
             binding.txtMobNo.text = data?.mob_no
             binding.txtAlterMobNo.text = data?.altenate_mobno
@@ -37,8 +38,19 @@ class RawCandetDetFragemtn : Fragment() {
             binding.txtLocation.text = data?.curr_location
             binding.txtScrApp.text = data?.SourceOfApplication
             binding.txtDateapp.text = data?.appDate
-            binding.txtQualification.text = data?.Qualification
-            binding.txtPassing.text = data?.PassYear
+            //binding.txtQualification.text = data?.Qualification
+            //binding.txtPassing.text = data?.PassYear
+            if(data?.trader == 1) {
+                binding.txtTrader.text = "Yes"
+                binding.txtCapital.text = data.capital.toString()
+                binding.txtSegment.text = data.segment
+                binding.linTrader.visibility = View.VISIBLE
+
+            }else {
+                binding.txtTrader.text = "No"
+                binding.linTrader.visibility = View.GONE
+            }
+
 
             val lastComment = data?.commentList?.firstOrNull()
             val followupDate = lastComment?.follloupDate

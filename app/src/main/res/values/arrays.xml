@@ -8,4 +8,9 @@
         <item>Sales Manager</item>
         <item>Admin</item>
     </string-array>
+    <string-array name="salutation">
+        <item>Mr</item>
+        <item>Mrs</item>
+        <item>Miss</item>
+    </string-array>
 </resources>

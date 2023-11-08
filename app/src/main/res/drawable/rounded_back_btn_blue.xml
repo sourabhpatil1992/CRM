@@ -5,7 +5,7 @@
             <!-- SHADOW -->
             <item>
                 <shape>
-                    <solid android:color="#8024C9D8"/>
+                    <solid android:color="#DD038738"/>
                     <!-- alttan gölge -->
                     <corners android:radius="19dp"/>
                 </shape>
@@ -22,8 +22,8 @@
                         android:endColor="#211a46"
                         android:angle="270" /-->
                     <gradient
-                        android:startColor="@color/regocolor"
-                        android:endColor="@color/regocolor"
+                        android:startColor="@color/greenback"
+                        android:endColor="@color/greenback"
                         android:angle="270" />
                     <corners
                         android:radius="19dp"/>
@@ -43,7 +43,7 @@
             <item>
                 <shape>
                     <!--solid android:color="#211a46"/-->
-                    <solid android:color="@color/regocolor"/>
+                    <solid android:color="@color/activeUser"/>
                     <corners android:radius="19dp"/>
 
                 </shape>
@@ -57,8 +57,8 @@
                         android:endColor="#211a46"
                         android:angle="270" /-->
                     <gradient
-                        android:startColor="@color/regocolor"
-                        android:endColor="@color/regocolor"
+                        android:startColor="@color/greenback"
+                        android:endColor="@color/greenback"
                         android:angle="270" />
                     <corners
                         android:radius="19dp"/>

@@ -21,14 +21,15 @@ class WhatsappTempAdapter(val cnt:Context):ListAdapter<WhatsappTemplateMsg,Whats
 
         fun bind(temp: WhatsappTemplateMsg) {
 
-            binding.txtSrNo.text = temp.id.toString()
-            binding.txtMsg.setText(temp.tempMsg)
+            binding.txtSrNo.text = temp.srNo.toString()
+            binding.txtMsg.text = temp.tempMsg
+            binding.tempName.text = temp.temp_name
 
 
             if(temp.header_name != null && temp.header_name !="" && temp.header_name !="null")
             {
 
-                //Log.d(TAG,"---"+filetype)
+
                 binding.imgWhats.setImageURI(null)
 
                 val filetype = temp!!.header_name!!.toString().split("\\.".toRegex())
@@ -60,7 +61,7 @@ class WhatsappTempAdapter(val cnt:Context):ListAdapter<WhatsappTemplateMsg,Whats
             else
             {
                 binding.imgWhats.visibility = View.GONE
-               // Log.d(TAG,"---"+temp)
+
             }
 
             binding.linWhatsTemp.setOnClickListener {

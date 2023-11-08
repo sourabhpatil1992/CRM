@@ -40,11 +40,15 @@ class WhatsappTemplates : AppCompatActivity() {
                 when (it) {
                     is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
                     is NetworkResult.Error -> {
-                        Toast.makeText(this, it.message.toString(), Toast.LENGTH_SHORT)
+                        Toast.makeText(this, it.message.toString(), Toast.LENGTH_SHORT).show()
                     }
 
                     is NetworkResult.Success -> {
-                        adapter.submitList(it.data!!)
+                        var cnt = 1
+                        it.data!!.forEach {
+                            it.srNo = cnt++
+                        }
+                        adapter.submitList(it.data)
                         binding.rview.layoutManager =
                             StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
                         binding.rview.adapter = adapter
