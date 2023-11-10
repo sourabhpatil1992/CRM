@@ -111,6 +111,8 @@
     <string name="currentpackage">Current Package :</string>
     <string name="current_package">Current Package</string>
     <string name="documents">Documents</string>
+    <string name="employee_dp">Employee DP</string>
+    <string name="update_employee_details">Update Employee Details</string>
 
 
 </resources>

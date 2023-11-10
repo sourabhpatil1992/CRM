@@ -965,7 +965,54 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         }
     }
 
+    fun createEmployee(empDet: EmpDet) {
+        try {
+            viewModelScope.launch {
+                userRepository.createEmployee(empDet)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt createEmployee() is " + e.message)
+        }
+    }
 
+    val empListLiveData: LiveData<NetworkResult<List<EmployeeList>>>
+        get() = userRepository.empListLiveData
+    fun getEmpList() {
+        try {
+            viewModelScope.launch {
+                userRepository.getEmpList()
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getEmpList() is " + e.message)
+        }
+    }
+
+
+    val empInfoLiveData :LiveData<NetworkResult<EmpInfoData>>
+        get() = userRepository.empInfoLiveData
+    fun getEmpInfo(empId: Int) {
+        try {
+            viewModelScope.launch {
+                userRepository.getEmpInfo(empId)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getEmpInfo() is:${e.message}")
+        }
+
+    }
+
+    val empDetLiveData :LiveData<NetworkResult<EmpDet>>
+        get() = userRepository.empDetLiveData
+    fun getEmpDet(empId: Int) {
+        try {
+            viewModelScope.launch {
+                userRepository.getEmpDet(empId)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getEmpDet() is:${e.message}")
+        }
+
+    }
 
 
 }

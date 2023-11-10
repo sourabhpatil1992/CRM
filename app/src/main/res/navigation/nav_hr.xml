@@ -28,10 +28,23 @@
         <action
             android:id="@+id/action_hrEmpFragment_to_createEmpFragment"
             app:destination="@id/createEmpFragment" />
+        <action
+            android:id="@+id/action_hrEmpFragment_to_empDetFragment"
+            app:destination="@id/empDetFragment" />
     </fragment>
     <fragment
         android:id="@+id/createEmpFragment"
         android:name="com.venter.crm.hrMangment.CreateEmpFragment"
         android:label="fragment_create_emp"
         tools:layout="@layout/fragment_create_emp" />
+
+    <fragment
+        android:id="@+id/empDetFragment"
+        android:name="com.venter.crm.hrMangment.HrEmpDetFragment"
+        android:label="fragment_create_emp"
+        tools:layout="@layout/fragment_hr_emp_det" >
+        <action
+            android:id="@+id/action_empDetFragment_to_createEmpFragment"
+            app:destination="@id/createEmpFragment" />
+    </fragment>
 </navigation>

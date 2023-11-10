@@ -40,7 +40,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
 
         } catch (e: Exception) {
             Log.d(
-                Constans.TAG,
+                TAG,
                 "Error in UserAuthRepository.kt createCandidateRepo() is " + e.message
             )
         }
@@ -98,7 +98,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
             }
 
         } catch (e: Exception) {
-            Log.d(Constans.TAG, "Error in UserAuthRepository.kt candidateCerDet() is " + e.message)
+            Log.d(TAG, "Error in UserAuthRepository.kt candidateCerDet() is " + e.message)
         }
     }
 
@@ -128,7 +128,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
 
         } catch (e: Exception) {
             Log.d(
-                Constans.TAG,
+                TAG,
                 "Error in UserAuthRepository.kt printCandidateProfile() is " + e.message
             )
         }
@@ -155,7 +155,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
 
         } catch (e: Exception) {
             Log.d(
-                Constans.TAG,
+                TAG,
                 "Error in UserAuthRepository.kt removeCandidate() is " + e.message
             )
         }
@@ -189,7 +189,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
 
         } catch (e: Exception) {
             Log.d(
-                Constans.TAG,
+                TAG,
                 "Error in UserAuthRepository.kt printCandidateProfile() is " + e.message
             )
         }
@@ -231,7 +231,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
             }
 
         } catch (e: Exception) {
-            Log.d(Constans.TAG, "Error in UserAuthRepository.kt printHikeLetter() is " + e.message)
+            Log.d(TAG, "Error in UserAuthRepository.kt printHikeLetter() is " + e.message)
         }
     }
 
@@ -262,7 +262,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
             }
 
         } catch (e: Exception) {
-            Log.d(Constans.TAG, "Error in UserAuthRepository.kt printHikeLetter() is " + e.message)
+            Log.d(TAG, "Error in UserAuthRepository.kt printHikeLetter() is " + e.message)
         }
     }
 
@@ -294,7 +294,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
             }
 
         } catch (e: Exception) {
-            Log.d(Constans.TAG, "Error in UserAuthRepository.kt printHikeLetter() is " + e.message)
+            Log.d(TAG, "Error in UserAuthRepository.kt printHikeLetter() is " + e.message)
         }
     }
 
@@ -327,7 +327,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
             }
 
         } catch (e: Exception) {
-            Log.d(Constans.TAG, "Error in UserAuthRepository.kt printHikeLetter() is " + e.message)
+            Log.d(TAG, "Error in UserAuthRepository.kt printHikeLetter() is " + e.message)
         }
     }
 
@@ -364,7 +364,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
 
         } catch (e: Exception) {
             Log.d(
-                Constans.TAG,
+                TAG,
                 "Error in UserAuthRepository.kt printCandidateProfile() is " + e.message
             )
         }
@@ -395,7 +395,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
             }
 
         } catch (e: Exception) {
-            Log.d(Constans.TAG, "Error in UserAuthRepository.kt printHikeLetter() is " + e.message)
+            Log.d(TAG, "Error in UserAuthRepository.kt printHikeLetter() is " + e.message)
         }
     }
 
@@ -419,7 +419,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
             }
 
         } catch (e: Exception) {
-            Log.d(Constans.TAG, "Error in UserAuthRepository.kt printIdCard() is " + e.message)
+            Log.d(TAG, "Error in UserAuthRepository.kt printIdCard() is " + e.message)
         }
     }
 
@@ -448,7 +448,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
             }
 
         } catch (e: Exception) {
-            Log.d(Constans.TAG, "Error in UserAuthRepository.kt getCandidateDet() is " + e.message)
+            Log.d(TAG, "Error in UserAuthRepository.kt getCandidateDet() is " + e.message)
         }
     }
 
@@ -479,7 +479,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
 
         } catch (e: Exception) {
             Log.d(
-                Constans.TAG,
+                TAG,
                 "Error in UserAuthRepository.kt getCandidateFeeList() is " + e.message
             )
         }
@@ -510,7 +510,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
 
         } catch (e: Exception) {
             Log.d(
-                Constans.TAG,
+                TAG,
                 "Error in UserAuthRepository.kt getCandidateFeeLedger() is " + e.message
             )
         }
@@ -675,7 +675,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
             }
 
         } catch (e: Exception) {
-            Log.d(Constans.TAG, "Error in UserAuthRepository.kt createUser() is " + e.message)
+            Log.d(TAG, "Error in UserAuthRepository.kt createUser() is " + e.message)
         }
     }
 
@@ -1307,7 +1307,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
         catch (e: Exception) {
             Log.d(
-                Constans.TAG,
+                TAG,
                 "Error in UserAuthRepository.kt setIncomingLead() is " + e.message
             )
         }
@@ -1891,7 +1891,7 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
 
     suspend fun sendWhatsMsg(temNo: Int, mobNo: String) {
 
-        val response = userApi.sendWhatsMsg(temNo, mobNo)
+       userApi.sendWhatsMsg(temNo, mobNo)
 
     }
 
@@ -1987,7 +1987,87 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
     }
 
+    suspend fun createEmployee(empDet: EmpDet) {
 
+        val response = userApi.createEmployee(empDet)
+
+    }
+
+
+    private  val _empListLiveData =MutableLiveData<NetworkResult<List<EmployeeList>>>()
+    val empListLiveData :LiveData<NetworkResult<List<EmployeeList>>>
+        get() = _empListLiveData
+    suspend fun getEmpList() {
+
+        try {
+            _empListLiveData.postValue(NetworkResult.Loading())
+            val response = userApi.getEmpList()
+
+            if (response.isSuccessful && response.body() != null) {
+                _empListLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+                _empListLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+                _empListLiveData.postValue(NetworkResult.Error("Something Went Wrong."))
+            }
+        }
+        catch (e:Exception)
+        {
+            Log.d(TAG,"Error in UserAuthRepository.ke updateUserHierarchy() is ${e.message}")
+        }
+    }
+
+
+    private  val _empInfoLiveData =MutableLiveData<NetworkResult<EmpInfoData>>()
+    val empInfoLiveData :LiveData<NetworkResult<EmpInfoData>>
+        get() = _empInfoLiveData
+    suspend fun getEmpInfo(empId: Int) {
+
+        try {
+            _empInfoLiveData.postValue(NetworkResult.Loading())
+            val response = userApi.getEmpInfo(empId)
+
+            if (response.isSuccessful && response.body() != null) {
+                _empInfoLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+                _empInfoLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+                _empInfoLiveData.postValue(NetworkResult.Error("Something Went Wrong."))
+            }
+        }
+        catch (e:Exception)
+        {
+            Log.d(TAG,"Error in UserAuthRepository.ke getEmpInfo() is ${e.message}")
+        }
+    }
+
+
+    private  val _empDetLiveData =MutableLiveData<NetworkResult<EmpDet>>()
+    val empDetLiveData :LiveData<NetworkResult<EmpDet>>
+        get() = _empDetLiveData
+    suspend fun getEmpDet(empId: Int) {
+
+        try {
+            _empDetLiveData.postValue(NetworkResult.Loading())
+            val response = userApi.getEmpDet(empId)
+
+            if (response.isSuccessful && response.body() != null) {
+                _empDetLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+                _empDetLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+                _empDetLiveData.postValue(NetworkResult.Error("Something Went Wrong."))
+            }
+        }
+        catch (e:Exception)
+        {
+            Log.d(TAG,"Error in UserAuthRepository.ke getEmpDet() is ${e.message}")
+        }
+
+    }
 
 
 }

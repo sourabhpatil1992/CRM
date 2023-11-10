@@ -336,7 +336,13 @@ interface UserAuthApi {
     @Multipart
     @POST("/candidateRawData/addMultipleRawData")
     suspend fun updateDatabase(@Part spic: MultipartBody.Part): Response<String>
-
-
+    @POST("/hrManagement/createEmployee")
+    suspend fun createEmployee(@Body empDet: EmpDet): Response<String>
+    @POST("/hrManagement/getEmpList")
+    suspend fun getEmpList():Response<List<EmployeeList>>
+    @POST("/hrManagement/getEmpInfo")
+    suspend fun getEmpInfo(@Query("empId")empId: Int): Response<EmpInfoData>
+    @POST("/hrManagement/getEmpDet")
+    suspend fun getEmpDet(empId: Int): Response<EmpDet>
 
 }
