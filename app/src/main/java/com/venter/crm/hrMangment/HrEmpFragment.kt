@@ -30,7 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint
  ***************************************************************/
 
 @AndroidEntryPoint
-class HrEmpFragment : Fragment(),EmployeeListInterface {
+class HrEmpFragment : Fragment(), EmployeeListInterface {
     private var _binding: FragmentHrEmpBinding? = null
     private val binding: FragmentHrEmpBinding
         get() = _binding!!
@@ -54,7 +54,7 @@ class HrEmpFragment : Fragment(),EmployeeListInterface {
                 findNavController().navigate(R.id.action_hrEmpFragment_to_createEmpFragment)
             }
 
-            getData()
+
 
             binding.edtSearch.doOnTextChanged { text, _, _, _ ->
 
@@ -71,6 +71,11 @@ class HrEmpFragment : Fragment(),EmployeeListInterface {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        getData()
+    }
+
     private fun searchAction(text: String) {
         try {
             val filterList: ArrayList<EmployeeList> = ArrayList()
@@ -81,10 +86,13 @@ class HrEmpFragment : Fragment(),EmployeeListInterface {
 
                     if (
                         (it.empId?.contains(text, ignoreCase = true) == true) ||
-                        (it.cJob?.contains(text, ignoreCase = true) == true) ||
-                        (it.fName?.contains(text, ignoreCase = true) == true) ||
-                        (it.mName?.contains(text, ignoreCase = true) == true) ||
-                        (it.lName?.contains(text, ignoreCase = true) == true)
+                        (it.cJob?.contains(text, ignoreCase = true) == true) || it.fName.contains(
+                            text,
+                            ignoreCase = true
+                        ) || (it.mName?.contains(
+                            text,
+                            ignoreCase = true
+                        ) == true) || (it.lName?.contains(text, ignoreCase = true) == true)
                     ) {
                         filterList.add(it)
                     }
@@ -94,10 +102,8 @@ class HrEmpFragment : Fragment(),EmployeeListInterface {
 
 
             setData(filterList)
-        }
-        catch (e:Exception)
-        {
-            Log.d(TAG,"Error in HrEmpFragment.kt searchAction() is :${e.message}")
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in HrEmpFragment.kt searchAction() is :${e.message}")
         }
 
 
@@ -134,8 +140,8 @@ class HrEmpFragment : Fragment(),EmployeeListInterface {
 
     override fun empDet(id: Int) {
         val bundle = Bundle()
-        bundle.putInt("id",id)
-        findNavController().navigate(R.id.action_hrEmpFragment_to_empDetFragment,bundle)
+        bundle.putInt("id", id)
+        findNavController().navigate(R.id.action_hrEmpFragment_to_empDetFragment, bundle)
     }
 
 

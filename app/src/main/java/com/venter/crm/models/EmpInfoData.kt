@@ -10,5 +10,5 @@ data class EmpInfoData(
     val dept: String,
     val cPackage: Double,
     val cJob: String,
-    val empId: Int
+    val empId: String
 )

@@ -69,7 +69,7 @@
     <string name="plus">+</string>
     <string name="minus">-</string>
     <string name="salutation">Salutation :</string>
-    <string name="employee_name">Employee Name</string>
+    <string name="employee_name">Employee Name :</string>
     <string name="first_name">First Name</string>
     <string name="middle_name">Middle Name</string>
     <string name="last_name">Last Name</string>

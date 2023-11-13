@@ -31,43 +31,46 @@ class UserDetActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityUserDetBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        try {
+            user = intent.getParcelableExtra("user")!!
 
-        user = intent.getParcelableExtra("user")!!
+            binding.whatsButton.setOnClickListener {
+                whatsAppInitialization()
+            }
+            binding.dataSwapping.setOnClickListener {
+                val intent = Intent(this, DataTransActivity::class.java)
+                intent.putExtra("userId", user.id)
+                intent.putExtra("userName", user.user_name)
+                startActivity(intent)
+            }
+            binding.userReport.setOnClickListener {
+                val intent = Intent(this, UserReport::class.java)
+                intent.putExtra("userId", user.id)
+                intent.putExtra("userName", user.user_name)
+                startActivity(intent)
+            }
 
-        binding.whatsButton.setOnClickListener {
-            whatsAppInitialization()
-        }
-        binding.dataSwapping.setOnClickListener {
-            val intent = Intent(this, DataTransActivity::class.java)
-            intent.putExtra("userId", user.id)
-            intent.putExtra("userName", user.user_name)
-            startActivity(intent)
-        }
-        binding.userReport.setOnClickListener {
-            val intent = Intent(this, UserReport::class.java)
-            intent.putExtra("userId", user.id)
-            intent.putExtra("userName", user.user_name)
-            startActivity(intent)
-        }
+            binding.delAcc.setOnClickListener {
+                delAcc()
+            }
 
-        binding.delAcc.setOnClickListener {
-            delAcc()
-        }
+            binding.userUpdate.setOnClickListener {
+                val intent = Intent(this, UserAddActivity::class.java)
+                intent.putExtra("user", user)
+                startActivity(intent)
+            }
 
-        binding.userUpdate.setOnClickListener {
-            val intent =Intent(this,UserAddActivity::class.java)
-            intent.putExtra("user", user)
-            startActivity(intent)
-        }
+            binding.assignment.setOnClickListener {
+                val intent = Intent(this, UserAssignmentActivity::class.java)
+                intent.putExtra("user", user)
+                startActivity(intent)
+            }
 
-        binding.assignment.setOnClickListener {
-            val intent =Intent(this,UserAssignmentActivity::class.java)
-            intent.putExtra("user", user)
-            startActivity(intent)
-        }
-
-        binding.resetDev.setOnClickListener {
-            resetDevice()
+            binding.resetDev.setOnClickListener {
+                resetDevice()
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserDetActivity.kt is : ${e.message}")
         }
 
     }
@@ -75,7 +78,7 @@ class UserDetActivity : AppCompatActivity() {
     private fun resetDevice() {
         try {
             val message = TextView(this)
-            message.text =getString(R.string.resetDevMsg)
+            message.text = getString(R.string.resetDevMsg)
             val layout = LinearLayout(this)
             layout.setPadding(20, 20, 20, 20)
             layout.addView(message)
@@ -83,46 +86,47 @@ class UserDetActivity : AppCompatActivity() {
             builders.setTitle("Reset Device")
             builders.setView(layout)
 
-            builders.setPositiveButton("Yes"){_,_->
+            builders.setPositiveButton("Yes") { _, _ ->
                 try {
                     candidateViewModel.resetDevice(user.id)
-                    candidateViewModel.stringResData.observe(this){
-                        when(it)
-                        {
-                            is NetworkResult.Loading ->{}
-                            is NetworkResult.Error -> Toast.makeText(this, it.message.toString(), Toast.LENGTH_SHORT)
+                    candidateViewModel.stringResData.observe(this) {
+                        when (it) {
+                            is NetworkResult.Loading -> {}
+                            is NetworkResult.Error -> Toast.makeText(
+                                this,
+                                it.message.toString(),
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
-                            is NetworkResult.Success ->{
+
+                            is NetworkResult.Success -> {
                                 Toast.makeText(this, it.data.toString(), Toast.LENGTH_SHORT)
                                     .show()
-                                startActivity(Intent(this,AdminDashboard::class.java))
+                                startActivity(Intent(this, AdminDashboard::class.java))
                                 this.finish()
                             }
                         }
                     }
-                }
-                catch (e:Exception)
-                {
-                    Log.d(TAG,"Error in UserDetActivity.kt delAcc() is ${e.message}")
+                } catch (e: Exception) {
+                    Log.d(TAG, "Error in UserDetActivity.kt delAcc() is ${e.message}")
                 }
 
             }
-            builders.setNegativeButton("No"){_,_->
+            builders.setNegativeButton("No") { _, _ ->
 
             }
 
             builders.show()
-        }
-        catch (e:Exception)
-        {
-            Log.d(TAG,"Error in UerDetActivity.kt resetDevice() is : ${e.message}")
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UerDetActivity.kt resetDevice() is : ${e.message}")
         }
     }
 
     private fun delAcc() {
         try {
             val message = TextView(this)
-            message.text ="Are you sure delete this account? \n Please check raw data is transferred or not. "
+            message.text =
+                "Are you sure delete this account? \n Please check raw data is transferred or not. "
             val layout = LinearLayout(this)
             layout.setPadding(20, 20, 20, 20)
             layout.addView(message)
@@ -130,31 +134,33 @@ class UserDetActivity : AppCompatActivity() {
             builders.setTitle("Account Remove")
             builders.setView(layout)
 
-            builders.setPositiveButton("Yes"){_,_->
+            builders.setPositiveButton("Yes") { _, _ ->
                 try {
-                   candidateViewModel.delAcc(user.id)
-                    candidateViewModel.stringResData.observe(this){
-                        when(it)
-                        {
-                            is NetworkResult.Loading ->{}
-                            is NetworkResult.Error -> Toast.makeText(this, it.message.toString(), Toast.LENGTH_SHORT)
+                    candidateViewModel.delAcc(user.id)
+                    candidateViewModel.stringResData.observe(this) {
+                        when (it) {
+                            is NetworkResult.Loading -> {}
+                            is NetworkResult.Error -> Toast.makeText(
+                                this,
+                                it.message.toString(),
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
-                            is NetworkResult.Success ->{
+
+                            is NetworkResult.Success -> {
                                 Toast.makeText(this, it.data.toString(), Toast.LENGTH_SHORT)
                                     .show()
-                                startActivity(Intent(this,AdminDashboard::class.java))
+                                startActivity(Intent(this, AdminDashboard::class.java))
                                 this.finish()
                             }
                         }
                     }
-                }
-                catch (e:Exception)
-                {
-                    Log.d(TAG,"Error in UserDetActivity.kt delAcc() is ${e.message}")
+                } catch (e: Exception) {
+                    Log.d(TAG, "Error in UserDetActivity.kt delAcc() is ${e.message}")
                 }
 
             }
-            builders.setNegativeButton("No"){_,_->
+            builders.setNegativeButton("No") { _, _ ->
 
             }
 

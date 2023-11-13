@@ -248,7 +248,7 @@ class RawDataDetActivity : AppCompatActivity() {
         layout.addView(empSpinner)
 
         builders.setPositiveButton("Submit") { _, _ ->
-            Log.d(TAG, user[empSpinner.selectedItemId.toInt()].toString())
+
 
             if (dataId != 0) {
                 candidateViewModel.swipeData(dataId, user[empSpinner.selectedItemId.toInt()].id)

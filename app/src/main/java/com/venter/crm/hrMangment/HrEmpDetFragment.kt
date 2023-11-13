@@ -10,9 +10,12 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.Picasso
 import com.venter.crm.R
 import com.venter.crm.databinding.FragmentHrEmpDetBinding
 import com.venter.crm.models.EmpInfoData
+import com.venter.crm.utils.Constans
 import com.venter.crm.utils.Constans.TAG
 import com.venter.crm.utils.NetworkResult
 import com.venter.crm.viewModelClass.CandidateViewModel
@@ -76,14 +79,20 @@ class HrEmpDetFragment : Fragment() {
 
     private fun setData(data: EmpInfoData) {
         try {
-            binding.empId.text = data.empId.toString()
+            Picasso.get()
+                .load(Constans.BASE_URL + "assets/profile/Emp_" + empId + ".jpeg")
+                .fit()
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                .into(binding.imgProfile)
+            binding.empId.text = data.empId?: ""
             val empName = "${data.salutation ?: ""} ${data.fName ?: ""} ${data.mName ?: ""} ${data.lName ?: ""}"
             binding.empName.text = empName
             binding.mobNo.text = data.mobNo
-            binding.email.text = data.emailId
-            binding.dept.text = data.dept
-            binding.job.text = data.cJob
+            binding.email.text = data.emailId?: ""
+            binding.dept.text = data.dept?: ""
+            binding.job.text = data.cJob?: ""
             binding.btnEdtEmp.visibility = View.VISIBLE
+            binding.linButtons.visibility = View.VISIBLE
         } catch (e: Exception) {
             Log.d(TAG, "Error in HrEmpDetFragment.kt setData() is : ${e.message}")
         }

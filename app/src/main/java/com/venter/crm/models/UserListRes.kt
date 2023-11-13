@@ -9,7 +9,7 @@ data class UserListRes(
     val user_name :String,
     val email_id:String,
     val mobile_no:String,
-    val job_title :String,
+    val job_title :String?,
     val user_type :String,
     var status:String,
     val what_acc:Int

@@ -24,5 +24,6 @@ data class EmpDet(
     val appAccess:Int,
     val userType:String,
     val cJob:String,
-    val cPackage:Double
+    val cPackage:Double,
+    val documets:String = ""
 )

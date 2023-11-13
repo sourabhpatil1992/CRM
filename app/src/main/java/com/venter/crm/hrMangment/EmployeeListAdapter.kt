@@ -6,8 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.Picasso
 import com.venter.crm.databinding.LayoutEmpBinding
 import com.venter.crm.models.EmployeeList
+import com.venter.crm.utils.Constans
 import com.venter.crm.utils.Constans.TAG
 
 /**************************************************************
@@ -24,6 +27,12 @@ class EmployeeListAdapter(val empInter:EmployeeListInterface) :ListAdapter<Emplo
         RecyclerView.ViewHolder(binding.root) {
         fun bind(emp: EmployeeList) {
             try {
+                Picasso.get()
+                    .load(Constans.BASE_URL + "assets/profile/Emp_" + emp.id + ".jpeg")
+                    .fit()
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                    .into(binding.imgProfile)
+
                 binding.txtEmpId.text = emp.empId
                 val empName = "${emp.fName ?: ""} ${emp.mName ?: ""} ${emp.lName ?: ""}"
                 binding.txtUserName.text = empName

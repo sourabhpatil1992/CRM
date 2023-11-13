@@ -27,11 +27,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class UserAddActivity : AppCompatActivity()
-{
-    private var _binding:ActivityUserAddBinding? = null
-    private val binding:ActivityUserAddBinding
-    get() = _binding!!
+class UserAddActivity : AppCompatActivity() {
+    private var _binding: ActivityUserAddBinding? = null
+    private val binding: ActivityUserAddBinding
+        get() = _binding!!
 
     private var ProfileUri: Uri? = null
 
@@ -39,7 +38,7 @@ class UserAddActivity : AppCompatActivity()
 
     private var user: UserListRes? = null
 
-    private var userId:Int =0
+    private var userId: Int = 0
 
     private var contract =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -53,56 +52,57 @@ class UserAddActivity : AppCompatActivity()
     @Inject
     lateinit var tokenManger: TokenManger
 
-    private val roles = arrayOf( "Business Analyst","Senior Business Analyst","Team Lead","Floor Manager",
-    "Sales Manager","Admin")
+    private val roles = arrayOf(
+        "Business Analyst", "Senior Business Analyst", "Team Lead", "Floor Manager",
+        "Sales Manager", "Admin"
+    )
 
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityUserAddBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        try {
+            val adapter = ArrayAdapter(this, R.layout.simple_spinner_item, roles)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spinnerRole.adapter = adapter
 
-        val adapter = ArrayAdapter(this, R.layout.simple_spinner_item, roles)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerRole.adapter = adapter
-
-        user = intent.getParcelableExtra<UserListRes>("user")
-
-        if( user != null)
-        {
-            Picasso.get()
-                .load(Constans.BASE_URL + "assets/userProfile/" + user!!.id + ".jpeg")
-                .fit()
-                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .into(binding.imgProfile)
-
-            binding.edtTxtName.setText(user!!.user_name)
-            binding.edtTxtMobNo.setText(user!!.mobile_no)
-            binding.edtTxtEmail.setText(user!!.email_id)
-            binding.edtTxtDesignation.setText(user!!.job_title)
+            user = intent.getParcelableExtra<UserListRes>("user")
 
 
+            if (user != null) {
+                Picasso.get()
+                    .load(Constans.BASE_URL + "assets/userProfile/" + user!!.id + ".jpeg")
+                    .fit()
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                    .into(binding.imgProfile)
+
+                binding.edtTxtName.setText(user!!.user_name)
+                binding.edtTxtMobNo.setText(user!!.mobile_no)
+                binding.edtTxtEmail.setText(user!!.email_id ?: "")
+               // binding.edtTxtDesignation.setText(user!!.job_title ?: "")
+
+
+                val position = adapter.getPosition(user!!.user_type)
+                if (position != AdapterView.INVALID_POSITION) {
+                    binding.spinnerRole.setSelection(position)
+                }
 
 
 
-            val position = adapter.getPosition(user!!.user_type)
-            if (position != AdapterView.INVALID_POSITION) {
-                binding.spinnerRole.setSelection(position)
+                userId = user!!.id
+
             }
 
+            binding.btnSubmit.setOnClickListener {
+                submitAction()
+            }
 
-
-            userId = user!!.id
-
-        }
-
-        binding.btnSubmit.setOnClickListener {
-            submitAction()
-        }
-
-        binding.btnDp.setOnClickListener {
-            contract.launch("image/*")
+            binding.btnDp.setOnClickListener {
+                contract.launch("image/*")
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAddActivity.kt is : ${e.message}")
         }
     }
 
@@ -111,25 +111,32 @@ class UserAddActivity : AppCompatActivity()
         _binding = null
     }
 
-    private fun submitAction()
-    {
+    private fun submitAction() {
         try {
-            if(binding.edtTxtName.text.isNotEmpty() && binding.edtTxtMobNo.text.length==10)
-            {
+            if (binding.edtTxtName.text.isNotEmpty() && binding.edtTxtMobNo.text.length == 10) {
                 val userType = binding.spinnerRole.selectedItem.toString()
-                candidateViewModel.createUser(binding.edtTxtName.text.toString(),binding.edtTxtMobNo.text.toString(),binding.edtTxtEmail.text.toString(),
-                    binding.edtTxtDesignation.text.toString(),userType,userId)
+                candidateViewModel.createUser(
+                    binding.edtTxtName.text.toString(),
+                    binding.edtTxtMobNo.text.toString(),
+                    binding.edtTxtEmail.text.toString(),
+                    binding.edtTxtDesignation.text.toString(),
+                    userType,
+                    userId
+                )
 
                 candidateViewModel.stringResData.observe(this)
                 {
                     binding.progressbar.visibility = View.GONE
-                    when(it)
-                    {
+                    when (it) {
                         is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
-                        is NetworkResult.Error -> Toast.makeText(this,it.message.toString(),Toast.LENGTH_SHORT).show()
-                        is NetworkResult.Success ->{
-                            if(ProfileUri != null)
-                            {
+                        is NetworkResult.Error -> Toast.makeText(
+                            this,
+                            it.message.toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        is NetworkResult.Success -> {
+                            if (ProfileUri != null) {
                                 val intent = Intent(this, CandidateProfileFrgnd::class.java)
                                 intent.putExtra("candidateId", it.data!!.toInt())
                                 intent.putExtra("ProfileUri", ProfileUri.toString())
@@ -138,8 +145,9 @@ class UserAddActivity : AppCompatActivity()
                                 startForegroundService(intent)
                             }
 
-                            Toast.makeText(this,"User Created Successfully.",Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this,AdminDashboard::class.java)
+                            Toast.makeText(this, "User Created Successfully.", Toast.LENGTH_SHORT)
+                                .show()
+                            val intent = Intent(this, AdminDashboard::class.java)
                             startActivity(intent)
                             this.finishAffinity()
                         }
@@ -148,10 +156,8 @@ class UserAddActivity : AppCompatActivity()
                 }
             }
 
-        }
-        catch (e:Exception)
-        {
-            Log.d(TAG,"Error in UserAddActivity.kt submitAction() is "+e.message)
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAddActivity.kt submitAction() is " + e.message)
         }
 
     }

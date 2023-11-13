@@ -44,7 +44,7 @@ class OtpActivity : AppCompatActivity() {
 
             //Toast.makeText(this,otp.toString(),Toast.LENGTH_SHORT).show()
 
-            resenTime()
+            resendTime()
 
             otp_set()
 
@@ -109,21 +109,18 @@ class OtpActivity : AppCompatActivity() {
         _binding = null
     }
 
-    fun resenTime() {
+    fun resendTime() {
         Thread(Runnable {
             for (i in 0..45) {
-
                 this.runOnUiThread {
-                    if(_binding !=null)
-                    binding.txtResendotp.text = (45 - i).toString() + " Sec"
+                    if (_binding != null)
+                        binding.txtResendotp.text = (45 - i).toString() + " Sec"
                 }
                 Thread.sleep(1000)
             }
             this.runOnUiThread {
                 binding.txtResendotp.text = "Resend OTP"
             }
-
-
         }).start()
     }
 

@@ -1,33 +1,65 @@
 package com.venter.crm.hrMangment
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.provider.OpenableColumns
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.Picasso
 import com.venter.crm.databinding.LayoutCanddocBinding
+import com.venter.crm.models.DocumentUri
+import com.venter.crm.utils.Constans
+import com.venter.crm.utils.Constans.TAG
 
 
-class EmployeeDocAdapter(val cnt:Context) : ListAdapter<Uri, EmployeeDocAdapter.DocHolder>(ComparatorDiffUtil()) {
+class EmployeeDocAdapter(val cnt: Context) :
+    ListAdapter<DocumentUri, EmployeeDocAdapter.DocHolder>(ComparatorDiffUtil()) {
 
     inner class DocHolder(private val binding: LayoutCanddocBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(doc: Uri) {
-            binding.txtDocName.text = getFileNameFromUri(cnt,doc)
+        fun bind(doc: DocumentUri) {
+            val uri = if (doc.src == "Local") Uri.parse(doc.uri)
+            else Uri.parse("${Constans.BASE_URL}assets/documents/employee/${doc.uri}")
+
+            binding.txtDocName.text = if (doc.src == "Local") getFileNameFromUri(cnt, uri) else doc.uri
+
             val context = binding.imgDoc.context
-            val fileExtension = context.contentResolver.getType(doc)
+            val fileExtension = context.contentResolver.getType(uri)
 
-            if (fileExtension != null && fileExtension.startsWith("image/"))
-                binding.imgDoc.setImageURI(doc)
+            val isPdf: Boolean = {
+                if (doc.src == "Local") {
+                    fileExtension?.startsWith("application/pdf") == true
+                } else {
+                    doc.uri.split(".")[1] == "pdf"
+                }
+            }()
 
-            else
-                binding.imgDoc.setImageDrawable(ContextCompat.getDrawable(context,com.venter.crm.R.drawable.pdf_icon))
+            if (isPdf) {
+                binding.imgDoc.setImageDrawable(ContextCompat.getDrawable(cnt, com.venter.crm.R.drawable.pdf_icon))
+            } else {
+                Picasso.get().load(uri).fit().centerCrop().into(binding.imgDoc)
+            }
 
+            binding.linDoc.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.setDataAndType(uri, if (isPdf) "application/pdf" else "image/*")
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+                try {
+                    cnt.startActivity(intent)
+                } catch (e: Exception) {
+                    Log.d(TAG, "Error in EmployeeDocAdapter.kt bind() binding.linDoc.setOnClickListener: ${e.message}")
+                }
+            }
         }
+
 
         fun getFileNameFromUri(context: Context, uri: Uri): String? {
             var fileName: String? = null
@@ -48,13 +80,13 @@ class EmployeeDocAdapter(val cnt:Context) : ListAdapter<Uri, EmployeeDocAdapter.
 
     }
 
-    class ComparatorDiffUtil : DiffUtil.ItemCallback<Uri>() {
+    class ComparatorDiffUtil : DiffUtil.ItemCallback<DocumentUri>() {
 
-        override fun areItemsTheSame(oldItem: Uri, newItem: Uri): Boolean {
+        override fun areItemsTheSame(oldItem: DocumentUri, newItem: DocumentUri): Boolean {
             return false
         }
 
-        override fun areContentsTheSame(oldItem: Uri, newItem: Uri): Boolean {
+        override fun areContentsTheSame(oldItem: DocumentUri, newItem: DocumentUri): Boolean {
             return false
         }
 

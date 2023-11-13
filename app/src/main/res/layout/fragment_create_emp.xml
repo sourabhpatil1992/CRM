@@ -785,24 +785,26 @@
             <View
                 android:layout_width="20dp"
                 android:layout_height="60dp" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSubmit"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/rounded_back_btn_blue"
+                android:text="@string/submit"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
 
         </LinearLayout>
     </ScrollView>
 
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnSubmit"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/rounded_back_btn_blue"
-        android:text="@string/submit"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
+
 
     <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/progressbar"

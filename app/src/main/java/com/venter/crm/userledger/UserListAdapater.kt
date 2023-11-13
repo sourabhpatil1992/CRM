@@ -15,6 +15,7 @@ import com.venter.crm.databinding.LayoutUserlistBinding
 
 import com.venter.crm.models.UserListRes
 import com.venter.crm.utils.Constans
+import com.venter.crm.utils.Constans.TAG
 
 class UserListAdapate(val cnt: Context, val statusUser: statusUser) :
     ListAdapter<UserListRes, UserListAdapate.UserListHolder>(
@@ -69,9 +70,11 @@ class UserListAdapate(val cnt: Context, val statusUser: statusUser) :
                 }
 
                 binding.linviewUser.setOnClickListener{
+
                     val intent =Intent(cnt,UserDetActivity::class.java)
                     intent.putExtra("user", user)
                     cnt.startActivity(intent)
+
                 }
             } catch (e: Exception) {
                 Log.d(Constans.TAG, "Error in UserListAdapate.kt bind() is " + e.message)

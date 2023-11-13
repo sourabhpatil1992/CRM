@@ -1,7 +1,7 @@
 package com.venter.crm.hrMangment
 
 import android.content.ContentResolver
-import android.net.Network
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -12,13 +12,18 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.Picasso
 import com.venter.crm.R
 import com.venter.crm.databinding.FragmentCreateEmpBinding
+import com.venter.crm.models.DocumentUri
 import com.venter.crm.models.EmpDet
+import com.venter.crm.models.EmpDocFiles
+import com.venter.crm.utils.Constans
 import com.venter.crm.utils.Constans.TAG
 import com.venter.crm.utils.NetworkResult
 import com.venter.crm.viewModelClass.CandidateViewModel
@@ -56,6 +61,7 @@ class CreateEmpFragment : Fragment() {
 
     private lateinit var adapter: EmployeeDocAdapter
 
+
     private var empId = 0
 
     private var contract =
@@ -76,8 +82,12 @@ class CreateEmpFragment : Fragment() {
                     }
                 }
 
+                val documentsPath : ArrayList<DocumentUri> = ArrayList()
+                documentUri.forEach {
+                    documentsPath.add(DocumentUri(it.toString(),"Local"))
+                }
 
-                setDocumentRc()
+                setDocumentRc(documentsPath)
             }
         }
 
@@ -86,24 +96,25 @@ class CreateEmpFragment : Fragment() {
     }
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
+    {
         return try {
             _binding = FragmentCreateEmpBinding.inflate(layoutInflater)
 
             adapter = EmployeeDocAdapter(requireContext())
 
-            empId = arguments?.getInt("id").toString().toInt()
 
+            empId =
+                if (arguments?.getInt("id").toString().toIntOrNull() != null)
+                    arguments?.getInt("id").toString().toInt()
+                else
+                    0
 
+            getEmpDet()
 
             cascadingView()
 
-            val todayDate = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(Date())
-            binding.edtDOB.text = todayDate
-            binding.joiningDate.text = todayDate
+
 
             binding.btnDp.setOnClickListener {
                 contract.launch("image/*")
@@ -117,11 +128,6 @@ class CreateEmpFragment : Fragment() {
                 submitData()
             }
 
-            getEmpDet()
-
-
-
-
 
             binding.root
 
@@ -131,7 +137,10 @@ class CreateEmpFragment : Fragment() {
         }
     }
 
+
+
     private fun getEmpDet() {
+
         if (empId > 0) {
             candidateViewModel.getEmpDet(empId)
             candidateViewModel.empDetLiveData.observe(viewLifecycleOwner)
@@ -156,6 +165,12 @@ class CreateEmpFragment : Fragment() {
     }
 
     private fun setData(data: EmpDet) {
+        Picasso.get()
+            .load(Constans.BASE_URL + "assets/profile/Emp_" + empId + ".jpeg")
+            .fit()
+            .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+            .into(binding.imgProfile)
+
         val spinSalutation = resources.getStringArray(R.array.salutation)
         binding.spinnerSalutation.setSelection(spinSalutation.indexOf(data.salutation))
         binding.firstName.setText(data.fName)
@@ -187,7 +202,21 @@ class CreateEmpFragment : Fragment() {
         binding.edtCurJobTitle.setText(data.cJob)
         binding.edtCurPackage.setText(data.cPackage.toString())
 
-        //Set DP Image and documents Image
+        val docUri = data.documets.split(",")
+
+
+        val documentsPath : ArrayList<DocumentUri> = ArrayList()
+        docUri.forEach {
+            documentsPath.add(DocumentUri(it,"Server"))
+        }
+
+        setDocumentRc(documentsPath)
+
+
+        binding.rcView.visibility = if (docUri.isNotEmpty())
+            View.VISIBLE
+        else
+            View.GONE
 
 
     }
@@ -255,11 +284,29 @@ class CreateEmpFragment : Fragment() {
 
 
             candidateViewModel.createEmployee(empDet)
+            candidateViewModel.stringResData.observe(viewLifecycleOwner)
+            {
+                binding.progressbar.visibility = View.GONE
+                when (it) {
+                    is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
+                    is NetworkResult.Error -> Toast.makeText(
+                        context,
+                        it.message.toString(),
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    is NetworkResult.Success -> {
+                        uploadDoc(it.data)
+
+                    }
+                }
+            }
 
         } else {
             Toast.makeText(context, "Please fill all details correctly.", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     private fun checkValidation(): Boolean {
         try {
@@ -302,6 +349,10 @@ class CreateEmpFragment : Fragment() {
 
 
     private fun cascadingView() {
+
+        val todayDate = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(Date())
+        binding.edtDOB.text = todayDate
+        binding.joiningDate.text = todayDate
 
         binding.relCandidateDet.setOnClickListener {
 
@@ -371,14 +422,15 @@ class CreateEmpFragment : Fragment() {
 
     }
 
-    private fun setDocumentRc() {
+    private fun setDocumentRc(docUri: ArrayList<DocumentUri>) {
         try {
-            adapter.submitList(documentUri)
+            adapter.submitList(null)
+            adapter.submitList(docUri)
             binding.rcView.layoutManager =
                 StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL)
             binding.rcView.adapter = adapter
 
-            binding.rcView.visibility = if (documentUri.isNotEmpty())
+            binding.rcView.visibility = if (docUri.isNotEmpty())
                 View.VISIBLE
             else
                 View.GONE
@@ -417,6 +469,38 @@ class CreateEmpFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun uploadDoc(data: String?) {
+        try {
+            if (profileUri != null) {
+                val intent = Intent(requireContext(), EmpProfileDPService::class.java)
+                intent.putExtra("empId", data!!.toInt())
+                intent.putExtra("ProfileUri", profileUri.toString())
+
+                requireContext().startForegroundService(intent)
+
+
+            }
+            if (documentUri.isNotEmpty()) {
+
+                val docList: MutableList<EmpDocFiles> = arrayListOf()
+                documentUri.forEach {
+                    docList.add(EmpDocFiles(it))
+                }
+
+                val intent = Intent(requireContext(), EmpDocumentService::class.java)
+                intent.putExtra("empId", data!!.toInt())
+                intent.putParcelableArrayListExtra("docUri", java.util.ArrayList(docList))
+                requireContext().startForegroundService(intent)
+            }
+            Toast.makeText(context,"Employee Details updated.",Toast.LENGTH_SHORT).show()
+             findNavController().popBackStack()
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in createEmpFragment.kt uploadDoc() is :${e.message}")
+        }
+
+
     }
 
 }

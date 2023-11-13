@@ -343,6 +343,20 @@ interface UserAuthApi {
     @POST("/hrManagement/getEmpInfo")
     suspend fun getEmpInfo(@Query("empId")empId: Int): Response<EmpInfoData>
     @POST("/hrManagement/getEmpDet")
-    suspend fun getEmpDet(empId: Int): Response<EmpDet>
+    suspend fun getEmpDet(@Query("empId")empId: Int): Response<EmpDet>
+
+    @Multipart
+    @POST("/hrManagement/employeeProfileDp")
+    suspend fun employeeProfileDp(
+        @Part spic: MultipartBody.Part,
+        @Query("empId") empId: String
+    ): Response<String>
+
+    @Multipart
+    @POST("/hrManagement/employeeDocuments")
+    suspend fun employeeDocuments(
+        @Part spic:List<MultipartBody.Part>,
+        @Query("empId") empId: String
+    ): Response<String>
 
 }
