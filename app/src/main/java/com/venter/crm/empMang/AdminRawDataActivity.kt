@@ -2,7 +2,6 @@ package com.venter.crm.empMang
 
 import android.content.Context
 import android.content.Intent
-import android.net.Network
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,6 +12,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.venter.crm.R
 import com.venter.crm.databinding.ActivityAdminRawDataBinding
 import com.venter.crm.databinding.LayoutRawdatamsgBinding
@@ -29,7 +30,7 @@ class AdminRawDataActivity : AppCompatActivity() {
     private val binding:ActivityAdminRawDataBinding
         get() = _binding!!
 
-    private var DataUri: Uri? = null
+    private var dataUri: Uri? = null
 
     var campData:List<CampData>? = null
 
@@ -38,15 +39,15 @@ class AdminRawDataActivity : AppCompatActivity() {
     private val filePicker = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let { selectedUri ->
             val contentResolver = contentResolver
-            val cursor = contentResolver.query(selectedUri, null, null, null, null)
+            val cursors = contentResolver.query(selectedUri, null, null, null, null)
 
-            cursor?.use { cursor ->
+            cursors?.use { cursor ->
                 val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
                 cursor.moveToFirst()
                 val fileName = cursor.getString(nameIndex)
 
                 if (fileName.endsWith(".xls") || fileName.endsWith(".xlsx")) {
-                    DataUri = selectedUri
+                    dataUri = selectedUri
 
                     val alertDialogBuilder = AlertDialog.Builder(this)
 
@@ -56,14 +57,14 @@ class AdminRawDataActivity : AppCompatActivity() {
                     val bindingAlert = LayoutRawdatamsgBinding.inflate(layoutInflater)
                     alertDialogBuilder.setView(bindingAlert.root)
 
-                    bindingAlert.cmpFile.text = getFileNameFromUri(this@AdminRawDataActivity,DataUri!!)
+                    bindingAlert.cmpFile.text = getFileNameFromUri(this@AdminRawDataActivity,dataUri!!)
 
 
                     alertDialogBuilder.setPositiveButton("OK") {_, _ ->
                         val intent = Intent(this, DatabaseUploadService::class.java)
 
 
-                        intent.putExtra("FileUri", DataUri.toString())
+                        intent.putExtra("FileUri", dataUri.toString())
                         intent.putExtra("Name", bindingAlert.cmpName.text.toString())
                         intent.putExtra("Details", bindingAlert.cmpDetails.text.toString())
                         intent.putExtra("DataType", bindingAlert.spinData.selectedItem.toString())
@@ -93,7 +94,7 @@ class AdminRawDataActivity : AppCompatActivity() {
         }
     }
 
-    fun getFileNameFromUri(context: Context, uri: Uri): String? {
+    private fun getFileNameFromUri(context: Context, uri: Uri): String? {
         var fileName: String? = null
         val cursor = context.contentResolver.query(uri, null, null, null, null)
         cursor?.use {
@@ -153,5 +154,32 @@ class AdminRawDataActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    fun showData(id:Int)
+    {
+        try {
+            val intent = Intent(this@AdminRawDataActivity, CampRawDataActivity::class.java)
+            intent.putExtra("campId", id)
+            startActivity(intent)
+
+        }
+        catch (e:Exception)
+        {
+            Log.d(TAG,"Error in AdminRawDataActivity.kt showData() is : ${e.message}")
+        }
+    }
+    fun deleteData(id:Int)
+    {
+        val alertDialogBuilder = AlertDialog.Builder(this)
+        alertDialogBuilder.setTitle("Delete Camping")
+        alertDialogBuilder.setMessage("Are you want remove data camping?\n Please careful for data security may loss the data.")
+        alertDialogBuilder.setIcon(R.drawable.crm)
+        alertDialogBuilder.setPositiveButton("Delete Camping"){_,_ ->
+        }
+        alertDialogBuilder.setNegativeButton("Cancel"){_,_ ->
+        }
+        val alertDialog: AlertDialog = alertDialogBuilder.create()
+        alertDialog.show()
     }
 }

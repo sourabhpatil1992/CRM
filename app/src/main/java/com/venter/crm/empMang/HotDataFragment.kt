@@ -14,7 +14,7 @@ import com.venter.crm.utils.Constans.TAG
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HotDataFragment : Fragment() {
+class HotDataFragment : Fragment(),CampaignInterface {
    private var _binding: FragmentHotDataBinding? = null
     private val binding: FragmentHotDataBinding
         get()  = _binding!!
@@ -32,7 +32,7 @@ class HotDataFragment : Fragment() {
         return try {
             _binding = FragmentHotDataBinding.inflate(layoutInflater)
 
-            adapter = DataCampAdapter()
+            adapter = DataCampAdapter(this)
 
             act = activity as AdminRawDataActivity
 
@@ -61,6 +61,14 @@ class HotDataFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding =  null
+    }
+
+    override fun capData(campId: Int) {
+        act.showData(campId)
+    }
+
+    override fun removeData(campId: Int) {
+        act.deleteData(campId)
     }
 
 }

@@ -1,6 +1,7 @@
 package com.venter.crm.empMang
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -9,7 +10,7 @@ import com.venter.crm.databinding.LayoutRawdatacampBinding
 import com.venter.crm.models.CampData
 
 
-class DataCampAdapter() : ListAdapter<CampData,DataCampAdapter.DataCampHolder>(ComparatorDiffUtil()) {
+class DataCampAdapter(val campInt:CampaignInterface) : ListAdapter<CampData,DataCampAdapter.DataCampHolder>(ComparatorDiffUtil()) {
     inner class DataCampHolder(private val binding: LayoutRawdatacampBinding) :RecyclerView.ViewHolder(binding.root)
     {
         fun bind(data: CampData)
@@ -21,6 +22,21 @@ class DataCampAdapter() : ListAdapter<CampData,DataCampAdapter.DataCampHolder>(C
             binding.notIntCnt.text = data.notInterestedCount.toString()
             binding.notResCnt.text = data.notRespondingCount.toString()
             binding.paidCnt.text = data.paidCount.toString()
+
+
+            binding.linRawData.setOnClickListener{
+                binding.linButtons.visibility = if(binding.linButtons.visibility == View.GONE)
+                    View.VISIBLE
+                else
+                    View.GONE
+            }
+
+            binding.btnShowData.setOnClickListener {
+                campInt.capData(data.camp_id)
+            }
+            binding.btnDeleteCamp.setOnClickListener {
+                campInt.removeData(data.camp_id)
+            }
 
         }
     }
@@ -46,4 +62,10 @@ class DataCampAdapter() : ListAdapter<CampData,DataCampAdapter.DataCampHolder>(C
         val temp = getItem(position)
         holder.bind(temp)
     }
+}
+
+interface CampaignInterface
+{
+    fun capData(campId:Int)
+    fun removeData(campId:Int)
 }

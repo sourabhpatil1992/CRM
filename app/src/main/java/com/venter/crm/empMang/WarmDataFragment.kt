@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class WarmDataFragment : Fragment() {
+class WarmDataFragment : Fragment(),CampaignInterface {
 private var _binding:FragmentWarmDataBinding? = null
     private val binding:FragmentWarmDataBinding
         get() = _binding!!
@@ -34,7 +34,7 @@ private var _binding:FragmentWarmDataBinding? = null
         return try {
             _binding = FragmentWarmDataBinding.inflate(layoutInflater)
 
-            adapter = DataCampAdapter()
+            adapter = DataCampAdapter(this)
             campData =ArrayList()
 
             act = activity as AdminRawDataActivity
@@ -63,6 +63,14 @@ private var _binding:FragmentWarmDataBinding? = null
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun capData(campId: Int) {
+        act.showData(campId)
+    }
+
+    override fun removeData(campId: Int) {
+        act.deleteData(campId)
     }
 
 

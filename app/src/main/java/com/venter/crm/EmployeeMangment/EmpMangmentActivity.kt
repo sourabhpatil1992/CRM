@@ -21,7 +21,7 @@ class EmpMangmentActivity : AppCompatActivity() {
         _binding = ActivityEmpMangmentBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.rawData.setOnClickListener {
-           // val intent = Intent(this,RawDataActivity::class.java)
+            //val intent = Intent(this,RawDataActivity::class.java)
             val intent = Intent(this,AdminRawDataActivity::class.java)
             startActivity(intent)
         }

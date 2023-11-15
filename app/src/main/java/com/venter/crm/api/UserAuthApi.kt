@@ -176,6 +176,9 @@ interface UserAuthApi {
     @POST("/candidateRawData/getAllRawData")
     suspend fun getAllRawData(@Query("offset")offset: Int): Response<List<RawDataList>>
 
+    @POST("/candidateRawData/getRawDataOfCamping")
+    suspend fun getRawDataOfCamping(@Query("campId")campId: Int): Response<List<RawDataList>>
+
     @POST("/candidateRawData/getEmpRawData")
     suspend fun getEmpRawData(): Response<List<RawDataList>>
 
@@ -197,12 +200,16 @@ interface UserAuthApi {
     suspend fun getStealData(@Query("uId") uId: Int): Response<List<RawDataList>>
     @POST("/candidateRawData/getEmpNotResData")
     suspend fun getEmpNotResData(@Query("uId") uId: Int): Response<List<RawDataList>>
+
+
     @POST("/candidateRawData/getRawCandidateDet")
     suspend fun getRawCandidateDet(@Query("candidateId") candidateId: Int): Response<RawCandidateData>
+
     @POST("/candidateRawData/updateRawCandidateDet")
     suspend fun updateRawCandidateDet(@Query("candidateId") candidateId: Int,@Query("mobNo") mobNo: String,@Query("altermobNo") altermobNo: String): Response<String>
     @POST("/candidateRawData/updateCustData")
     suspend fun updateCustumerData(@Body custData:CustUpdateDet): Response<String>
+
 
 
     /*@POST("/candidateRawData/setEmpRawDataComment")
@@ -366,6 +373,7 @@ interface UserAuthApi {
         @Part spic:List<MultipartBody.Part>,
         @Query("empId") empId: String
     ): Response<String>
+
 
 
 

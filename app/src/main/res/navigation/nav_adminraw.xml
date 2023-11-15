@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_adminraw"
+    app:startDestination="@id/coldRawDataFragment">
+
+
+    <fragment
+        android:id="@+id/coldRawDataFragment"
+        android:name="com.venter.crm.empMang.ColdRawDataFragment"
+        android:label="fragment_cold_raw_data"
+        tools:layout="@layout/fragment_cold_raw_data" >
+        <action
+            android:id="@+id/action_coldRawDataFragment_to_campRawDataFragment"
+            app:destination="@id/campRawDataFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/campRawDataFragment"
+        android:name="com.venter.crm.empMang.CampRawDataFragment"
+        android:label="fragment_camp_raw_data"
+        tools:layout="@layout/fragment_camp_raw_data" />
+</navigation>

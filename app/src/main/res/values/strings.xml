@@ -138,6 +138,8 @@
     <string name="paid">Paid:</string>
     <string name="warm_raw_data">Warm Raw Data</string>
     <string name="hot_raw_data">Hot Raw Data</string>
+    <string name="delete_campaign">Delete Campaign</string>
+    <string name="show_data">Show Data</string>
 
 
 </resources>

@@ -874,6 +874,31 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
     }
 
+    suspend fun getRawDataOfCamping(campId: Int) {
+
+        try {
+            _allrawDataListResLiveData.postValue(NetworkResult.Loading())
+            val response = userApi.getRawDataOfCamping(campId)
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _allrawDataListResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _allrawDataListResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _allrawDataListResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.kt getRawDataOfCamping() is : ${e.message}")
+        }
+    }
+
     suspend fun getEmpRawData() {
         try {
             _allrawDataListResLiveData.postValue(NetworkResult.Loading())
@@ -2088,6 +2113,8 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
             Log.d(TAG, "Error in UserAuthRepository.ke getRawDataCamping() is ${e.message}")
         }
     }
+
+
 
 
 }

@@ -1027,5 +1027,15 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         }
     }
 
+    fun getRawDataOfCamping(campId: Int) {
+        try {
+            viewModelScope.launch {
+                userRepository.getRawDataOfCamping(campId)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getRawDataOfCamping() is:${e.message}")
+        }
+    }
+
 
 }
