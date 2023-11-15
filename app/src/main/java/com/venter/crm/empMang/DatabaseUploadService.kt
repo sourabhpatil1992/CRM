@@ -131,6 +131,10 @@ class DatabaseUploadService : Service() {
         scope.launch {
             try {
                 val fileUri = Uri.parse(intent!!.getStringExtra("FileUri").toString())
+                val campName = intent.getStringExtra("Name").toString()
+                val campDet = intent.getStringExtra("Details").toString()
+                val dataType =intent.getStringExtra("DataType").toString()
+
 
 
                 val mimeType = applicationContext.contentResolver.getType(fileUri)
@@ -160,7 +164,7 @@ class DatabaseUploadService : Service() {
 
 
                 val response =syncApi.updateDatabase(
-                    filePart
+                    filePart,campName,campDet,dataType
                 )
 
 

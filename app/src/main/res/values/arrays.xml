@@ -13,4 +13,9 @@
         <item>Mrs</item>
         <item>Miss</item>
     </string-array>
+    <string-array name="data_type">
+        <item>Cold</item>
+        <item>Warm</item>
+        <item>Hot</item>
+    </string-array>
 </resources>

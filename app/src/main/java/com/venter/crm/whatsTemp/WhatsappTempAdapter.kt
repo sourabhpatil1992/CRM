@@ -32,10 +32,10 @@ class WhatsappTempAdapter(val cnt:Context):ListAdapter<WhatsappTemplateMsg,Whats
 
                 binding.imgWhats.setImageURI(null)
 
-                val filetype = temp!!.header_name!!.toString().split("\\.".toRegex())
+                val filetype = temp.header_name!!.toString().split("\\.".toRegex())
 
                 if(filetype.size>1) {
-                    when (filetype[1]!!) {
+                    when (filetype[1]) {
                         "pdf" -> {
                             binding.imgWhats.setImageResource(R.drawable.doc_icon)
                         }

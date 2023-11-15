@@ -33,6 +33,19 @@
         android:theme="@style/Theme.CRM"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".empMang.AdminRawDataActivity"
+            android:exported="false" />
+        <activity
+            android:name=".integration.IntegrationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".whatsTemp.MessagingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".bot.BotActivity"
+            android:exported="false" />
+
         <service
             android:name=".hrMangment.EmpDocumentService"
             android:enabled="true"

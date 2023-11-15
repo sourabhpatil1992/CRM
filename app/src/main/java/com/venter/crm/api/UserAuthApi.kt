@@ -258,6 +258,9 @@ interface UserAuthApi {
     @POST("/candidateRawData/getTodayShedule")
     suspend fun getTodayShedule(): Response<userStatus>
 
+    @POST("/candidateRawData/getRawDataCamping")
+    suspend fun getRawDataCamping(): Response<List<CampData>>
+
 
 
 
@@ -335,7 +338,12 @@ interface UserAuthApi {
 
     @Multipart
     @POST("/candidateRawData/addMultipleRawData")
-    suspend fun updateDatabase(@Part spic: MultipartBody.Part): Response<String>
+    suspend fun updateDatabase(
+        @Part spic: MultipartBody.Part,
+        @Query("campName")campName: String,
+        @Query("campDet")campDet: String,
+        @Query("dataType")dataType: String
+    ): Response<String>
     @POST("/hrManagement/createEmployee")
     suspend fun createEmployee(@Body empDet: EmpDet): Response<String>
     @POST("/hrManagement/getEmpList")
@@ -358,5 +366,7 @@ interface UserAuthApi {
         @Part spic:List<MultipartBody.Part>,
         @Query("empId") empId: String
     ): Response<String>
+
+
 
 }

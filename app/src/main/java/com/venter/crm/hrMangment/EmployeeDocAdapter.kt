@@ -44,7 +44,8 @@ class EmployeeDocAdapter(val cnt: Context) :
             if (isPdf) {
                 binding.imgDoc.setImageDrawable(ContextCompat.getDrawable(cnt, com.venter.crm.R.drawable.pdf_icon))
             } else {
-                Picasso.get().load(uri).fit().centerCrop().into(binding.imgDoc)
+                Picasso.get().load(uri).fit().
+                centerCrop().into(binding.imgDoc)
             }
 
             binding.linDoc.setOnClickListener {

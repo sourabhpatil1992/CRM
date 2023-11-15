@@ -1014,5 +1014,18 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     }
 
+    val campDataLiveData :LiveData<NetworkResult<List<CampData>>>
+        get() = userRepository.campDataLiveData
+
+    fun getRawDataCamping() {
+        try {
+            viewModelScope.launch {
+                userRepository.getRawDataCamping()
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getRawDataCamping() is:${e.message}")
+        }
+    }
+
 
 }

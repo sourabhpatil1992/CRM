@@ -181,7 +181,7 @@ class WhatsAppAccounts : AppCompatActivity(), WhatsAccInterface {
                                     layout.addView(qrImage)
 
 
-                                    builders.setNeutralButton("Cancel") { dialogInterface, which ->
+                                    builders.setNeutralButton("Cancel") { _, _ ->
 
                                     }
 

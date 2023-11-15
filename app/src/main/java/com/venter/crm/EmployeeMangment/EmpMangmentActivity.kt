@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.venter.crm.Dashboard.EmpDashboard
 import com.venter.crm.Dashboard.EmployeeDash
 import com.venter.crm.databinding.ActivityEmpMangmentBinding
+import com.venter.crm.empMang.AdminRawDataActivity
 import com.venter.crm.userledger.UserLedgerActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,7 +21,8 @@ class EmpMangmentActivity : AppCompatActivity() {
         _binding = ActivityEmpMangmentBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.rawData.setOnClickListener {
-            val intent = Intent(this,RawDataActivity::class.java)
+           // val intent = Intent(this,RawDataActivity::class.java)
+            val intent = Intent(this,AdminRawDataActivity::class.java)
             startActivity(intent)
         }
 

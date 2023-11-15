@@ -13,14 +13,17 @@ import androidx.core.content.ContextCompat
 import com.squareup.picasso.Picasso
 import com.venter.crm.Candidate.CandidateMang
 import com.venter.crm.EmployeeMangment.EmpMangmentActivity
+import com.venter.crm.bot.BotActivity
 import com.venter.crm.candidateFee.FeeDashboard
 import com.venter.crm.databinding.ActivityAdminDashboardBinding
 import com.venter.crm.hrMangment.HrActivity
+import com.venter.crm.integration.IntegrationActivity
 import com.venter.crm.officeexpenses.ExpensesDashboardActivity
 import com.venter.crm.reportMangment.AdminReportDash
 import com.venter.crm.userledger.UserLedgerActivity
 import com.venter.crm.utils.Constans
 import com.venter.crm.utils.TokenManger
+import com.venter.crm.whatsTemp.MessagingActivity
 import com.venter.crm.whatsTemp.WhatsAppAccounts
 import com.venter.crm.whatsTemp.WhatsappTemplates
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,10 +64,7 @@ class AdminDashboard : AppCompatActivity() {
             startActivity(intent)
         }
 
-        binding.whatsApp.setOnClickListener {
-            val intent = Intent(this,WhatsAppAccounts::class.java)
-            startActivity(intent)
-        }
+
         binding.msgTemp.setOnClickListener {
             val intent = Intent(this,WhatsappTemplates::class.java)
             startActivity(intent)
@@ -78,28 +78,15 @@ class AdminDashboard : AppCompatActivity() {
             val intent = Intent(this,HrActivity::class.java)
             startActivity(intent)
         }
-        binding.marketing.setOnClickListener {
-            Toast.makeText(
-                this,
-                "This feature is not available in your plan. For use this service please upgrade your plan.",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-        binding.kyc.setOnClickListener {
-            Toast.makeText(
-                this,
-                "This feature is not available in your plan. For use this service please upgrade your plan.",
-                Toast.LENGTH_SHORT
-            ).show()
+        binding.integrations.setOnClickListener {
+            val intent = Intent(this,IntegrationActivity::class.java)
+            startActivity(intent)
         }
 
-        binding.bot.setOnClickListener {
-            Toast.makeText(
-                this,
-                "This feature is not available in your plan. For use this service please upgrade your plan.",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+
+
+
+
 
     }
 

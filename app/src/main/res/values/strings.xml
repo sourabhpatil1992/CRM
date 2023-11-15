@@ -113,6 +113,31 @@
     <string name="documents">Documents</string>
     <string name="employee_dp">Employee DP</string>
     <string name="update_employee_details">Update Employee Details</string>
+    <string name="bot">BOT</string>
+    <string name="whatsapp_bot">WhatsApp Bot</string>
+    <string name="call_bot">Call Bot</string>
+    <string name="messaging_platform">Messaging Platform</string>
+    <string name="whatsapp">WhatsApp</string>
+    <string name="telegram">Telegram</string>
+    <string name="email">Email</string>
+    <string name="integrations">Integrations</string>
+    <string name="tab_of_data_types">Tab of Data types</string>
+    <string name="raw_data">Raw Data</string>
+    <string name="add_raw_data">Add Raw Data</string>
+    <string name="data_campaign_name">Data Campaign name :</string>
+    <string name="data_campaign_details">Data Campaign Details :</string>
+    <string name="data_campaign_file">Data Campaign File :</string>
+    <string name="click_here_to_select_file">Click Here to Select File</string>
+    <string name="data_campaign_data_type">Data Campaign Data Type :</string>
+    <string name="total_data_count">Total Data Count :</string>
+    <string name="cold_raw_data">Cold Raw Data</string>
+    <string name="interested">Interested :</string>
+    <string name="zero">0</string>
+    <string name="not_interested">Not Interested:</string>
+    <string name="not_responding">Not Responding:</string>
+    <string name="paid">Paid:</string>
+    <string name="warm_raw_data">Warm Raw Data</string>
+    <string name="hot_raw_data">Hot Raw Data</string>
 
 
 </resources>

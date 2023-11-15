@@ -103,12 +103,10 @@ class RawDataActivity : AppCompatActivity(),chkListner {
         adapter.submitList(null)
         val layoutManager = LinearLayoutManager(this)
         binding.rcCandidate.layoutManager = layoutManager
-//                        binding.rcCandidate.layoutManager =
-//                            StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+
         binding.rcCandidate.adapter = adapter
 
         binding.floatingActionButton.setOnClickListener {
-           //addData()
             filePicker.launch("*/*")
         }
 

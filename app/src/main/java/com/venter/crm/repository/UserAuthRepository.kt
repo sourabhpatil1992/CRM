@@ -2068,5 +2068,26 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
 
     }
 
+    private val _campDataLiveData = MutableLiveData<NetworkResult<List<CampData>>>()
+    val campDataLiveData: LiveData<NetworkResult<List<CampData>>>
+        get() = _campDataLiveData
+    suspend fun getRawDataCamping() {
+        try {
+            _campDataLiveData.postValue(NetworkResult.Loading())
+            val response = userApi.getRawDataCamping()
+
+            if (response.isSuccessful && response.body() != null) {
+                _campDataLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+                _campDataLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+                _campDataLiveData.postValue(NetworkResult.Error("Something Went Wrong."))
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.ke getRawDataCamping() is ${e.message}")
+        }
+    }
+
 
 }
