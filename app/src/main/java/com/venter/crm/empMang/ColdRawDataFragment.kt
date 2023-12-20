@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.venter.crm.R
 import com.venter.crm.databinding.FragmentColdRawDataBinding
@@ -16,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class ColdRawDataFragment : Fragment(), CampaignInterface {
+class ColdRawDataFragment() : Fragment(), CampaignInterface {
     private var _binding: FragmentColdRawDataBinding? = null
     private val binding: FragmentColdRawDataBinding
         get() = _binding!!

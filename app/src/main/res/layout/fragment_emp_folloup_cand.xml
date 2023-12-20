@@ -12,7 +12,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:orientation="vertical"
+        android:layout_marginHorizontal="10dp"
         >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="@string/followup_date"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:layout_marginVertical="10dp"/>
 
         <Spinner
             android:id="@+id/spinEmpName"
@@ -22,23 +33,82 @@
             android:layout_marginRight="10dp" />
 
     </LinearLayout>
-    <TextView
-        android:id="@+id/calView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linFollowDate"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_below="@id/linEmpSpin"
-        android:text="01-01-1111"
-        android:drawableStart="@drawable/ic_baseline_calendar_month_24"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:drawablePadding="10dp"
-        android:layout_alignParentEnd="true"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="22dp"/>
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="10dp"
+        android:baselineAligned="false">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/from_date"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:gravity="center"
+                />
+            <TextView
+                android:id="@+id/fromDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/_01_01_1111"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:drawablePadding="10dp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="22dp"
+                app:drawableStartCompat="@drawable/ic_baseline_calendar_month_24" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:orientation="vertical"
+            android:layout_marginStart="10dp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/to_date"
+                android:textSize="18sp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/toDateView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/_01_01_1111"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:drawablePadding="10dp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="22dp"
+                app:drawableStartCompat="@drawable/ic_baseline_calendar_month_24" />
+
+        </LinearLayout>
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/filter"
-        android:layout_below="@+id/calView"
+        android:layout_below="@+id/linFollowDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -49,20 +119,23 @@
             android:id="@+id/edtSearch"
             android:layout_width="0dp"
             android:layout_height="48dp"
-            android:layout_marginLeft="10dp"
+            android:inputType="text"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_weight="0.8"
+            android:autofillHints="name"
             android:background="@drawable/round_back_black"
-            android:drawableLeft="@drawable/ic_baseline_search_24"
+            android:drawableStart="@drawable/ic_baseline_search_24"
             android:drawablePadding="10dp"
-            android:hint="Search"
-            android:paddingLeft="20dp"
+            android:hint="@string/search"
+            android:paddingStart="20dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:textColor="@color/black"
             android:textColorHint="#9E9B9B"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            tools:ignore="RtlSymmetry,VisualLintTextFieldSize" />
 
         <!--androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btnFilter"
@@ -148,28 +221,16 @@
 
 
     </LinearLayout-->
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/swiperefresh"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/filter"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcCandidate"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
-            tools:listitem="@layout/layout_rawdata"
-            />
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcCandidate"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/filter"
+        android:layout_marginHorizontal="20dp"
+       android:layout_marginVertical="20dp"
+        tools:listitem="@layout/layout_rawdata"
+        />
 
 
     <com.github.ybq.android.spinkit.SpinKitView

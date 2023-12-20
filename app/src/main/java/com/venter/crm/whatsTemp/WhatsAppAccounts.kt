@@ -1,5 +1,6 @@
 package com.venter.crm.whatsTemp
 
+import android.content.Intent
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -218,6 +219,9 @@ class WhatsAppAccounts : AppCompatActivity(), WhatsAccInterface {
     }
 
     override fun chatWhats(acc: WhatsAppAccList) {
+        val intent = Intent(this,WhatsappMessageActivity::class.java)
+        intent.putExtra("accId",acc.id)
+        startActivity(intent)
         Toast.makeText(this,"This feature is not available in your plan.",Toast.LENGTH_SHORT).show()
     }
 

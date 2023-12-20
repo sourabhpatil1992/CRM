@@ -140,6 +140,27 @@
     <string name="hot_raw_data">Hot Raw Data</string>
     <string name="delete_campaign">Delete Campaign</string>
     <string name="show_data">Show Data</string>
+    <string name="_01_01_1111">01-01-1111</string>
+    <string name="to_date">To Date</string>
+    <string name="from_date">From Date</string>
+    <string name="followup_date">Followup Date</string>
+    <string name="raw_data_count">Raw Data Count :</string>
+    <string name="configuration">Configuration</string>
+    <string name="comment_configuration">Comment Configuration</string>
+    <string name="dashboard_configuration">Dashboard Configuration</string>
+    <string name="email_configuration">Email Configuration</string>
+    <string name="comment_template">Comment Template :</string>
+    <string name="please_add_new_line_for_new_template">(Please add new line for new template)</string>
+    <string name="prospect_sub_type">Prospect Sub-Type :</string>
+    <string name="prospect_type">Prospect Type :</string>
+    <string name="not_interested_paid_interested_are_by_default">( \'Not Interested\', \'Paid\', \'Interested\' are by default)</string>
+    <string name="na_white_is_by_default_value"> (NA,White)  is by default value.</string>
+    <string name="please_add_prospect_type_in_new_line">Please Add Prospect type in new line :</string>
+    <string name="for_remove_prospect_subtype_please_hold_long_press">For remove prospect subtype, please hold long press.</string>
+    <string name="add_sub_type">Add Sub-Type</string>
+    <string name="update">Update</string>
+    <string name="color_code">Color Code :</string>
+    <string name="prospect_s_type">Prospect Sub Type</string>
 
 
 </resources>

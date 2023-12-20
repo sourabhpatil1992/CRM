@@ -2,10 +2,14 @@ package com.venter.crm.utils
 
 object Constans {
     //Production
-    //const val BASE_URL = "http://149.102.141.128:7002/"
+    //const val BASE_URL = "http://103.133.215.139:7002/"
+    //const val BASE_URL = "http://103.133.215.139:7002/"
+
+    //Development  Local Server
+    const val BASE_URL = "http://192.168.0.102:7002/"
 
     //Development
-    const val BASE_URL = "http://149.102.141.128:3002/"
+    //const val BASE_URL = "http://149.102.141.128:3002/"
 
 
     const val TAG ="MY_TAG"

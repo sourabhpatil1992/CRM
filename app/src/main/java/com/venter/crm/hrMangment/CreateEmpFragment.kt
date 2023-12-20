@@ -202,21 +202,25 @@ class CreateEmpFragment : Fragment() {
         binding.edtCurJobTitle.setText(data.cJob)
         binding.edtCurPackage.setText(data.cPackage.toString())
 
-        val docUri = data.documets.split(",")
+        if(data.documets.isNotEmpty()) {
+            val docUri = data.documets.split(",")
 
 
-        val documentsPath : ArrayList<DocumentUri> = ArrayList()
-        docUri.forEach {
-            documentsPath.add(DocumentUri(it,"Server"))
+            val documentsPath: ArrayList<DocumentUri> = ArrayList()
+            docUri.forEach {
+                documentsPath.add(DocumentUri(it, "Server"))
+            }
+
+            setDocumentRc(documentsPath)
+
+            binding.rcView.visibility = if (docUri.isNotEmpty())
+                View.VISIBLE
+            else
+                View.GONE
         }
 
-        setDocumentRc(documentsPath)
 
 
-        binding.rcView.visibility = if (docUri.isNotEmpty())
-            View.VISIBLE
-        else
-            View.GONE
 
 
     }

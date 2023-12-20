@@ -13,6 +13,8 @@
         <action
             android:id="@+id/action_employeeDashFragment_to_rawDataFragment"
             app:destination="@id/rawDataFragment" />
+
+
         <action
             android:id="@+id/action_employeeDashFragment_to_incomingLeads"
             app:destination="@id/incomingLeads" />
@@ -37,6 +39,9 @@
         <action
             android:id="@+id/action_employeeDashFragment_to_empSettingFragment"
             app:destination="@id/empSettingFragment" />
+        <action
+            android:id="@+id/action_employeeDashFragment_to_empCampRawDataFragment"
+            app:destination="@id/empCampRawDataFragment" />
     </fragment>
     <fragment
         android:id="@+id/rawDataFragment"
@@ -83,4 +88,9 @@
         android:name="com.venter.crm.empMang.EmpSettingFragment"
         android:label="fragment_emp_setting"
         tools:layout="@layout/fragment_emp_setting" />
+    <fragment
+        android:id="@+id/empCampRawDataFragment"
+        android:name="com.venter.crm.empMang.EmpCampRawDataFragment"
+        android:label="fragment_emp_camp_raw_data"
+        tools:layout="@layout/fragment_emp_camp_raw_data" />
 </navigation>

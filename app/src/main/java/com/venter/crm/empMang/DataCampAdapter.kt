@@ -22,6 +22,7 @@ class DataCampAdapter(val campInt:CampaignInterface) : ListAdapter<CampData,Data
             binding.notIntCnt.text = data.notInterestedCount.toString()
             binding.notResCnt.text = data.notRespondingCount.toString()
             binding.paidCnt.text = data.paidCount.toString()
+            binding.rawDataCnt.text = data.rawDataCount.toString()
 
 
             binding.linRawData.setOnClickListener{

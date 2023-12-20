@@ -179,8 +179,14 @@ interface UserAuthApi {
     @POST("/candidateRawData/getRawDataOfCamping")
     suspend fun getRawDataOfCamping(@Query("campId")campId: Int): Response<List<RawDataList>>
 
+    @POST("/candidateRawData/deleteRawDataCamping")
+    suspend fun deleteCamping(@Query("campId")campId: Int): Response<String>
+
     @POST("/candidateRawData/getEmpRawData")
     suspend fun getEmpRawData(): Response<List<RawDataList>>
+
+    @POST("/candidateRawData/getEmpCampRawData")
+    suspend fun getEmpCampRawData(@Query("campType")campType: String): Response<List<RawDataList>>
 
     @POST("/candidateRawData/getEmpProsData")
     suspend fun getEmpProsData(): Response<List<RawDataList>>
@@ -237,7 +243,7 @@ interface UserAuthApi {
 
     //Get Candidate Id list for today's Follow up
     @POST("/candidateRawData/getFollowUpList")
-    suspend fun getFollowUpList(@Query("userId") userId: Int, @Query("folloupDate")folloupDate: String): Response<List<RawDataList>>
+    suspend fun getFollowUpList(@Query("userId") userId: Int, @Query("fromDate")fromDate: String,@Query("toDate") toDate: String): Response<List<RawDataList>>
 
 
     //Get the Employee report for the employee dashboard from today's of manual date
@@ -373,6 +379,14 @@ interface UserAuthApi {
         @Part spic:List<MultipartBody.Part>,
         @Query("empId") empId: String
     ): Response<String>
+
+
+
+    @POST("/configuration/updateConfiguration")
+    suspend fun updateConfiguration(@Body conf: SystemConf):Response<String>
+
+    @POST("/configuration/getConfiguration")
+    suspend fun getConfiguration():Response<SystemConf>
 
 
 

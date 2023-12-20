@@ -9,7 +9,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -33,6 +35,18 @@
         android:theme="@style/Theme.CRM"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".integration.CommentConfActivity"
+            android:exported="false" />
+        <activity
+            android:name=".integration.ConfigurationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".whatsTemp.WhatsAppChat"
+            android:exported="false" />
+        <activity
+            android:name=".whatsTemp.WhatsappMessageActivity"
+            android:exported="false" />
         <activity
             android:name=".empMang.CampRawDataActivity"
             android:exported="false" />

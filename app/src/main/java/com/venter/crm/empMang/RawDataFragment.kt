@@ -41,48 +41,73 @@ class RawDataFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentRawDataBinding.inflate(layoutInflater)
+    ): View? {
+        return try {
+            _binding = FragmentRawDataBinding.inflate(layoutInflater)
 
-        //Set The Adapter
-        adapter = DataListAdapter(requireContext())
-
-        //FetCh data from the Server
-        candidateViewModel.getEmpRawData()
-        getData()
-
-        //Get Data on the search box typing set the delay of 1 sec for the search
-        binding.edtSearch.doOnTextChanged { text, _, _, _ ->
-            Handler().postDelayed({
-                if ( binding.edtSearch.text!!.isEmpty()) {
-
-                    candidateViewModel.getEmpRawData()
+            //Set The Adapter
+            adapter = DataListAdapter(requireContext())
 
 
-                } else {
-                    candidateViewModel.getEmpSearchData(text.toString())
+            //Get Data on the search box typing set the delay of 1 sec for the search
+            binding.edtSearch.doOnTextChanged { text, _, _, _ ->
+                Handler().postDelayed({
+                    if (binding.edtSearch.text!!.isEmpty()) {
 
-                }},1000)
+                        //candidateViewModel.getEmpRawData()
+                        binding.linCamp.visibility = View.VISIBLE
+                        binding.rcCandidate.visibility =View.GONE
 
 
+                    } else {
+                        binding.linCamp.visibility = View.GONE
+                        binding.rcCandidate.visibility =View.VISIBLE
+
+                        candidateViewModel.getEmpSearchData(text.toString())
+
+                    }
+                }, 1000)
+
+
+            }
+
+            binding.viewPager.adapter = EmpRawDataPagerAdapter(childFragmentManager)
+            binding.tabLayout.setupWithViewPager(binding.viewPager)
+
+            candidateViewModel.allrawDataListResLiveData.observe(viewLifecycleOwner)
+            {
+                binding.progressbar.visibility = View.GONE
+
+                when(it)
+                {
+                    is NetworkResult.Loading ->{binding.progressbar.visibility = View.VISIBLE}
+                    is NetworkResult.Error ->{
+                        Toast.makeText(requireContext(),it.message.toString(),Toast.LENGTH_LONG).show()}
+                    is NetworkResult.Success ->{
+
+                        setData(it.data!!)
+                    }
+                }
+            }
+
+
+
+
+
+            binding.root
         }
-
-
-        binding.swiperefresh.setOnRefreshListener {
-            candidateViewModel.getEmpRawData()
-
+        catch (e:Exception)
+        {
+            Log.d(TAG,"Error in RawDataFragment.kt is : ${e.message}")
+            null
         }
-
-
-
-        return binding.root
     }
 
-    private fun getData() {
+    /*private fun getData() {
         candidateViewModel.allrawDataListResLiveData.observe(viewLifecycleOwner)
         {
             binding.progressbar.visibility = View.GONE
-            binding.swiperefresh.isRefreshing =  false
+
             when(it)
             {
                 is NetworkResult.Loading ->{binding.progressbar.visibility = View.VISIBLE}
@@ -93,7 +118,31 @@ class RawDataFragment : Fragment() {
                 }
             }
         }
-    }
+    }*/
+
+
+    /*private fun getData() {
+        try {
+            candidateViewModel.getRawDataCamping()
+            candidateViewModel.campDataLiveData.observe(viewLifecycleOwner)
+            {
+                binding.progressbar.visibility = View.GONE
+                when(it)
+                {
+                    is NetworkResult.Loading ->binding.progressbar.visibility = View.VISIBLE
+                    is NetworkResult.Error -> Toast.makeText(context,it.message.toString(),Toast.LENGTH_SHORT).show()
+                    is NetworkResult.Success ->
+                    {
+
+                    }
+                }
+            }
+
+        }catch (e:Exception)
+        {
+            Log.d(TAG,"Error i in AdminRawDataActivity.kt is : ${e.message}")
+        }
+    }*/
 
     private fun setData(data: List<RawDataList>)
     {

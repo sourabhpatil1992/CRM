@@ -446,6 +446,17 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     }
 
+    fun getEmpCampRawData(campType:String) {
+        try {
+            viewModelScope.launch {
+                userRepository.getEmpCampRawData(campType)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getEmpRawData() is " + e.message)
+        }
+
+    }
+
     fun getEmpProsData() {
         try {
             viewModelScope.launch {
@@ -612,10 +623,10 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
 
     //    val intListResData: LiveData<NetworkResult<List<RawDataList>>>
 //        get() = userRepository.allrawDataListResLiveData
-    fun getFollowUpList(userId: Int, folloupDate: String) {
+    fun getFollowUpList(userId: Int, fromDate: String, toDate: String) {
         try {
             viewModelScope.launch {
-                userRepository.getFollowUpList(userId, folloupDate)
+                userRepository.getFollowUpList(userId, fromDate,toDate)
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt getFollowUpList() is " + e.message)
@@ -1034,6 +1045,42 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
             }
         } catch (e: Exception) {
             Log.d(TAG, "Error in CandidateViewModel.kt getRawDataOfCamping() is:${e.message}")
+        }
+    }
+
+    fun deleteCamping(campId: Int) {
+        try {
+            viewModelScope.launch {
+                userRepository.deleteCamping(campId)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt deleteCamping() is:${e.message}")
+        }
+
+    }
+
+    fun updateConfiguration(conf: SystemConf)
+    {
+        try {
+            viewModelScope.launch {
+                userRepository.updateConfiguration(conf)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt updateConfiguration() is:${e.message}")
+        }
+    }
+
+
+    val systemConfDataLiveData :LiveData<NetworkResult<SystemConf>>
+        get() = userRepository.systemConfDataLiveData
+    fun getConfiguration()
+    {
+        try {
+            viewModelScope.launch {
+                userRepository.getConfiguration()
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getConfiguration() is:${e.message}")
         }
     }
 

@@ -369,14 +369,48 @@
 
                     </androidx.cardview.widget.CardView>
 
-                    <View
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/configration"
                         android:layout_width="0dp"
                         android:layout_height="135dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
-                        />
+                        app:cardCornerRadius="15dp"
+                        app:cardElevation="5dp"
+
+                        >
+
+                        <RelativeLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white">
+
+                            <ImageView
+                                android:id="@+id/conf_icon"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/configration" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/conf_icon"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="@string/configuration"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+
+
+                        </RelativeLayout>
+
+
+                    </androidx.cardview.widget.CardView>
 
                 </LinearLayout>
 

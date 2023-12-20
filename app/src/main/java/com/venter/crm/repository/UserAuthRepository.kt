@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.venter.crm.api.UserAuthApi
 import com.venter.crm.models.*
-import com.venter.crm.utils.Constans
 import com.venter.crm.utils.Constans.TAG
 import com.venter.crm.utils.NetworkResult
 import org.json.JSONObject
@@ -899,11 +898,61 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
     }
 
+    suspend fun deleteCamping(campId: Int) {
+        try {
+            _stringResLiveData.postValue(NetworkResult.Loading())
+            val response =
+                userApi.deleteCamping(campId)
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.kt setEmpRawDataComment() is " + e.message)
+        }
+    }
+
     suspend fun getEmpRawData() {
         try {
             _allrawDataListResLiveData.postValue(NetworkResult.Loading())
             val response =
                 userApi.getEmpRawData()
+
+            if (response.isSuccessful && response.body() != null) {
+
+                _allrawDataListResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+
+
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+
+                _allrawDataListResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+
+                _allrawDataListResLiveData.postValue(NetworkResult.Error("Something Went Wrong"))
+            }
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.kt getEmpRaw() is " + e.message)
+        }
+    }
+
+    suspend fun getEmpCampRawData(campType:String) {
+        try {
+            _allrawDataListResLiveData.postValue(NetworkResult.Loading())
+            val response =
+                userApi.getEmpCampRawData(campType)
 
             if (response.isSuccessful && response.body() != null) {
 
@@ -1204,15 +1253,17 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
     }
 
+
+
     /*private val _intListResLiveData = MutableLiveData<NetworkResult<List<Int>>>()
     val intListResLiveData: LiveData<NetworkResult<List<Int>>>
         get() = _intListResLiveData*/
 
-    suspend fun getFollowUpList(userId: Int, folloupDate: String) {
+    suspend fun getFollowUpList(userId: Int, fromDate: String, toDate: String) {
         try {
             _allrawDataListResLiveData.postValue(NetworkResult.Loading())
             val response =
-                userApi.getFollowUpList(userId, folloupDate)
+                userApi.getFollowUpList(userId, fromDate, toDate)
 
             if (response.isSuccessful && response.body() != null) {
 
@@ -2114,6 +2165,48 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
     }
 
+
+    suspend fun updateConfiguration(conf: SystemConf)
+    {
+        try {
+            _stringResLiveData.postValue(NetworkResult.Loading())
+            val response = userApi.updateConfiguration(conf)
+
+            if (response.isSuccessful && response.body() != null) {
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong."))
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.ke updateConfiguration() is ${e.message}")
+        }
+    }
+
+
+    private val _systemConfDataLiveData = MutableLiveData<NetworkResult<SystemConf>>()
+    val systemConfDataLiveData: LiveData<NetworkResult<SystemConf>>
+        get() = _systemConfDataLiveData
+    suspend fun getConfiguration()
+    {
+        try {
+            _systemConfDataLiveData.postValue(NetworkResult.Loading())
+            val response = userApi.getConfiguration()
+
+            if (response.isSuccessful && response.body() != null) {
+                _systemConfDataLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+                _systemConfDataLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+                _systemConfDataLiveData.postValue(NetworkResult.Error("Something Went Wrong."))
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.ke getConfiguration() is ${e.message}")
+        }
+    }
 
 
 

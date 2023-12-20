@@ -176,6 +176,19 @@ class AdminRawDataActivity : AppCompatActivity() {
         alertDialogBuilder.setMessage("Are you want remove data camping?\n Please careful for data security may loss the data.")
         alertDialogBuilder.setIcon(R.drawable.crm)
         alertDialogBuilder.setPositiveButton("Delete Camping"){_,_ ->
+            candidateViewModel.deleteCamping(id)
+            candidateViewModel.stringResData.observe(this)
+            {
+                binding.progressbar.visibility = View.GONE
+                when(it)
+                {
+                    is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
+                    is NetworkResult.Error -> Toast.makeText(this,it.message.toString(),Toast.LENGTH_SHORT).show()
+                    is NetworkResult.Success ->{
+                        getData()
+                    }
+                }
+            }
         }
         alertDialogBuilder.setNegativeButton("Cancel"){_,_ ->
         }

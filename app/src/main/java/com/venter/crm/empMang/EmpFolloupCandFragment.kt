@@ -9,8 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -59,7 +59,6 @@ class EmpFolloupCandFragment : Fragment() {
 
             }
             adapter.submitList(null)
-            adapter.notifyDataSetChanged()
             adapter.submitList(dataList)
             binding.rcCandidate.layoutManager =
                 StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
@@ -80,7 +79,8 @@ class EmpFolloupCandFragment : Fragment() {
         adapter = DataListAdapter(requireContext())
         rawDataList = ArrayList()
         val date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
-        binding.calView.text = date
+        binding.toDateView.text = date
+        binding.fromDate.text = date
 
 
         val empList: ArrayList<String> = ArrayList()
@@ -88,7 +88,7 @@ class EmpFolloupCandFragment : Fragment() {
 
         empList.add("You")
 
-        val adapters = ArrayAdapter<String>(
+        val adapters = ArrayAdapter(
             requireContext(),
             select_dialog_item,
             empList
@@ -102,23 +102,11 @@ class EmpFolloupCandFragment : Fragment() {
 
         candidateViewModel.getFollowUpList(
             tokenManger.getUserId()!!.toInt(),
-            binding.calView.text.toString()
+            binding.fromDate.text.toString(),
+            binding.toDateView.text.toString()
         )
 
-        /*binding.btnFilter.setOnClickListener {
-            if (binding.linviewFilter.isVisible)
-                binding.linviewFilter.visibility = View.GONE
-            else
-                binding.linviewFilter.visibility = View.VISIBLE
-        }
 
-        binding.txtApply.setOnClickListener {
-            if (binding.linviewFilter.isVisible)
-                binding.linviewFilter.visibility = View.GONE
-            else
-                binding.linviewFilter.visibility = View.VISIBLE
-            filterData()
-        }*/
 
         binding.edtSearch.doOnTextChanged { _, _, _, _ -> filterData() }
 
@@ -126,9 +114,9 @@ class EmpFolloupCandFragment : Fragment() {
 
 
         candidateViewModel.allrawDataListResLiveData.observe(viewLifecycleOwner)
-        { it ->
+        {
             binding.progressbar.visibility = View.GONE
-            binding.swiperefresh.isRefreshing = false
+
 
             when (it) {
                 is NetworkResult.Loading -> {
@@ -152,45 +140,29 @@ class EmpFolloupCandFragment : Fragment() {
 
         }
 
-        binding.swiperefresh.setOnRefreshListener {
-            if (binding.spinEmpName.selectedItem == "You") {
-                candidateViewModel.getFollowUpList(
-                    tokenManger.getUserId()!!.toInt(),
-                    binding.calView.text.toString()
-                )
-            } else {
-                var othersUserId = 0
-                userDataList.forEach {
-                    if (it.user_name.contains(binding.spinEmpName.selectedItem.toString(), true))
-                        othersUserId = it.id
-                }
-                candidateViewModel.getFollowUpList(othersUserId, binding.calView.text.toString())
 
-            }
+        binding.fromDate.doOnTextChanged { _, _, _, _ ->
+           dateChange()
+        }
+        binding.toDateView.doOnTextChanged { _, _, _, _ ->
+           dateChange()
+        }
+
+        binding.fromDate.setOnClickListener {
+            setDate(binding.fromDate)
+
+        }
+        binding.toDateView.setOnClickListener {
+            setDate(binding.toDateView)
 
         }
 
-        binding.calView.doOnTextChanged { _, _, _, _ ->
-            if (binding.spinEmpName.selectedItem == "You") {
-                candidateViewModel.getFollowUpList(
-                    tokenManger.getUserId()!!.toInt(),
-                    binding.calView.text.toString()
-                )
-            } else {
-                var othersUserId = 0
-                userDataList.forEach {
-                    if (it.user_name.contains(binding.spinEmpName.selectedItem.toString(), true))
-                        othersUserId = it.id
-                }
-                candidateViewModel.getFollowUpList(
-                    othersUserId,
-                    binding.calView.text.toString()
-                )
 
-            }
-        }
+        return binding.root
+    }
 
-        binding.calView.setOnClickListener {
+    private fun setDate(dateView: TextView) {
+        try {
             val materialDateBuilder: MaterialDatePicker.Builder<*> =
                 MaterialDatePicker.Builder.datePicker()
 
@@ -209,14 +181,13 @@ class EmpFolloupCandFragment : Fragment() {
                 val format = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
 
                 val formatted = format.format(utc.time).toString()
-                binding.calView.setText(formatted)
+                dateView.text = formatted
 
-                //candidateViewModel.getEmpReport(binding.txtFromDate.text.toString(),binding.txtToDate.text.toString())
+
             }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in EmpFollowupCandFragment.kt setDate() is : ${e.message}")
         }
-
-
-        return binding.root
     }
 
     private fun filterData() {
@@ -234,7 +205,7 @@ class EmpFolloupCandFragment : Fragment() {
                     ) {
 
 
-                            dataList.add(it)
+                        dataList.add(it)
                     }
 
                 }
@@ -243,7 +214,7 @@ class EmpFolloupCandFragment : Fragment() {
             } else {
                 rawDataList.forEach {
 
-                        dataList.add(it)
+                    dataList.add(it)
 
                 }
             }
@@ -281,14 +252,14 @@ class EmpFolloupCandFragment : Fragment() {
                                 }
 
 
-                                val adapters = ArrayAdapter<String>(
+                                val adapters = ArrayAdapter(
                                     requireContext(),
                                     select_dialog_item,
                                     empList
                                 )
                                 binding.spinEmpName.adapter = adapters
 
-                                binding.spinEmpName.setOnItemSelectedListener(object :
+                                binding.spinEmpName.onItemSelectedListener = object :
                                     AdapterView.OnItemSelectedListener {
                                     override fun onItemSelected(
                                         adapterView: AdapterView<*>?,
@@ -300,7 +271,8 @@ class EmpFolloupCandFragment : Fragment() {
                                             if (binding.spinEmpName.selectedItem == "You") {
                                                 candidateViewModel.getFollowUpList(
                                                     tokenManger.getUserId()!!.toInt(),
-                                                    binding.calView.text.toString()
+                                                    binding.fromDate.text.toString(),
+                                                    binding.toDateView.text.toString()
                                                 )
                                             } else {
                                                 var othersUserId = 0
@@ -314,7 +286,8 @@ class EmpFolloupCandFragment : Fragment() {
                                                 }
                                                 candidateViewModel.getFollowUpList(
                                                     othersUserId,
-                                                    binding.calView.text.toString()
+                                                    binding.fromDate.text.toString(),
+                                                    binding.toDateView.text.toString()
                                                 )
 
                                             }
@@ -329,7 +302,7 @@ class EmpFolloupCandFragment : Fragment() {
                                     override fun onNothingSelected(adapterView: AdapterView<*>?) {
                                         return
                                     }
-                                })
+                                }
 
 
                             }
@@ -356,6 +329,37 @@ class EmpFolloupCandFragment : Fragment() {
         } catch (e: Exception) {
             Log.d(TAG, "Error in EmpFolloupCandidFragment getData() is " + e.message)
         }
+    }
+
+    private fun dateChange()
+    {
+        try {
+            if (binding.spinEmpName.selectedItem == "You") {
+                candidateViewModel.getFollowUpList(
+                    tokenManger.getUserId()!!.toInt(),
+                    binding.fromDate.text.toString(),
+                    binding.toDateView.text.toString()
+                )
+            }
+            else {
+                var othersUserId = 0
+                userDataList.forEach {
+                    if (it.user_name.contains(binding.spinEmpName.selectedItem.toString(), true))
+                        othersUserId = it.id
+                }
+                candidateViewModel.getFollowUpList(
+                    othersUserId,
+                    binding.fromDate.text.toString(),
+                    binding.toDateView.text.toString()
+                )
+
+            }
+        }
+        catch (e:Exception)
+        {
+            Log.d(TAG,"Error in EmpFollowupCandFragment.kt dateChange() is : ${e.message}")
+        }
+
     }
 
 

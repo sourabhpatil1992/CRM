@@ -3,6 +3,7 @@ package com.venter.crm.Dashboard
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -41,6 +43,8 @@ class EmployeeDashFragment : Fragment() {
     @Inject
     lateinit var tokenManger: TokenManger
 
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,8 +53,19 @@ class EmployeeDashFragment : Fragment() {
 
         try {
 
-            if (!permissionGranted(requireContext())) {
+           /* if (!permissionGranted(requireContext())) {
                 askPermission()
+            }*/
+
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                if (!permissionGranted(requireContext())) {
+                    askPermission()
+                }
+            }
+            else{
+                if (!permissionGranted12(requireContext())) {
+                    askPermission12()
+                }
             }
 
             //officeClose()
@@ -117,17 +132,20 @@ class EmployeeDashFragment : Fragment() {
                 officeClose()
 
         } else {
-            if (!currentTime.before(date1) && currentTime.before(date2) && uStatus == 1) {
+            if (currentTime != null) {
+                if (!currentTime.before(date1) && currentTime.before(date2) && uStatus == 1) {
 
-                startOffice()
+                    startOffice()
 
-            } else {
-                officeClose()
+                } else {
+                    officeClose()
+                }
             }
         }
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun permissionGranted(context: Context): Boolean {
 
         return !(
@@ -158,11 +176,66 @@ class EmployeeDashFragment : Fragment() {
                         (ContextCompat.checkSelfPermission(
                             context,
                             Manifest.permission.PROCESS_OUTGOING_CALLS
+                        ) != PackageManager.PERMISSION_GRANTED) or
+                        (ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.CALL_PHONE
+                        ) != PackageManager.PERMISSION_GRANTED) or
+                        (ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.READ_MEDIA_IMAGES
+                        ) != PackageManager.PERMISSION_GRANTED) or
+                        (ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.READ_MEDIA_AUDIO
+                        ) != PackageManager.PERMISSION_GRANTED) or
+                        (ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.READ_MEDIA_VIDEO
+                        ) != PackageManager.PERMISSION_GRANTED)
+                )
+
+    }
+    private fun permissionGranted12(context: Context): Boolean {
+
+        return !(
+                (ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.READ_CALL_LOG
+                ) != PackageManager.PERMISSION_GRANTED) or
+                        (ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.READ_PHONE_NUMBERS
+                        ) != PackageManager.PERMISSION_GRANTED) or
+                        (ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.SEND_SMS
+                        ) != PackageManager.PERMISSION_GRANTED) or
+                        (ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.FOREGROUND_SERVICE
+                        ) != PackageManager.PERMISSION_GRANTED) or
+                        (ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                        ) != PackageManager.PERMISSION_GRANTED) or
+                        (ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        ) != PackageManager.PERMISSION_GRANTED) or
+                        (ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.PROCESS_OUTGOING_CALLS
+                        ) != PackageManager.PERMISSION_GRANTED) or
+                        (ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.CALL_PHONE
                         ) != PackageManager.PERMISSION_GRANTED)
                 )
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun askPermission() {
         try {
             ActivityCompat.requestPermissions(
@@ -173,7 +246,35 @@ class EmployeeDashFragment : Fragment() {
                     Manifest.permission.FOREGROUND_SERVICE,
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.PROCESS_OUTGOING_CALLS
+                    Manifest.permission.PROCESS_OUTGOING_CALLS,
+                    Manifest.permission.CALL_PHONE,
+                    Manifest.permission.READ_MEDIA_IMAGES,
+                    Manifest.permission.READ_MEDIA_VIDEO,
+                    Manifest.permission.READ_MEDIA_AUDIO,
+
+                    ), 500
+            )
+
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in the asking permission..." + e.message)
+        }
+
+
+    }
+
+    private fun askPermission12() {
+        try {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(
+                    Manifest.permission.READ_CALL_LOG,
+                    Manifest.permission.READ_PHONE_NUMBERS,
+                    Manifest.permission.FOREGROUND_SERVICE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.PROCESS_OUTGOING_CALLS,
+                    Manifest.permission.CALL_PHONE
+
                 ), 500
             )
 
@@ -186,7 +287,14 @@ class EmployeeDashFragment : Fragment() {
 
     private fun startOffice() {
         binding.rawdata.setOnClickListener {
-            findNavController().navigate(R.id.action_employeeDashFragment_to_rawDataFragment)
+            try {
+                findNavController().navigate(R.id.action_employeeDashFragment_to_rawDataFragment)
+                //findNavController().navigate(R.id.action_employeeDashFragment_to_empCampRawDataFragment)
+            }
+            catch (e:Exception)
+            {
+                Log.d(TAG,"Error in ${e.message}")
+            }
         }
         binding.incomming.setOnClickListener {
             findNavController().navigate(R.id.action_employeeDashFragment_to_incomingLeads)
