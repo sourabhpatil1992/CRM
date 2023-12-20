@@ -1,6 +1,5 @@
 package com.venter.crm.empMang
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +8,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.venter.crm.R
 import com.venter.crm.databinding.ActivityCampRawDataBinding
 import com.venter.crm.models.RawDataList
 import com.venter.crm.utils.Constans.TAG
@@ -36,7 +34,26 @@ class CampRawDataActivity : AppCompatActivity() {
         _binding = ActivityCampRawDataBinding.inflate(layoutInflater)
         setContentView(binding.root)
         try {
-            adapter = DataListAdapter(this)
+            candidateViewModel.getProsSubConfig()
+            candidateViewModel.prosSubTypeDataLiveData.observe(this)
+            {
+                binding.progressbar.visibility = View.GONE
+                when (it) {
+                    is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
+                    is NetworkResult.Error -> Toast.makeText(
+                        this,
+                        it.message.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    is NetworkResult.Success -> {
+                        adapter = DataListAdapter(this, it.data)
+                        //Log.d(TAG, it.data.toString())
+                    }
+                }
+            }
+
+
             campId = intent.getIntExtra("campId", 0)
             if (campId > 0)
                 candidateViewModel.getRawDataOfCamping(campId)

@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.venter.crm.Dashboard.EmployeeDash
 import com.venter.crm.databinding.FragmentRawDataBinding
 import com.venter.crm.models.RawDataList
 import com.venter.crm.utils.Constans.TAG
@@ -45,8 +46,12 @@ class RawDataFragment : Fragment() {
         return try {
             _binding = FragmentRawDataBinding.inflate(layoutInflater)
 
+            val employeeDash = activity as? EmployeeDash
+            val prosSubType = employeeDash?.prosSubType
+
+            adapter = DataListAdapter(requireContext(),prosSubType)
             //Set The Adapter
-            adapter = DataListAdapter(requireContext())
+            adapter = DataListAdapter(requireContext(), prosSubType)
 
 
             //Get Data on the search box typing set the delay of 1 sec for the search

@@ -9,12 +9,10 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.venter.crm.EmployeeMangment.RawDataListAdapter
-import com.venter.crm.EmployeeMangment.chkListner
+import com.venter.crm.Dashboard.EmployeeDash
 import com.venter.crm.databinding.FragmentEmpNotRespondingDataBinding
 import com.venter.crm.models.RawDataList
 import com.venter.crm.models.UserList
@@ -51,8 +49,12 @@ class EmpNotRespondingData : Fragment() {
     ): View? {
         try {
             _binding = FragmentEmpNotRespondingDataBinding.inflate(layoutInflater)
+            val employeeDash = activity as? EmployeeDash
+            val prosSubType = employeeDash?.prosSubType
 
-            adapter = DataListAdapter(requireContext())
+            adapter = DataListAdapter(requireContext(),prosSubType)
+
+            adapter = DataListAdapter(requireContext(), prosSubType)
             spinnerChange()
             setEmployeeSpinner()
 

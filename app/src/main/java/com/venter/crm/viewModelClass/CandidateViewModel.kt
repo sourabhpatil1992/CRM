@@ -1084,5 +1084,29 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         }
     }
 
+    val commentConfDataLiveData :LiveData<NetworkResult<CommentConf>>
+        get() = userRepository.commentConfDataLiveData
+    fun getCommentConfig() {
+        try {
+            viewModelScope.launch {
+                userRepository.getCommentConfig()
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getCommentConfig() is:${e.message}")
+        }
+    }
+
+    val prosSubTypeDataLiveData :LiveData<NetworkResult<List<ProsSubType>>>
+        get() = userRepository.prosSubTypeDataLiveData
+    fun getProsSubConfig() {
+        try {
+            viewModelScope.launch {
+                userRepository.getProsSubConfig()
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getProsSubConfig() is:${e.message}")
+        }
+    }
+
 
 }

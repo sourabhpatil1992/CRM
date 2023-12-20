@@ -11,3 +11,11 @@ data class ProsSubType(
     val color:String
 )
 
+data class CommentConf(
+    val commentTemp:String?=null,
+    val prosSubType: List<ProsSubType>? =null,
+    val prosType: String? =null,
+    val whatsTemp :List<WhatsTempNameList>? = null
+
+    )
+

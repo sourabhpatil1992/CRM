@@ -6,13 +6,20 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.venter.crm.R
 import com.venter.crm.databinding.ActivityEmployeeDashBinding
+import com.venter.crm.models.ProsSubType
 import com.venter.crm.utils.Constans
+import com.venter.crm.utils.NetworkResult
+import com.venter.crm.viewModelClass.CandidateViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,6 +27,11 @@ class EmployeeDash : AppCompatActivity() {
     private var _binding:ActivityEmployeeDashBinding?=null
     private val binding:ActivityEmployeeDashBinding
         get() = _binding!!
+
+    private val candidateViewModel by viewModels<CandidateViewModel>()
+
+    var prosSubType:List<ProsSubType>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityEmployeeDashBinding.inflate(layoutInflater)
@@ -30,6 +42,23 @@ class EmployeeDash : AppCompatActivity() {
             askPermission()
         }
 
+        candidateViewModel.getProsSubConfig()
+        candidateViewModel.prosSubTypeDataLiveData.observe(this)
+        {
+           // binding.progressbar.visibility = View.GONE
+            when (it) {
+                is NetworkResult.Loading -> {}//binding.progressbar.visibility = View.VISIBLE
+                is NetworkResult.Error -> Toast.makeText(
+                    this,
+                    it.message.toString(),
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                is NetworkResult.Success -> {
+                    prosSubType = it.data
+                }
+            }
+        }
 
     }
 

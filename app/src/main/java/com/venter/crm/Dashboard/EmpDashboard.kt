@@ -46,6 +46,30 @@ class EmpDashboard : AppCompatActivity() {
         {
             askPermission()
         }
+        try {
+
+            candidateViewModel.getProsSubConfig()
+            candidateViewModel.prosSubTypeDataLiveData.observe(this)
+            {
+                binding.progressbar.visibility = View.GONE
+                when (it) {
+                    is NetworkResult.Loading -> binding.progressbar.visibility = View.VISIBLE
+                    is NetworkResult.Error -> Toast.makeText(
+                        this,
+                        it.message.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    is NetworkResult.Success -> {
+                        Log.d(TAG, it.data.toString())
+                    }
+                }
+            }
+        }
+        catch (e:Exception)
+        {
+            Log.d(TAG,"Error in EmpDashboard.kt is : ${e.message}")
+        }
         //getData()
         if (tokenManger.getUserType() == "Admin") {
             binding.viewPager.adapter = AdminViewPagerAdapter(supportFragmentManager)

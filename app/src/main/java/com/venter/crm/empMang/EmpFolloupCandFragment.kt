@@ -15,6 +15,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.venter.crm.Dashboard.EmployeeDash
 import com.venter.crm.databinding.FragmentEmpFolloupCandBinding
 import com.venter.crm.models.RawDataList
 import com.venter.crm.models.UserList
@@ -76,7 +77,11 @@ class EmpFolloupCandFragment : Fragment() {
     ): View {
         // Create Binding
         _binding = FragmentEmpFolloupCandBinding.inflate(layoutInflater)
-        adapter = DataListAdapter(requireContext())
+        val employeeDash = activity as? EmployeeDash
+        val prosSubType = employeeDash?.prosSubType
+
+        adapter = DataListAdapter(requireContext(),prosSubType)
+        adapter = DataListAdapter(requireContext(), prosSubType)
         rawDataList = ArrayList()
         val date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
         binding.toDateView.text = date

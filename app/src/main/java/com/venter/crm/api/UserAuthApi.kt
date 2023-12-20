@@ -387,6 +387,10 @@ interface UserAuthApi {
 
     @POST("/configuration/getConfiguration")
     suspend fun getConfiguration():Response<SystemConf>
+    @POST("/configuration/getCommentConfig")
+    suspend fun getCommentConfig():Response<CommentConf>
+    @POST("/configuration/getProsSubConfig")
+    suspend fun getProsSubConfig():Response<List<ProsSubType>>
 
 
 

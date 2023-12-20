@@ -13,6 +13,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.venter.crm.Dashboard.EmployeeDash
 import com.venter.crm.databinding.FragmentEmpProsFragementBinding
 import com.venter.crm.models.RawDataList
 import com.venter.crm.models.UserList
@@ -114,7 +115,12 @@ class EmpProsFragement : Fragment() {
 
         try {
             _binding = FragmentEmpProsFragementBinding.inflate(layoutInflater)
-            adapter = DataListAdapter(requireContext())
+            val employeeDash = activity as? EmployeeDash
+            val prosSubType = employeeDash?.prosSubType
+
+            adapter = DataListAdapter(requireContext(),prosSubType)
+
+            adapter = DataListAdapter(requireContext(), prosSubType)
             rawDataList = ArrayList()
             userDataList = ArrayList()
 

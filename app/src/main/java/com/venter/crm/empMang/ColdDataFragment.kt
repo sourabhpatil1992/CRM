@@ -1,7 +1,6 @@
 package com.venter.crm.empMang
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +9,9 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.venter.crm.EmployeeMangment.RawDataListAdapter
-import com.venter.crm.EmployeeMangment.chkListner
+import com.venter.crm.Dashboard.EmployeeDash
 import com.venter.crm.databinding.FragmentColdDataBinding
 import com.venter.crm.models.RawDataList
-import com.venter.crm.utils.Constans.TAG
 import com.venter.crm.utils.NetworkResult
 import com.venter.crm.utils.TokenManger
 import com.venter.crm.viewModelClass.CandidateViewModel
@@ -52,8 +49,12 @@ class ColdDataFragment : Fragment() {
 
         layoutManager = LinearLayoutManager(context)
 
+        val employeeDash = activity as? EmployeeDash
+        val prosSubType = employeeDash?.prosSubType
 
-        adapter = DataListAdapter(requireContext())
+        adapter = DataListAdapter(requireContext(),prosSubType)
+
+        adapter = DataListAdapter(requireContext(), prosSubType)
 
 
         getData()

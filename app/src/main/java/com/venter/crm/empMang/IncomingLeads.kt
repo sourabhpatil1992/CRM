@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.venter.crm.Dashboard.EmployeeDash
 import com.venter.crm.R
 import com.venter.crm.databinding.FragmentIncomingLeadsBinding
 import com.venter.crm.models.RawDataList
@@ -52,8 +53,10 @@ class IncomingLeads : Fragment() {
     ): View? {
         _binding = FragmentIncomingLeadsBinding.inflate(layoutInflater)
 
-        //Set The Adapter
-        adapter = DataListAdapter(requireContext())
+        val employeeDash = activity as? EmployeeDash
+        val prosSubType = employeeDash?.prosSubType
+
+        adapter = DataListAdapter(requireContext(),prosSubType)
 
          spinnerChange()
 

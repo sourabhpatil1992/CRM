@@ -2208,6 +2208,49 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
     }
 
+    private val _commentConfDataLiveData = MutableLiveData<NetworkResult<CommentConf>>()
+    val commentConfDataLiveData: LiveData<NetworkResult<CommentConf>>
+        get() = _commentConfDataLiveData
+    suspend fun getCommentConfig() {
+
+        try {
+            _commentConfDataLiveData.postValue(NetworkResult.Loading())
+            val response = userApi.getCommentConfig()
+
+            if (response.isSuccessful && response.body() != null) {
+                _commentConfDataLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+                _commentConfDataLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+                _commentConfDataLiveData.postValue(NetworkResult.Error("Something Went Wrong."))
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.ke getCommentConfig() is ${e.message}")
+        }
+    }
+
+    private val _prosSubTypeDataLiveData = MutableLiveData<NetworkResult<List<ProsSubType>>>()
+    val prosSubTypeDataLiveData: LiveData<NetworkResult<List<ProsSubType>>>
+        get() = _prosSubTypeDataLiveData
+    suspend fun getProsSubConfig() {
+
+        try {
+            _prosSubTypeDataLiveData.postValue(NetworkResult.Loading())
+            val response = userApi.getProsSubConfig()
+
+            if (response.isSuccessful && response.body() != null) {
+                _prosSubTypeDataLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+                _prosSubTypeDataLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+                _prosSubTypeDataLiveData.postValue(NetworkResult.Error("Something Went Wrong."))
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.ke getProsSubConfig() is ${e.message}")
+        }
+    }
 
 
 }

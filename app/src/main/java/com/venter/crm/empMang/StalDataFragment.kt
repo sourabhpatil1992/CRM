@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.venter.crm.Dashboard.EmployeeDash
 import com.venter.crm.databinding.FragmentStalDataBinding
 import com.venter.crm.models.RawDataList
 import com.venter.crm.models.UserList
@@ -50,7 +51,12 @@ class StalDataFragment : Fragment() {
         _binding = FragmentStalDataBinding.inflate(layoutInflater)
 
         try {
-            adapter = DataListAdapter(requireContext())
+            val employeeDash = activity as? EmployeeDash
+            val prosSubType = employeeDash?.prosSubType
+
+            adapter = DataListAdapter(requireContext(),prosSubType)
+
+            adapter = DataListAdapter(requireContext(), prosSubType)
 
             spinnerChange()
 

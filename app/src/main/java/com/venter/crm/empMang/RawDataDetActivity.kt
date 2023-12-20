@@ -30,6 +30,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.venter.crm.databinding.ActivityRawDataDetBinding
 import com.venter.crm.databinding.LayoutCommentBinding
 import com.venter.crm.databinding.LayoutCustdeteditBinding
+import com.venter.crm.models.CommentConf
 import com.venter.crm.models.CustUpdateDet
 import com.venter.crm.models.RawCandidateData
 import com.venter.crm.models.RawCommentData
@@ -59,6 +60,7 @@ class RawDataDetActivity : AppCompatActivity() {
     private var dataId = 0
 
     private var tempList: ArrayList<WhatsTempNameList> = ArrayList()
+    private var commentConf: CommentConf? = null
 
 
     var data: RawCandidateData? = null
@@ -181,8 +183,30 @@ class RawDataDetActivity : AppCompatActivity() {
 
     private fun getTemplateList() {
         candidateViewModel.getWhatsMsgNameList()
+        candidateViewModel.getCommentConfig()
         tempList = ArrayList()
-        candidateViewModel.msgNameListResLiveData.observe(this)
+
+        candidateViewModel.commentConfDataLiveData.observe(this)
+        {
+            binding.progressbar.visibility = View.GONE
+            when (it) {
+                is NetworkResult.Loading -> {
+                    binding.progressbar.visibility = View.VISIBLE
+                }
+
+                is NetworkResult.Error -> {
+                    Toast.makeText(this, it.message.toString(), Toast.LENGTH_SHORT).show()
+                }
+
+                is NetworkResult.Success -> {
+                    commentConf = it.data
+                    tempList = it.data!!.whatsTemp as ArrayList<WhatsTempNameList>
+                    // tempList.add(0, WhatsTempNameList(0, "NA"))
+
+                }
+            }
+        }
+        /*candidateViewModel.msgNameListResLiveData.observe(this)
         {
             when (it) {
                 is NetworkResult.Loading -> {}
@@ -193,7 +217,7 @@ class RawDataDetActivity : AppCompatActivity() {
 
                 }
             }
-        }
+        }*/
     }
 
     private fun dataTransfer() {
@@ -356,20 +380,18 @@ class RawDataDetActivity : AppCompatActivity() {
             if (data!!.trader == 1) {
                 bindingMsg.rdoYes.isChecked = true
                 bindingMsg.linTrade.visibility = View.VISIBLE
-            }
-            else
-            {
+            } else {
                 bindingMsg.rdoNo.isChecked = true
                 bindingMsg.linTrade.visibility = View.GONE
-                }
+            }
             bindingMsg.capital.setText(data!!.capital.toString())
-            if(!data!!.segment.isNullOrEmpty()) {
+            if (!data!!.segment.isNullOrEmpty()) {
                 val segment = data!!.segment!!.split(",")
-                if(segment.contains("F&O"))
+                if (segment.contains("F&O"))
                     bindingMsg.chkFo.isChecked = true
-                if(segment.contains("Cash"))
+                if (segment.contains("Cash"))
                     bindingMsg.chkCash.isChecked = true
-                if(segment.contains("Commodity"))
+                if (segment.contains("Commodity"))
                     bindingMsg.chkCommodity.isChecked = true
 
             }
@@ -401,7 +423,7 @@ class RawDataDetActivity : AppCompatActivity() {
             builder.setPositiveButton("OK") { _, _ ->
 
                 if (bindingMsg.email.text.isNotEmpty())
-                    if(!emailValidation(bindingMsg.email.text.toString())) {
+                    if (!emailValidation(bindingMsg.email.text.toString())) {
                         Toast.makeText(this, "Please Enter Valid Email Id.", Toast.LENGTH_SHORT)
                             .show()
                         return@setPositiveButton
@@ -482,8 +504,24 @@ class RawDataDetActivity : AppCompatActivity() {
             bindingMsg.txtCallTime.text = "${callTime} Sec"
 
 
-            val prosType: Array<String> =
-                arrayOf("Not Interested", "Interested", "Not Responding", "Paid")
+            // val prosType: Array<String> = arrayOf("Not Interested", "Interested", "Not Responding", "Paid")
+            val prosType: ArrayList<String> =
+                commentConf!!.prosType.toString().split("\n") as ArrayList<String>
+
+            if (!prosType.contains("Not Interested"))
+                prosType.add(0, "Not Interested")
+            else {
+                // If "Not Interested" is already in the list, move it to the first position
+                prosType.remove("Not Interested")
+                prosType.add(0, "Not Interested")
+            }
+
+            prosType.remove("Not Responding")
+            prosType.add("Not Responding")
+
+            prosType.remove("Paid")
+            prosType.add("Paid")
+
 
             var adapter = ArrayAdapter<String>(
                 this,
@@ -493,7 +531,7 @@ class RawDataDetActivity : AppCompatActivity() {
 
             bindingMsg.spinProsType.adapter = adapter
 
-            val prospectLevel: Array<String> = arrayOf(
+            /*val prospectLevel: Array<String> = arrayOf(
                 "NA",
                 "Coming for visit",
                 "Visited",
@@ -503,6 +541,21 @@ class RawDataDetActivity : AppCompatActivity() {
                 "Will Join/Inform",
                 "Paid"
             )
+            Log.d(TAG,commentConf!!.prosSubType.toString())*/
+
+            val prospectLevel: ArrayList<String> = commentConf!!.prosSubType?.map {
+                it.subType
+            } as ArrayList<String>
+            /*val prospectLevel: ArrayList<String> =
+                commentConf!!.prosSubType.toString().split("\n") as ArrayList<String>*/
+
+            prospectLevel.remove("NA")
+            prospectLevel.add(0, "NA")
+
+
+            prospectLevel.remove("Paid")
+            prospectLevel.add("Paid")
+
             adapter = ArrayAdapter<String>(
                 this,
                 R.layout.select_dialog_item, // Custom layout for Spinner items
@@ -550,7 +603,16 @@ class RawDataDetActivity : AppCompatActivity() {
 
                 }
 
+            val remarkTemp: ArrayList<String> =
+                commentConf!!.commentTemp.toString().split("\n") as ArrayList<String>
+
+            val remarkAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, remarkTemp)
+            bindingMsg.remark.setAdapter(remarkAdapter)
+
+
+
             val tempNames = tempList.mapNotNull { it.temp_name }
+
             val whatsTemp: ArrayList<String> = ArrayList(tempNames)
 
 
