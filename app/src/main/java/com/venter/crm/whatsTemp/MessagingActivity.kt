@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.venter.crm.R
 import com.venter.crm.databinding.ActivityMessagingBinding
+import com.venter.crm.integration.EmailAccountIntegrationActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -20,6 +21,10 @@ class MessagingActivity : AppCompatActivity() {
 
         binding.whatsapp.setOnClickListener {
             val intent = Intent(this,WhatsAppAccounts::class.java)
+            startActivity(intent)
+        }
+        binding.email.setOnClickListener {
+            val intent = Intent(this,EmailAccountIntegrationActivity::class.java)
             startActivity(intent)
         }
     }

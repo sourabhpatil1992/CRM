@@ -47,7 +47,7 @@ class CommentConfActivity : AppCompatActivity(),ProsSubTypeInterface {
             getData()
 
             binding.btnSubmit.setOnClickListener {
-                val conf = SystemConf(binding.commentTemplate.text.toString(),prosSubTypeList,binding.prosType.text.toString())
+                val conf = SystemConf(binding.commentTemplate.text.toString().replaceFirst("\\s+$".toRegex(), ""),prosSubTypeList,binding.prosType.text.toString().replaceFirst("\\s+$".toRegex(), ""))
                 candidateViewModel.updateConfiguration(conf)
                  candidateViewModel.stringResData.observe(this) {
                     binding.progressbar.visibility = View.GONE
@@ -134,6 +134,11 @@ class CommentConfActivity : AppCompatActivity(),ProsSubTypeInterface {
 
             builder.setPositiveButton("OK") { _, _ ->
                 prosSubTypeList.add(ProsSubType(bindingMsg.subType.text.toString(),(bindingMsg.colorView.background as ColorDrawable).color.toString()))
+                adapter.submitList(prosSubTypeList)
+                val layoutManager = LinearLayoutManager(this)
+                binding.rcView.layoutManager = layoutManager
+
+                binding.rcView.adapter = adapter
             }
             builder.setNegativeButton("Cancel") { _, _ ->
                 // Handle Cancel button click if needed

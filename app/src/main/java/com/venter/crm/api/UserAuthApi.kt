@@ -391,6 +391,10 @@ interface UserAuthApi {
     suspend fun getCommentConfig():Response<CommentConf>
     @POST("/configuration/getProsSubConfig")
     suspend fun getProsSubConfig():Response<List<ProsSubType>>
+    @POST("/configuration/configEmail")
+    suspend fun configEmail(@Body mailConf: ConfigMailModel):Response<String>
+    @POST("/configuration/getEmailList")
+    suspend fun getEmailList():Response<List<ConfigMailModel>>
 
 
 

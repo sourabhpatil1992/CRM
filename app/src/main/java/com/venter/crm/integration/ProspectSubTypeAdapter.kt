@@ -29,11 +29,11 @@ class ProspectSubTypeAdapter(private val inter:ProsSubTypeInterface) : ListAdapt
     class ComparatorDiffUtil : DiffUtil.ItemCallback<ProsSubType>()
     {
         override fun areItemsTheSame(oldItem: ProsSubType, newItem: ProsSubType): Boolean {
-            return true
+            return oldItem.subType == newItem.subType
         }
 
         override fun areContentsTheSame(oldItem: ProsSubType, newItem: ProsSubType): Boolean {
-            return true
+            return oldItem == newItem
         }
 
     }

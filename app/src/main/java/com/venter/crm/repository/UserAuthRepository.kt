@@ -2252,5 +2252,46 @@ class UserAuthRepository @Inject constructor(private val userApi: UserAuthApi) {
         }
     }
 
+    suspend fun configEmail(mailConf: ConfigMailModel) {
+
+        try {
+            _stringResLiveData.postValue(NetworkResult.Loading())
+            val response = userApi.configEmail(mailConf)
+
+            if (response.isSuccessful && response.body() != null) {
+                _stringResLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+                _stringResLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+                _stringResLiveData.postValue(NetworkResult.Error("Something Went Wrong."))
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.ke configEmail() is ${e.message}")
+        }
+    }
+
+    private val _emailListDataLiveData = MutableLiveData<NetworkResult<List<ConfigMailModel>>>()
+    val emailListDataLiveData: LiveData<NetworkResult<List<ConfigMailModel>>>
+        get() = _emailListDataLiveData
+    suspend fun getEmailList() {
+
+        try {
+            _emailListDataLiveData.postValue(NetworkResult.Loading())
+            val response = userApi.getEmailList()
+
+            if (response.isSuccessful && response.body() != null) {
+                _emailListDataLiveData.postValue(NetworkResult.Success(response.body()!!))
+            } else if (response.errorBody() != null) {
+                val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+                _emailListDataLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+            } else {
+                _emailListDataLiveData.postValue(NetworkResult.Error("Something Went Wrong."))
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in UserAuthRepository.ke getEmailList() is ${e.message}")
+        }
+    }
+
 
 }

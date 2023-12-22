@@ -1108,5 +1108,27 @@ class CandidateViewModel @Inject constructor(private val userRepository: UserAut
         }
     }
 
+    fun configEmail(mailConf: ConfigMailModel) {
+        try {
+            viewModelScope.launch {
+                userRepository.configEmail(mailConf)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt configEmail() is:${e.message}")
+        }
+    }
+
+    val emailListDataLiveData :LiveData<NetworkResult<List<ConfigMailModel>>>
+        get() = userRepository.emailListDataLiveData
+    fun getEmailList() {
+        try {
+            viewModelScope.launch {
+                userRepository.getEmailList()
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "Error in CandidateViewModel.kt getEmailList() is:${e.message}")
+        }
+    }
+
 
 }

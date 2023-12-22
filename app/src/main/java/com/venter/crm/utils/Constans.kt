@@ -6,7 +6,7 @@ object Constans {
     //const val BASE_URL = "http://103.133.215.139:7002/"
 
     //Development  Local Server
-    const val BASE_URL = "http://192.168.0.102:7002/"
+    const val BASE_URL = "http://192.168.0.103:7002/"
 
     //Development
     //const val BASE_URL = "http://149.102.141.128:3002/"

@@ -503,6 +503,7 @@ class RawDataDetActivity : AppCompatActivity() {
             val bindingMsg = LayoutCommentBinding.inflate(layoutInflater)
             bindingMsg.txtCallTime.text = "${callTime} Sec"
 
+            Log.d(TAG,commentConf.toString())
 
             // val prosType: Array<String> = arrayOf("Not Interested", "Interested", "Not Responding", "Paid")
             val prosType: ArrayList<String> =
